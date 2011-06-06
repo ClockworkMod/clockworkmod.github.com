@@ -11,20 +11,20 @@ $.get(
 );
 
 $(document).ready(function(){
-	$("a.show").hide();
+	$("a.hide").hide();
 	$('td.summary').hide();
 
 	$("a.show").click(function(event){
 		event.preventDefault();
 		$("a.show").hide();
 		$("a.hide").show();
-		$("td.summary").show("slow");
+		$("td.summary").show();
 	});
 	
 	$("a.hide").click(function(event){
 		event.preventDefault();
 		$("a.show").show();
 		$("a.hide").hide();
-		$("td.summary").hide("slow");
+		$("td.summary").hide();
 	});
 });

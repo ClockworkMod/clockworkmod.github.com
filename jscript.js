@@ -12,7 +12,6 @@ $.get(
 
 $(document).ready(function(){
 	$("a.show").hide();
-	$("a.summary").hide();
 	$('td.summary').hide();
 
 	$("a.show").click(function(event){
@@ -27,4 +26,5 @@ $(document).ready(function(){
 		$("a.show").show();
 		$("a.hide").hide();
 		$("td.summary").hide("slow");
+	});
 });

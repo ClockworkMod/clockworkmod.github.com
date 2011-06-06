@@ -4,8 +4,27 @@ $.get(
 		$.each(data.manifests,function(i, val){
 			$('.it').append('<tr class= tx' + i + '><td><a href=' + val.manifest + '>' + val.id + '</a></td><td>');
 			$('.tx' + i).append('<td>'+ val.developer + '</td></tr>');
-			$('.tx'+i).append('<td>'+ val.summary + '</td></tr>');
+			$('.tx'+i).append('<td class = "summary">'+ val.summary + '</td></tr>');
 		});
 	},
 	"jsonp"
 );
+
+$(document).ready(function(){
+	$("a.show").hide();
+	$("a.summary").hide();
+	$('td.summary').hide();
+
+	$("a.show").click(function(event){
+		event.preventDefault();
+		$("a.show").hide();
+		$("a.hide").show();
+		$("td.summary").show("slow");
+	});
+	
+	$("a.hide").click(function(event){
+		event.preventDefault();
+		$("a.show").show();
+		$("a.hide").hide();
+		$("td.summary").hide("slow");
+});

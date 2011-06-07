@@ -1,20 +1,6 @@
 $(document).ready(function(){
 	$("a.hide").hide();
 	$('td.summary').hide();
-
-	$("a.show").click(function(event){
-		event.preventDefault();
-		$("a.show").hide();
-		$("a.hide").show();
-		$("td.summary").show();
-	});
-	
-	$("a.hide").click(function(event){
-		event.preventDefault();
-		$("a.show").show();
-		$("a.hide").hide();
-		$("td.summary").hide();
-	});
 });
 
 $.get(
@@ -29,3 +15,21 @@ $.get(
 	"jsonp"
 );
 
+$(document).ready(function(){
+	$('td.summary').hide();
+	
+	$("a.show").click(function(event){
+		event.preventDefault();
+		$("a.show").hide();
+		$("a.hide").show();
+		$("td.summary").show();
+	});
+	
+	$("a.hide").click(function(event){
+		event.preventDefault();
+		$("a.show").show();
+		$("a.hide").hide();
+		$("td.summary").hide();
+	});
+	
+});

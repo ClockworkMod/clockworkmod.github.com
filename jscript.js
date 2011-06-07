@@ -11,12 +11,12 @@ $.get(
 			$('.tx' + i).append('<td>'+ val.developer + '</td>');
 			$('.tx'+i).append('<td class = "summary">'+ val.summary + '</td></tr>');
 		});
+		$('td.summary').hide();
 	},
 	"jsonp"
 );
 
 $(document).ready(function(){
-	$('td.summary').hide();
 	
 	$("a.show").click(function(event){
 		event.preventDefault();

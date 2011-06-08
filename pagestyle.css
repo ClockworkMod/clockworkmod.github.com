@@ -1,0 +1,51 @@
+body
+{
+	margin-left:auto;
+	margin-right:auto;
+	background-color:#148;
+	color:white;
+}
+
+table
+{
+	background-color:#469;
+	color:white;
+	vertical-align:top;
+	width:800px;
+}
+
+th
+{
+	background-color:#359;
+	color:#FFF;
+	
+}
+
+td
+{
+	color:#FFE;
+	background-color:#359;
+	horizontal-align:center;
+	vertical-align:center;
+	padding-left:10px;
+}
+
+
+td.summary
+{
+	color:#DFF;
+	background-color:#469;
+	horizontal-align:center;
+	vertical-align:top;
+}
+
+img
+{
+	float: none;
+}
+
+a
+{
+	margin-left:auto;
+	margin-right:auto;
+}

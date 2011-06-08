@@ -10,7 +10,7 @@ function(data) {
     $.each(data.manifests,
     function(i, val) {
         $('.it').append('<tr class= tx' + i + '><td class = "ty' + i + '><a href="" class = "ax' + i + '">' + val.developer + '</a><br><img src="' + val.icon + '" width = "100" height ="100" alt = "' + val.id + '"></td>');
-        $('.tx' + i).append('<td class= "summary"><b>ROMS:</b><ol class = ox'+i+'></ol><br><br> '+ val.summary +' </td></tr>');
+        $('.tx' + i).append('<td class= "summary"><b>ROMS:</b><ol class = ox'+i+'></ol><br><b>ABOUT:</b> '+ val.summary +' </td></tr>');
 
         manArr.unshift(val.manifest);
     });
@@ -22,7 +22,7 @@ function(data) {
     		"http://jsonp.deployfu.com/clean/" + encodeURIComponent(val),
     		function(data){
 				for(j=0;j<data.roms.length;j++){
-					$('ol.ox' + i).append('<li>' + data.roms[j].name + '</li></tr>');
+					$('ol.ox' + i).append('<li><a href="'+data.roms[j].url+'">' + data.roms[j].name + '</a></li></tr>');
 					if (j>3) {
 						j=0;
 						break;

@@ -16,7 +16,7 @@ table
 
 th
 {
-	background-color:#359;
+	background-color:#148;
 	color:#FFF;
 	
 }
@@ -24,10 +24,12 @@ th
 td
 {
 	color:#FFE;
-	background-color:#359;
+	background-color:#469;
 	horizontal-align:center;
 	vertical-align:center;
 	padding-left:10px;
+	padding-top:20px;
+	padding-bottom:20px;
 }
 
 

@@ -1,6 +1,7 @@
 body
 {
 	background-color:#047;
+	color:#FFF;
 }
 
 ul#tabs li
@@ -16,7 +17,7 @@ ul#tabs li
 
 a.dev
 {
-    color:#FFF;
+    color:#000;
     text-decoration:none;
 }
 

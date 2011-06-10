@@ -13,7 +13,7 @@ $(document).ready(function() {
         //Fill developer list
         $.each(developers,
         function(i, val) {
-            $("ul.devlist").append('<li><a class="DEV ' + val.id + '" href="">' + val.developer + '</a></li>');
+            $("ul.devlist").append('<li><a class="DEV" id = "dev' + i + '" href="">' + val.developer + '</a></li>');
         });
 
         // Fill drop down list
@@ -34,7 +34,7 @@ $(document).ready(function() {
 
 
         // Clicking button will narrow down developer list to device in drop down
-        $("input").click(function(event) {
+        $("input.fButton").click(function(event) {
             $('a').removeClass("hideDev");
             var listVal = String(document.getElementById('filter').value);
             if (listVal != "-") {
@@ -45,7 +45,8 @@ $(document).ready(function() {
                     function(j, rList) {
                         // Add class to hide developers that don't support the device
                         if (j != listVal) {
-                            $('a.' + val.id).addClass("hideDev");
+                            //alert(encodeURIComponent(val.id));
+                            $("#dev"+i).addClass("hideDev");
                         }
 
                     });

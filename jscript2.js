@@ -13,7 +13,7 @@ $(document).ready(function() {
         //Fill developer list
         $.each(developers,
         function(i, val) {
-            $("ul.devlist").append('<li><a class="DEV ' + val.developer + '" href="">' + val.developer + '</a></li>');
+            $("ul.devlist").append('<li><a class="DEV ' + val.id + '" href="">' + val.developer + '</a></li>');
         });
 
         // Fill drop down list
@@ -36,25 +36,21 @@ $(document).ready(function() {
         // Clicking button will narrow down developer list to device in drop down
         $("input").click(function(event) {
             $('a').removeClass("hideDev");
-
-            if (String(document.getElementById('filter').value) == "-") {}
-            else {
+            var listVal = String(document.getElementById('filter').value);
+            if (listVal != "-") {
                 $.each(developers,
                 function(i, val) {
-                    var temp = false;
-
                     // Check to see if developer supports device
                     $.each(val.roms,
                     function(j, rList) {
-                        if (rList[String(document.getElementById('filter').value)]) {
-                            temp = true;
+                        // Add class to hide developers that don't support the device
+                        if (j != listVal) {
+                            $('a.' + val.id).addClass("hideDev");
                         }
+
                     });
 
-                    // Add class to hide developers that don't support the device
-                    if (!temp) {
-                        $('a.' + val.developer).addClass("hideDev");
-                    }
+
                 });
             }
 

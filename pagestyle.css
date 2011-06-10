@@ -30,6 +30,7 @@ a.DEV
 a:hover
 {
     text-transform:uppercase;
+    background-color:#DFF;
 }
 
 ul#tabs li a:hover {

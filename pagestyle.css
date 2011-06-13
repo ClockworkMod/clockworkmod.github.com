@@ -1,53 +1,58 @@
-body
-{
-	background-color:#047;
-	color:#FFF;
+body {
+background-color: #345;
+color: #FFF;
 }
 
-ul li
-{
-	list-style-type:none;
+ul li {
+list-style-type: none;
 }
 
-ul#tabs li
-{
-	display: inline;
-	background-color:#FFE;
+ul#tabs li {
+display: inline;
+background-color: #FFE;
+margin: 30px 0 0 0;
+padding: 0 0 0.3em 0;
 }
 
-a.hideDev
-{
-    color:#00F;
-    display:none;
+ul#tabs li a {
+color: #FFF;
+background-color: #135;
+border: 1px solid#c9c3ba;
+border-bottom: none;
+padding: 0.3em .3em 1.1em .3em;
+text-decoration: none;
 }
 
-a.DEV
-{
-    color:#000;
-    text-decoration:none;
+a.hideDev {
+color: #00F;
+display: none;
 }
 
-a:hover
-{
-    text-transform:uppercase;
-    background-color:#DFF;
+a.DEV {
+color: #FFF;
+text-decoration: none;
 }
 
-ul#tabs li a:hover {
+a: hover {
+text-transform: uppercase;
+background-color: #DFF;
+}
+
+ul#tabs li a: hover {
 background-color: #f1f0ee;
 }
 
 ul#tabs li a.selected {
-color: #000;
-background-color: #f1f0ee;
+color: #FFF;
+background-color: #369;
 font-weight: bold;
-padding: 0.7em 0.3em .38em 0.3em;
+padding: 0.7em 0.3em 1.2em 0.3em;
 }
 
 div.tabContent {
 border: 1px solid #c9c3ba;
 padding: 0.5em;
-background-color: #f1f0ee;
+background-color: #369;
 }
 
 div.tabContent.hide {

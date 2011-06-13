@@ -11,10 +11,15 @@
 <body>
     Device: <select class = "filter" id = "filter"><option value ="-">-</option></select>
     <input type="button" value = "FILTER" class = "fButton">
-    <ul class = "tabs" id = "tabs">
-        <li><a href = "#developers">DEVELOPERS</a></li>
+    
+    <ul id = "tabs">
+        <li><a id = "devTab" class = "tabItem" href = "#developers">DEVELOPERS</a></li>
     </ul>
-    <div class = "tabContent" class = "developers"><ul class="devlist"></ul></div>
+    
+    <div class = "tabContent developers">
+        <ul class="devlist"></ul>
+    </div>
+    
     <div class = "newTab"></div>
 </body>
 </html>

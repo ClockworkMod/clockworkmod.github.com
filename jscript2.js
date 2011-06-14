@@ -149,13 +149,17 @@ $(document).ready(function()
                         // Tab content starts here
                         $('.newTab').append('<div class = "tabContent romInfo" id = "romInfo"></div>');
 
+                        
+
+                        $("#romInfo").append('<a href="' + data.roms[romIndex].url + '">Download ROM Here</a><br><br>');
+
                         // Rating & number of downloads
                         var romRatUri = "http://rommanager.deployfu.com/v2/ratings/";
                         $.get("http://jsonp.deployfu.com/clean/"+encodeURIComponent(romRatUri+developers[devIndex].id),
                         function(xdata)
                         {
                             if(xdata.result[romName])
-                                $("#romInfo").append('Rating: ' + xdata.result[romName].rating.toFixed(2) + '<br> Downloads: '+ xdata.result[romName].downloads + '<br><br>');
+                                $("#romInfo").append('Overall Rating: ' + xdata.result[romName].rating.toFixed(2) + '<br>Total Downloads: '+ xdata.result[romName].downloads + '<br><br>');
                         },
                         "jsonp"
                         );

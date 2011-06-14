@@ -31,11 +31,11 @@ $(document).ready(function()
                     theDev = devRats[String(devId)];
                     totalDL = theDev.anonymousDownloadCount + theDev.downloadCount;
                     rating = theDev.totalRating / theDev.ratingCount;
-                    lastMod = Date((theDev.lastModified)*1000);
-                    $("ul.devlist").append('<li><a class="DEV" id = "dev' + i + 
-                    '" href="#"><img  height = 100 width = 100 src = '+val.icon+'> '+
-                     val.developer +' | Rating: ' + rating.toFixed(2) + ' | Downloads: '+
-                      totalDL +' | Last Modified: '+ lastMod  + ' </a></li>');
+                    lastMod = Date((theDev.lastModified) * 1000);
+                    $("ul.devlist").append('<li><a class="DEV" id = "dev' + i +
+                    '" href="#"><img  height = 100 width = 100 src = ' + val.icon + '> ' +
+                    val.developer + ' | Rating: ' + rating.toFixed(2) + ' | Downloads: ' +
+                    totalDL + ' | Last Modified: ' + lastMod + ' </a></li>');
                 }
                 else
                 $("ul.devlist").append('<li><a class="DEV" id = "dev' + i + '" href="#">' + val.developer + ' </a></li>');
@@ -127,7 +127,7 @@ $(document).ready(function()
                     // Get the indicies and the rom name
                     var devIndex = parseInt(this.id[this.id.length - 2]);
                     var romIndex = parseInt(this.id[this.id.length - 1]);
-                    var romName;
+                    var romName = null;
 
                     $.get("http://jsonp.deployfu.com/clean/" + encodeURIComponent(developers[devIndex].manifest),
                     function(data)
@@ -145,10 +145,38 @@ $(document).ready(function()
                             $("div.romInfo").removeClass("hide");
                             $("#romInfoTab").addClass("selected");
                         });
+                        
+                        // Tab content starts here
+                        $('.newTab').append('<div class = "tabContent romInfo" id = "romInfo"></div>');
+
+                        // Rating & number of downloads
+                        var romRatUri = "http://rommanager.deployfu.com/v2/ratings/";
+                        $.get("http://jsonp.deployfu.com/clean/"+encodeURIComponent(romRatUri+developers[devIndex].id),
+                        function(xdata)
+                        {
+                            if(xdata.result[romName])
+                                $("#romInfo").append('Rating: ' + xdata.result[romName].rating.toFixed(2) + '<br> Downloads: '+ xdata.result[romName].downloads + '<br><br>');
+                        },
+                        "jsonp"
+                        );
+
+                        // Comments
+                        var commentUri = "http://rommanager.deployfu.com/ratings/";
+                        $.get("http://jsonp.deployfu.com/clean/"+encodeURIComponent(commentUri+developers[devIndex].id + '/' + romName),
+                        function(ydata)
+                        {
+                            $("#romInfo").append('<h3>Comments:</h3>');
+                            $.each(ydata.result.comments, function(j, com){
+                                $("#romInfo").append('<hr><strong>User:</strong> ' + com.nickname +'<br><strong>Rating:</strong> ' + com.rating  + '/5 <br><strong>Comment: </strong>' + com.comment + '<br>');
+                            });
+
+                        },
+                        "jsonp"
+                        );
                     },
                     "jsonp");
 
-                    $('.newTab').append('<div class = "tabContent romInfo" id = "romInfo"></div>');
+                    
 
 
 

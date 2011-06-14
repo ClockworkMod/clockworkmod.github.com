@@ -3,6 +3,11 @@ background-color: #345;
 color: #FFF;
 }
 
+strong
+{
+color:#FA0;
+}
+
 ul li {
 list-style-type: none;
 }

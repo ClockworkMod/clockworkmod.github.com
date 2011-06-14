@@ -1,9 +1,6 @@
 var manArr = new Array();
 
 
-//http://gh-pages.clockworkmod.com/ROMManagerManifest/devices.js
-
-
 $(document).ready(function() {
 
     $.get(

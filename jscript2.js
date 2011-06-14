@@ -6,11 +6,12 @@ $(document).ready(function()
 
     var devices = null;
     var developers = null;
+    var devRats = null;
 
     // Attempt to fill page with content
     function doStuff()
     {
-        if (devices == null || developers == null)
+        if (devices == null || developers == null || devRats == null)
         {
             return;
         }
@@ -19,14 +20,29 @@ $(document).ready(function()
         $.each(developers,
         function(i, val)
         {
-            $("ul.devlist").append('<li><a class="DEV" id = "dev' + i + '" href="#">' + val.developer + '</a></li>');
+            // Get the rating
+            var rating = 0;
+            var devId = escape(val.id);
+            if (devRats[String(devId)])
+            {
+                // Add to list
+                if (devRats[String(devId)].ratingCount)
+                {
+                    theDev = devRats[String(devId)];
+                    totalDL = theDev.anonymousDownloadCount + theDev.downloadCount;
+                    rating = theDev.totalRating / theDev.ratingCount;
+                    $("ul.devlist").append('<li><a class="DEV" id = "dev' + i + '" href="#">' + val.developer +' ' + String(rating) + ' '+ totalDL + ' </a></li>');
+                }
+                else
+                $("ul.devlist").append('<li><a class="DEV" id = "dev' + i + '" href="#">' + val.developer + ' </a></li>');
+            }
         });
 
         // Fill drop down list
         $.each(devices,
         function(i, val)
         {
-            $("select.filter").append('<option value = "' + val.key + '">' + val.key + '</option>');
+            $("select.filter").append('<option value = "' + val.key + '">' + val.name + '</option>');
         });
 
         // Clicking button will narrow down developer list to device in drop down
@@ -61,7 +77,10 @@ $(document).ready(function()
         {
             event.preventDefault();
             $("#devInfo").remove();
+            $("#romList").remove();
             $("#romListTab").remove();
+            $("#romInfo").remove();
+            $("#romInfoTab").remove();
             $("div.developers").addClass("hide");
             $(".tabItem").removeClass("selected");
 
@@ -88,9 +107,48 @@ $(document).ready(function()
             $.get("http://jsonp.deployfu.com/clean/" + encodeURIComponent(developers[devIndex].manifest),
             function(data) {
                 $.each(data.roms,
-                function(i, val) 
+                function(i, val)
                 {
-                    $("#romOL").append('<li class = "devRom"><a class = "ROM"  id = "' + developers[devIndex].id + devIndex + i +'" href="#">' + val.name + '</a></li>');
+                    $("#romOL").append('<li class = "devRom"><a class = "ROM"  id = "' + developers[devIndex].id + devIndex + i + '" href="#">' + val.name + '</a></li>');
+                });
+
+                $("a.ROM").click(function(event)
+                {
+                    event.preventDefault();
+                    $("#romInfo").remove();
+                    $("#romInfoTab").remove();
+                    $("div.romList").addClass("hide");
+                    $(".tabItem").removeClass("selected");
+
+                    // Get the indicies and the rom name
+                    var devIndex = parseInt(this.id[this.id.length - 2]);
+                    var romIndex = parseInt(this.id[this.id.length - 1]);
+                    var romName;
+
+                    $.get("http://jsonp.deployfu.com/clean/" + encodeURIComponent(developers[devIndex].manifest),
+                    function(data)
+                    {
+                        romName = data.roms[romIndex].name;
+
+                        //Create the tab
+                        $('#tabs').append('<li><a id = "romInfoTab" class = "tabItem selected" href="#romInfo">' + romName + '</a></li>');
+
+                        // Controls for clicking the rom list tab
+                        $("#romInfoTab").click(function(event)
+                        {
+                            $("div.tabContent").addClass("hide");
+                            $("a.tabItem").removeClass("selected");
+                            $("div.romInfo").removeClass("hide");
+                            $("#romInfoTab").addClass("selected");
+                        });
+                    },
+                    "jsonp");
+
+                    $('.newTab').append('<div class = "tabContent romInfo" id = "romInfo"></div>');
+
+
+
+
                 });
 
             },
@@ -111,36 +169,7 @@ $(document).ready(function()
 
     }
 
-    $("a.ROM").click(function(event) {
-        event.preventDefault();
-        $("#romInfo").remove();
-        $("#romInfoTab").remove();
-        $("div.romList").addClass("hide");
-        $(".tabItem").removeClass("selected");
 
-        var devIndex = parseInt(this.id[this.id.length - 2]);
-        var romIndex = parseInt(this.id[this.id.length - 1]);
-        var romName = null;
-
-        $.get("http://jsonp.deployfu.com/clean/" + encodeURIComponent(developers[devIndex].manifest),
-        function(data){
-            romName = data.roms[romIndex].name;
-        },
-        "jsonp");
-
-        $('#tabs').append('<li><a id = "romInfoTab" class = "tabItem selected" href="#romInfo">' + romName + '</a></li>');
-        $('.newTab').append('<div class = "tabContent romInfo" id = "devInfo"></div>');
-
-        // Controls for clicking the rom list tab
-        $("#romInfoTab").click(function(event)
-        {
-            $("div.tabContent").addClass("hide");
-            $("a.tabItem").removeClass("selected");
-            $("div.romInfo").removeClass("hide");
-            $("#romInfoTab").addClass("selected");
-        });
-        
-    });
 
 
     //Will be used to alphabetize the drop down menu by first character
@@ -151,14 +180,14 @@ $(document).ready(function()
             var temp = itemList[i];
             var j = i - 1;
 
-            while (j >= 0 && itemList[j].key[0].toLowerCase() > temp.key[0].toLowerCase())
+            while (j >= 0 && itemList[j].name[0].toLowerCase() > temp.name[0].toLowerCase())
             {
                 itemList[j + 1] = itemList[j];
                 j = j - 1;
             }
             while (j >= 0 &&
-            itemList[j].key[0].toLowerCase() == temp.key[0].toLowerCase() &&
-            itemList[j].key[1].toLowerCase() > temp.key[1].toLowerCase())
+            itemList[j].key[0].toLowerCase() == temp.name[0].toLowerCase() &&
+            itemList[j].key[1].toLowerCase() > temp.name[1].toLowerCase())
             {
                 itemList[j + 1] = itemList[j];
                 j = j - 1;
@@ -211,6 +240,18 @@ $(document).ready(function()
     {
         developers = data.manifests;
         sortDevs(developers);
+        doStuff();
+    },
+    "jsonp"
+    );
+
+    //Get dev's ratings
+    var ratUri = "http://rommanager.deployfu.com/v2/ratings";
+    $.get(
+    "http://jsonp.deployfu.com/clean/" + encodeURIComponent(ratUri),
+    function(data)
+    {
+        devRats = data.result;
         doStuff();
     },
     "jsonp"

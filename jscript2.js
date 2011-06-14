@@ -31,7 +31,11 @@ $(document).ready(function()
                     theDev = devRats[String(devId)];
                     totalDL = theDev.anonymousDownloadCount + theDev.downloadCount;
                     rating = theDev.totalRating / theDev.ratingCount;
-                    $("ul.devlist").append('<li><a class="DEV" id = "dev' + i + '" href="#"><img  height = 100 width = 100 src = '+val.icon+'> '+ val.developer +' ' + String(rating) + ' '+ totalDL + ' </a></li>');
+                    lastMod = Date((theDev.lastModified)*1000);
+                    $("ul.devlist").append('<li><a class="DEV" id = "dev' + i + 
+                    '" href="#"><img  height = 100 width = 100 src = '+val.icon+'> '+
+                     val.developer +' | Rating: ' + rating.toFixed(2) + ' | Downloads: '+
+                      totalDL +' | Last Modified: '+ lastMod  + ' </a></li>');
                 }
                 else
                 $("ul.devlist").append('<li><a class="DEV" id = "dev' + i + '" href="#">' + val.developer + ' </a></li>');

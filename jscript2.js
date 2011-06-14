@@ -31,7 +31,7 @@ $(document).ready(function()
                     theDev = devRats[String(devId)];
                     totalDL = theDev.anonymousDownloadCount + theDev.downloadCount;
                     rating = theDev.totalRating / theDev.ratingCount;
-                    $("ul.devlist").append('<li><a class="DEV" id = "dev' + i + '" href="#">' + val.developer +' ' + String(rating) + ' '+ totalDL + ' </a></li>');
+                    $("ul.devlist").append('<li><a class="DEV" id = "dev' + i + '" href="#"><img  height = 100 width = 100 src = '+val.icon+'> '+ val.developer +' ' + String(rating) + ' '+ totalDL + ' </a></li>');
                 }
                 else
                 $("ul.devlist").append('<li><a class="DEV" id = "dev' + i + '" href="#">' + val.developer + ' </a></li>');

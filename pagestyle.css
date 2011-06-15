@@ -3,16 +3,27 @@ background-color: #345;
 color: #FFF;
 }
 
-strong
-{
-color:#FA0;
+strong {
+color: #FA0;
+}
+
+table {
+border-spacing: 20px;
+}
+
+td{
+text-align: center;
+}
+
+td a:hover {
+text-transform: uppercase;
 }
 
 ul li {
 list-style-type: none;
 }
 
-ul#tabs{
+ul#tabs {
 list-style-type: none;
 margin: 50px 0 0;
 padding: 0 0 0.3em;
@@ -40,13 +51,11 @@ display: none;
 }
 
 a.DEV {
-color: #FFF;
+color: #9DE;
 text-decoration: none;
 }
 
 a:hover {
-text-transform: uppercase;
-background-color: #A00;
 }
 
 ul#tabs li a:hover {

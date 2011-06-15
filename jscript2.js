@@ -32,13 +32,18 @@ $(document).ready(function()
                     totalDL = theDev.anonymousDownloadCount + theDev.downloadCount;
                     rating = theDev.totalRating / theDev.ratingCount;
                     lastMod = Date((theDev.lastModified) * 1000);
-                    $("ul.devlist").append('<li><a class="DEV" id = "dev' + i +
-                    '" href="#"><img  height = 100 width = 100 src = ' + val.icon + '> ' +
-                    val.developer + ' | Rating: ' + rating.toFixed(2) + ' | Downloads: ' +
-                    totalDL + ' | Last Modified: ' + lastMod + ' </a></li>');
+                    if (val.icon)
+                        $("#devlist").append('<tr><td><a class="DEV" id = "dev' + i +'" href="#"><img  height = 100 width = 100 src = ' + val.icon + '><br>' + val.developer +'</a></td><td>'  + rating.toFixed(2) + '</td><td> ' +totalDL + '</td><td> ' + lastMod + ' </td></tr>');
+                    else
+                        $("#devlist").append('<tr><td><a class="DEV" id = "dev' + i +'" href="#"><img  height = 100 width = 100 src = "android.gif"><br>' + val.developer +'</a></td><td>'  + rating.toFixed(2) + '</td><td> ' +totalDL + '</td><td> ' + lastMod + ' </td></tr>');
+                        
                 }
-                else
-                $("ul.devlist").append('<li><a class="DEV" id = "dev' + i + '" href="#">' + val.developer + ' </a></li>');
+                else{
+                    if (val.icon)
+                        $("#devlist").append('<tr><td><a class="DEV" id = "dev' + i +'" href="#"><img  height = 100 width = 100 src = ' + val.icon + '><br>' + val.developer +'</a></td><td> - </td><td>  - </td><td> - </td></tr>');
+                    else
+                        $("#devlist").append('<tr><td><a class="DEV" id = "dev' + i +'" href="#"><img  height = 100 width = 100 src = "android.gif"><br>' + val.developer +'</a></td><td> - </td><td>  - </td><td> - </td></tr>');
+                }
             }
         });
 
@@ -103,7 +108,11 @@ $(document).ready(function()
             });
 
             //Get icon and summary
-            $("#devInfo").append('<img height = 100 width = 100 src = "' + developers[devIndex].icon + '">');
+            if (developers[devIndex].icon)
+                $("#devInfo").append('<img height = 100 width = 100 src = "' + developers[devIndex].icon + '">');
+            else
+                $("#devInfo").append('<img height = 100 width = 100 src = "android.gif">');
+                
             $("#devInfo").append('<p>' + developers[devIndex].summary + '</p><ol id= "romOL"></ol>');
 
             // List the roms
@@ -132,7 +141,7 @@ $(document).ready(function()
                     $.get("http://jsonp.deployfu.com/clean/" + encodeURIComponent(developers[devIndex].manifest),
                     function(data)
                     {
-                        romName = data.roms[romIndex].name;
+                        romName = String(data.roms[romIndex].name);
 
                         //Create the tab
                         $('#tabs').append('<li><a id = "romInfoTab" class = "tabItem selected" href="#romInfo">' + romName + '</a></li>');
@@ -148,8 +157,6 @@ $(document).ready(function()
                         
                         // Tab content starts here
                         $('.newTab').append('<div class = "tabContent romInfo" id = "romInfo"></div>');
-
-                        
 
                         $("#romInfo").append('<a href="' + data.roms[romIndex].url + '">Download ROM Here</a><br><br>');
 

@@ -50,22 +50,22 @@ $(document).ready(function()
                     else if (rating < 1.75 && rating >= 1.25)
                     ratImage = "one_half_star.gif";
                     else if (rating < 1.25 && rating >= .75)
-                    ratImage = "one_star.gif";
+                    ratImage = "1_star.gif";
                     else
                     ratImage = "half_star.gif";
 
                     lastMod = Date((theDev.lastModified) * 1000);
                     if (val.icon)
-                    $("#devlist").append('<tr><td><a class="DEV" id = "dev' + i + '" href="#"><img  height = 100 width = 100 src = ' + val.icon + '><br>' + val.developer + '</a></td><td><img src ="' + ratImage + '"></td><td> ' + totalDL + '</td><td> ' + lastMod + ' </td></tr>');
+                    $("#devlist").append('<tr><td><a class="DEV" id = "dev' + i + '" href="#romList"><img  height = 100 width = 100 src = ' + val.icon + '><br>' + val.developer + '</a></td><td><img src ="' + ratImage + '"></td><td> ' + totalDL + '</td><td> ' + lastMod.split(" ")[0] +' ' + lastMod.split(" ")[1] +' ' + lastMod.split(" ")[2] + ', ' + lastMod.split(" ")[3] +  ' </td></tr>');
                     else
-                    $("#devlist").append('<tr><td><a class="DEV" id = "dev' + i + '" href="#"><img  height = 100 width = 100 src = "no_icon.png"><br>' + val.developer + '</a></td><td><img src ="' + ratImage + '"></td><td> ' + totalDL + '</td><td> ' + lastMod + ' </td></tr>');
+                    $("#devlist").append('<tr><td><a class="DEV" id = "dev' + i + '" href="#romList"><img  height = 100 width = 100 src = "no_icon.png"><br>' + val.developer + '</a></td><td><img src ="' + ratImage + '"></td><td> ' + totalDL + '</td><td> ' + lastMod.split(" ")[0] +' ' + lastMod.split(" ")[1] +' ' + lastMod.split(" ")[2] + ', ' + lastMod.split(" ")[3] + ' </td></tr>');
 
                 }
                 else {
                     if (val.icon)
-                    $("#devlist").append('<tr><td><a class="DEV" id = "dev' + i + '" href="#"><img  height = 100 width = 100 src = ' + val.icon + '><br>' + val.developer + '</a></td><td> - </td><td>  - </td><td> - </td></tr>');
+                    $("#devlist").append('<tr><td><a class="DEV" id = "dev' + i + '" href="#romList"><img  height = 100 width = 100 src = ' + val.icon + '><br>' + val.developer + '</a></td><td> - </td><td>  - </td><td> - </td></tr>');
                     else
-                    $("#devlist").append('<tr><td><a class="DEV" id = "dev' + i + '" href="#"><img  height = 100 width = 100 src = "no_icon.png"><br>' + val.developer + '</a></td><td> - </td><td>  - </td><td> - </td></tr>');
+                    $("#devlist").append('<tr><td><a class="DEV" id = "dev' + i + '" href="#romList"><img  height = 100 width = 100 src = "no_icon.png"><br>' + val.developer + '</a></td><td> - </td><td>  - </td><td> - </td></tr>');
                 }
             }
         });
@@ -145,7 +145,7 @@ $(document).ready(function()
                 $.each(data.roms,
                 function(i, val)
                 {
-                    $("#romOL").append('<li class = "devRom"><a class = "ROM"  id = "' + developers[devIndex].id + "_" + devIndex + "_" + i + '" href="#">' + val.name + '</a></li>');
+                    $("#romOL").append('<li class = "devRom"><a class = "ROM"  id = "' + developers[devIndex].id + "__" + devIndex + "__" + i + '" href="#romInfo">' + val.name + '</a></li>');
                 });
 
                 $("a.ROM").click(function(event)
@@ -157,8 +157,8 @@ $(document).ready(function()
                     $(".tabItem").removeClass("selected");
 
                     // Get the indicies and the rom name
-                    var devIndex = parseInt(this.id.split("_")[1]);
-                    var romIndex = parseInt(this.id.split("_")[2]);
+                    var devIndex = parseInt(this.id.split("__")[1]);
+                    var romIndex = parseInt(this.id.split("__")[2]);
                     var romName = null;
                     var modV = null;
 
@@ -197,12 +197,12 @@ $(document).ready(function()
                             var rating = null;
 
                             if (xdata.result[romName])
-                                romID = romName;
+                            romID = romName;
                             else if (xdata.result[modV])
-                                romID = modV;
+                            romID = modV;
                             else if (xdata.result[modV.toUpperCase()])
-                                romID = modV.toUpperCase();
-                                
+                            romID = modV.toUpperCase();
+
                             rating = xdata.result[romID].rating.toFixed(2);
 
                             if (rating >= 4.75)
@@ -222,7 +222,7 @@ $(document).ready(function()
                             else if (rating < 1.75 && rating >= 1.25)
                             ratImage = "one_half_star.gif";
                             else if (rating < 1.25 && rating >= .75)
-                            ratImage = "one_star.gif";
+                            ratImage = "1_star.gif";
                             else
                             ratImage = "half_star.gif";
 
@@ -259,11 +259,11 @@ $(document).ready(function()
                                     else if (rating < 1.75 && rating >= 1.25)
                                     ratImage = "one_half_star.gif";
                                     else if (rating < 1.25 && rating >= .75)
-                                    ratImage = "one_star.gif";
+                                    ratImage = "1_star.gif";
                                     else
                                     ratImage = "half_star.gif";
 
-                                    $("#romInfo").append('<hr><strong>User: </strong>'+ com.nickname+'<br> <strong>Rating: </strong><img src ="' + ratImage + '"><br><strong>Comment: </strong>' + com.comment + '<br>');
+                                    $("#romInfo").append('<hr><strong>User: </strong>' + com.nickname + '<br> <strong>Rating: </strong><img src ="' + ratImage + '"><br><strong>Comment: </strong>' + com.comment + '<br>');
                                 });
 
                             },
@@ -304,6 +304,26 @@ $(document).ready(function()
     }
 
 
+    // Messing with the back button
+    $(window).unload(function(event)
+    {
+       if(document.getElementById('devListing').class == "hide")
+       {
+           event.preventDefault();
+           if(document.getElementById('devInfo').class == "hide")
+           {
+               $("#romInfo").remove();
+               $("#romInfoTab").remove();
+               $("#devInfo").removeClass("hide");
+           }
+           else
+           {
+               $("#devInfo").remove();
+               $("#romInfoTab").remove();
+               $("#devListing").removeClass("hide");
+           }
+        }
+    });
 
 
     //Will be used to alphabetize the drop down menu by first character

@@ -1,10 +1,14 @@
 body {
-background-color: #345;
+background-color: #000;
 color: #FFF;
 }
 
+h2 {
+color: #0BF;
+}
+
 strong {
-color: #FA0;
+color: #0BF;
 }
 
 table {
@@ -38,8 +42,8 @@ padding: 0 0 0.1em 0;
 
 ul#tabs li a {
 color: #FFF;
-background-color: #257;
-border: 1px solid#c9c3ba;
+background-color: #789;
+border: 1px solid #c9c3ba;
 border-bottom: none;
 padding: 0.3em .3em .4em .3em;
 text-decoration: none;
@@ -51,7 +55,7 @@ display: none;
 }
 
 a.DEV {
-color: #9DE;
+color: #6F3;
 text-decoration: none;
 }
 
@@ -64,7 +68,7 @@ background-color: #A00;
 
 ul#tabs li a.selected {
 color: #FFF;
-background-color: #369;
+background-color: #000;
 font-weight: bold;
 padding: 1em .3em .5em 0.3em;
 }
@@ -72,7 +76,7 @@ padding: 1em .3em .5em 0.3em;
 div.tabContent {
 border: 1px solid #c9c3ba;
 padding: .5em;
-background-color: #369;
+background-color: #000;
 }
 
 div.tabContent.hide {

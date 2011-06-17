@@ -376,7 +376,7 @@ $(document).ready(function()
         }
         else if (window.location.hash == "#developers")
         {
-            $("#romList").remove();
+            $("#devInfo").remove();
             $("#romListTab").remove();
             $("#devListing").removeClass("hide");
             $("#devTab").addClass("selected");

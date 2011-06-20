@@ -358,8 +358,9 @@ $(document).ready(function()
     );
 
     //Get developers
+    manUri = 'http://gh-pages.clockworkmod.com/ROMManagerManifest/manifests.js';
     $.get(
-    "http://jsonp.deployfu.com/clean/http%3A%2F%2Fromshare.deployfu.com%2Fmanifest",
+    "http://jsonp.deployfu.com/clean/" + encodeURIComponent(manUri),
     function(data)
     {
         developers = data.manifests;

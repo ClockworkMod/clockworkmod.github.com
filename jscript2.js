@@ -114,7 +114,7 @@ $(document).ready(function()
 
             var devIndex = parseInt(this.id.substring(3));
 
-            $('#tabs').append('<li><a id = "romListTab" class = "tabItem selected" href="#romList">' + developers[devIndex].developer + '</a></li>');
+            $('#tabs').append('<li><a id = "romListTab" class = "tabItem selected">' + developers[devIndex].developer + '</a></li>');
             $('.newTab').append('<div class = "tabContent romList" id = "devInfo"></div>');
 
             // Change address bar hash
@@ -144,7 +144,7 @@ $(document).ready(function()
                 $.each(data.roms,
                 function(i, val)
                 {
-                    $("#romOL").append('<li class = "devRom"><a class = "ROM"  id = "' + developers[devIndex].id + "__" + devIndex + "__" + i + '" href="#romInfo">' + val.name + '</a></li>');
+                    $("#romOL").append('<li class = "devRom"><a class = "ROM"  id = "' + developers[devIndex].id + "___" + devIndex + "___" + i + '" href="#romInfo">' + val.name + '</a></li>');
                 });
 
                 $("a.ROM").click(function(event)
@@ -156,8 +156,8 @@ $(document).ready(function()
                     $(".tabItem").removeClass("selected");
 
                     // Get the indicies and the rom name
-                    var devIndex = parseInt(this.id.split("__")[1]);
-                    var romIndex = parseInt(this.id.split("__")[2]);
+                    var devIndex = parseInt(this.id.split("___")[1]);
+                    var romIndex = parseInt(this.id.split("___")[2]);
                     var romName = null;
                     var modV = null;
 
@@ -169,7 +169,7 @@ $(document).ready(function()
 
 
                         //Create the tab
-                        $('#tabs').append('<li><a id = "romInfoTab" class = "tabItem selected" href="#romInfo">' + romName + '</a></li>');
+                        $('#tabs').append('<li><a id = "romInfoTab" class = "tabItem selected">' + romName + '</a></li>');
 
                         // Controls for clicking the rom list tab
                         $("#romInfoTab").click(function(event)
@@ -332,6 +332,8 @@ $(document).ready(function()
         {
             $("#romInfo").remove();
             $("#romInfoTab").remove();
+            $(".tabContent").addClass("hide");
+            $(".tabItem").removeClass("selected");
             $("div.romList").removeClass("hide");
             $("#romListTab").addClass("selected");
 
@@ -340,6 +342,8 @@ $(document).ready(function()
         {
             $("#devInfo").remove();
             $("#romListTab").remove();
+            $(".tabContent").addClass("hide");
+            $(".tabItem").removeClass("selected");
             $("#devListing").removeClass("hide");
             $("#devTab").addClass("selected");
         }

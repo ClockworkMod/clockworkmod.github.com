@@ -38,34 +38,12 @@ $(document).ready(function()
                     theDev = devRats[String(devId)];
                     totalDL = theDev.anonymousDownloadCount + theDev.downloadCount;
                     rating = theDev.totalRating / theDev.ratingCount;
-                    var ratImage = null
-
-                    if (rating >= 4.75)
-                    ratImage = "five_star.gif";
-                    else if (rating < 4.75 && rating >= 4.25)
-                    ratImage = "four_half_star.gif";
-                    else if (rating < 4.25 && rating >= 3.75)
-                    ratImage = "four_star.gif";
-                    else if (rating < 3.75 && rating >= 3.25)
-                    ratImage = "three_half_star.gif";
-                    else if (rating < 3.25 && rating >= 2.75)
-                    ratImage = "three_star.gif";
-                    else if (rating < 2.75 && rating >= 2.25)
-                    ratImage = "two_half_star.gif";
-                    else if (rating < 2.25 && rating >= 1.75)
-                    ratImage = "two_star.gif";
-                    else if (rating < 1.75 && rating >= 1.25)
-                    ratImage = "one_half_star.gif";
-                    else if (rating < 1.25 && rating >= .75)
-                    ratImage = "1_star.gif";
-                    else
-                    ratImage = "half_star.gif";
-
+                    
                     lastMod = Date((theDev.lastModified) * 1000);
                     if (val.icon)
-                    $("#devlist").append('<tr><td><a class="DEV" id = "dev' + i + '" href="#romList"><img  height = 100 width = 100 src = ' + val.icon + '><br>' + val.developer + '</a></td><td><div class = "jRating" data = "'+4*parseInt(rating)+'"></div></td><td> ' + totalDL + '</td><td> ' + lastMod.split(" ")[0] + ' ' + lastMod.split(" ")[1] + ' ' + lastMod.split(" ")[2] + ', ' + lastMod.split(" ")[3] + ' </td></tr>');
+                    $("#devlist").append('<tr><td><a class="DEV" id = "dev' + i + '" href="#romList"><img  height = 100 width = 100 src = ' + val.icon + '><br>' + val.developer + '</a></td><td><div class = "jRating" data = "'+ parseInt(4*rating)+'"></div></td><td> ' + totalDL + '</td><td> ' + lastMod.split(" ")[0] + ' ' + lastMod.split(" ")[1] + ' ' + lastMod.split(" ")[2] + ', ' + lastMod.split(" ")[3] + ' </td></tr>');
                     else
-                    $("#devlist").append('<tr><td><a class="DEV" id = "dev' + i + '" href="#romList"><img  height = 100 width = 100 src = "no_icon.png"><br>' + val.developer + '</a></td><td><div class = "jRating" data = "'+4*parseInt(rating)+'"></div></td><td> ' + totalDL + '</td><td> ' + lastMod.split(" ")[0] + ' ' + lastMod.split(" ")[1] + ' ' + lastMod.split(" ")[2] + ', ' + lastMod.split(" ")[3] + ' </td></tr>');
+                    $("#devlist").append('<tr><td><a class="DEV" id = "dev' + i + '" href="#romList"><img  height = 100 width = 100 src = "no_icon.png"><br>' + val.developer + '</a></td><td><div class = "jRating" data = "'+parseInt(4*rating)+'"></div></td><td> ' + totalDL + '</td><td> ' + lastMod.split(" ")[0] + ' ' + lastMod.split(" ")[1] + ' ' + lastMod.split(" ")[2] + ', ' + lastMod.split(" ")[3] + ' </td></tr>');
 
                     $('.jRating').jRating({
                         step: false,
@@ -73,6 +51,7 @@ $(document).ready(function()
                         length: 5,
                         // show 5 stars at the init
                         isDisabled: true,
+                        decimalLength : 1,
                         // show small stars instead of big default stars
                         bigStarsPath: 'stars.png'
                     });
@@ -225,35 +204,16 @@ $(document).ready(function()
                             else if (xdata.result[modV.toUpperCase()])
                             romID = modV.toUpperCase();
 
-                            rating = xdata.result[romID].rating.toFixed(2);
-
-                            if (rating >= 4.75)
-                            ratImage = "five_star.gif";
-                            else if (rating < 4.75 && rating >= 4.25)
-                            ratImage = "four_half_star.gif";
-                            else if (rating < 4.25 && rating >= 3.75)
-                            ratImage = "four_star.gif";
-                            else if (rating < 3.75 && rating >= 3.25)
-                            ratImage = "three_half_star.gif";
-                            else if (rating < 3.25 && rating >= 2.75)
-                            ratImage = "three_star.gif";
-                            else if (rating < 2.75 && rating >= 2.25)
-                            ratImage = "two_half_star.gif";
-                            else if (rating < 2.25 && rating >= 1.75)
-                            ratImage = "two_star.gif";
-                            else if (rating < 1.75 && rating >= 1.25)
-                            ratImage = "one_half_star.gif";
-                            else if (rating < 1.25 && rating >= .75)
-                            ratImage = "1_star.gif";
-                            else
-                            ratImage = "half_star.gif";
+                            rating = xdata.result[romID].rating.toFixed(1);
 
                             if (xdata.result[romName])
-                            $("#romInfo").append('Overall Rating: <img src ="' + ratImage + '"><br>Total Downloads: ' + xdata.result[romName].downloads + '<br><br><h2>Comments:</h2>');
+                            $("#romInfo").append('Overall Rating: <div class = "jRating" data = "'+ parseInt(4*rating)+'"></div><br>Total Downloads: ' + xdata.result[romName].downloads + '<br><br><h2>Comments:</h2>');
                             else if (xdata.result[modV])
-                            $("#romInfo").append('Overall Rating: <img src ="' + ratImage + '"><br>Total Downloads: ' + xdata.result[modV].downloads + '<br><br><h2>Comments:</h2>');
+                            $("#romInfo").append('Overall Rating: <div class = "jRating" data = "'+ parseInt(4*rating)+'"></div><br>Total Downloads: ' + xdata.result[modV].downloads + '<br><br><h2>Comments:</h2>');
                             else
-                            $("#romInfo").append('Overall Rating: <img src ="' + ratImage + '"><br>Total Downloads: ' + xdata.result[modV.toUpperCase()].downloads + '<br><h2>Comments:</h2>');
+                            $("#romInfo").append('Overall Rating:<div class = "jRating" data = "'+ parseInt(4*rating)+'"></div><br>Total Downloads: ' + xdata.result[modV.toUpperCase()].downloads + '<br><h2>Comments:</h2>');
+
+                            
 
                             // Comments
                             var commentUri = "http://rommanager.deployfu.com/ratings/";
@@ -263,35 +223,28 @@ $(document).ready(function()
                                 $.each(ydata.result.comments,
                                 function(j, com) {
 
-                                    var rating = com.rating
+                                    var rating = com.rating;
 
-                                    if (rating >= 4.75)
-                                    ratImage = "five_star.gif";
-                                    else if (rating < 4.75 && rating >= 4.25)
-                                    ratImage = "four_half_star.gif";
-                                    else if (rating < 4.25 && rating >= 3.75)
-                                    ratImage = "four_star.gif";
-                                    else if (rating < 3.75 && rating >= 3.25)
-                                    ratImage = "three_half_star.gif";
-                                    else if (rating < 3.25 && rating >= 2.75)
-                                    ratImage = "three_star.gif";
-                                    else if (rating < 2.75 && rating >= 2.25)
-                                    ratImage = "two_half_star.gif";
-                                    else if (rating < 2.25 && rating >= 1.75)
-                                    ratImage = "two_star.gif";
-                                    else if (rating < 1.75 && rating >= 1.25)
-                                    ratImage = "one_half_star.gif";
-                                    else if (rating < 1.25 && rating >= .75)
-                                    ratImage = "1_star.gif";
-                                    else
-                                    ratImage = "half_star.gif";
-
-                                    $("#romInfo").append('<hr><strong>User: </strong>' + com.nickname + '<br> <strong>Rating: </strong><img src ="' + ratImage + '"><br><strong>Comment: </strong>' + com.comment + '<br>');
+                                    $("#romInfo").append('<hr><strong>User: </strong>' + com.nickname + '<br> <strong>Rating: </strong><div class = "jRating" data = "'+ parseInt(4*rating)+'"></div><br><strong>Comment: </strong>' + com.comment + '<br>');
                                 });
+
+                                $('.jRating').jRating({
+                                    step: false,
+                                    // no step
+                                    length: 5,
+                                    // show 5 stars at the init
+                                    isDisabled: true,
+                                    decimalLength : 1,
+                                    // show small stars instead of big default stars
+                                    bigStarsPath: 'stars.png'
+                                });
+
 
                             },
                             "jsonp"
                             );
+                            
+                            
 
                         },
                         "jsonp"

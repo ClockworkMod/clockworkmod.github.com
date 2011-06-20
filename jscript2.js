@@ -1,11 +1,11 @@
 // Developer >> Rom List >> Rom Details
 //TODO:  escape!
 
-
 $(document).ready(function()
  {
+    
 
-    window.addEventListener("hashchange",barchange,false);
+    window.addEventListener("hashchange", barchange, false);
 
     $("#devTab").addClass("selected");
 
@@ -15,7 +15,6 @@ $(document).ready(function()
 
     // Messing with the address bar
     // Should allow navigation throught tabs
-
     // Attempt to fill page with content
     function doStuff()
     {
@@ -64,9 +63,19 @@ $(document).ready(function()
 
                     lastMod = Date((theDev.lastModified) * 1000);
                     if (val.icon)
-                    $("#devlist").append('<tr><td><a class="DEV" id = "dev' + i + '" href="#romList"><img  height = 100 width = 100 src = ' + val.icon + '><br>' + val.developer + '</a></td><td><img src ="' + ratImage + '"></td><td> ' + totalDL + '</td><td> ' + lastMod.split(" ")[0] + ' ' + lastMod.split(" ")[1] + ' ' + lastMod.split(" ")[2] + ', ' + lastMod.split(" ")[3] + ' </td></tr>');
+                    $("#devlist").append('<tr><td><a class="DEV" id = "dev' + i + '" href="#romList"><img  height = 100 width = 100 src = ' + val.icon + '><br>' + val.developer + '</a></td><td><div class = "jRating" data = "'+4*parseInt(rating)+'"></div></td><td> ' + totalDL + '</td><td> ' + lastMod.split(" ")[0] + ' ' + lastMod.split(" ")[1] + ' ' + lastMod.split(" ")[2] + ', ' + lastMod.split(" ")[3] + ' </td></tr>');
                     else
-                    $("#devlist").append('<tr><td><a class="DEV" id = "dev' + i + '" href="#romList"><img  height = 100 width = 100 src = "no_icon.png"><br>' + val.developer + '</a></td><td><img src ="' + ratImage + '"></td><td> ' + totalDL + '</td><td> ' + lastMod.split(" ")[0] + ' ' + lastMod.split(" ")[1] + ' ' + lastMod.split(" ")[2] + ', ' + lastMod.split(" ")[3] + ' </td></tr>');
+                    $("#devlist").append('<tr><td><a class="DEV" id = "dev' + i + '" href="#romList"><img  height = 100 width = 100 src = "no_icon.png"><br>' + val.developer + '</a></td><td><div class = "jRating" data = "'+4*parseInt(rating)+'"></div></td><td> ' + totalDL + '</td><td> ' + lastMod.split(" ")[0] + ' ' + lastMod.split(" ")[1] + ' ' + lastMod.split(" ")[2] + ', ' + lastMod.split(" ")[3] + ' </td></tr>');
+
+                    $('.jRating').jRating({
+                        step: false,
+                        // no step
+                        length: 5,
+                        // show 5 stars at the init
+                        isDisabled: true,
+                        // show small stars instead of big default stars
+                        bigStarsPath: 'stars.png'
+                    });
 
                 }
                 else {
@@ -363,7 +372,7 @@ $(document).ready(function()
             itemList[j + 1] = temp;
         }
     }
-    
+
     function barchange()
     {
         if (window.location.hash == "#romList")
@@ -382,7 +391,7 @@ $(document).ready(function()
             $("#devTab").addClass("selected");
         }
     }
-    
+
     //Grab device info
     var uri = "http://gh-pages.clockworkmod.com/ROMManagerManifest/devices.js";
     $.get("http://jsonp.deployfu.com/clean/" + encodeURIComponent(uri),

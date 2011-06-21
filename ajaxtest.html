@@ -4,6 +4,7 @@
     <link rel="stylesheet" type="text/css" href="pagestyle.css" />
     <script src="jquery-1.6.1.min.js" type="text/javascript"></script>
     <script src="jscript2.js" type="text/javascript"></script>
+    <script src="sorttable.js" type="text/javascript"></script>
     <!-- jRating -->
     <link rel="stylesheet" href="jRating.jquery.css" type="text/css" />
     <script type="text/javascript" src="jRating.jquery.js"></script>
@@ -20,12 +21,12 @@
     </ul>
     
     <div class = "tabContent developers" id = "devListing">
-        <table id="devlist">
+        <table id="devlist" class = "sortable">
             <tr>
-                <td><strong>Developer</strong></td>
-                <td><strong>Rating</strong></td>
-                <td><strong>Downloads</strong></td>
-                <td><strong>Last Modified</strong></td>
+                <th><strong>Developer</strong></th>
+                <th><strong>Rating</strong></th>
+                <th class="sorttable_numeric"><strong>Downloads</strong></th>
+                <th><strong>Last Modified</strong></th>
             </tr>
         </table>
     </div>

@@ -47,9 +47,9 @@ $(document).ready(function()
                     var rating = theDev.totalRating / theDev.ratingCount;
 
                     if (val.icon)
-                    $("#devlist").append('<tr id = "devRow'+i+'"><td width = 400><a class="DEV" id = "dev' + i + '" href="#romList">' + val.developer + '<img class = "devIcon"  height = 100 width = 100 src = ' + val.icon + '></a><br>'+val.summary+'</td><td width = 200><div class = "jRating" data = "' + parseInt(4 * rating) + '"></div></td><td> ' + totalDL + '</td><td> ' + lastMod + ' </td></tr>');
+                    $("#devlist").append('<tr id = "devRow'+i+'"><td width = 400><a class="DEV" id = "dev' + i + '" href="#romList">' + val.developer + '<img class = "devIcon"  height = 100 width = 100 src = ' + val.icon + '></a><br>'+val.summary+'</td><td width = 200><div class = "jRating" data = "' + parseInt(4 * rating) + '"></div><div class="filler">'+rating+'</div></td><td> ' + totalDL + '</td><td><div class = "filler">'+theDev.lastModified+'</div> ' + lastMod + ' </td></tr>');
                     else
-                    $("#devlist").append('<tr id = "devRow'+i+'"><td width = 400 ><a class="DEV" id = "dev' + i + '" href="#romList">'+ val.developer +'<img class = "devIcon" height = 100 width = 100 src = "no_icon.png"></a><br>'+val.summary+'</td><td width = 200><div class = "jRating" data = "' + parseInt(4 * rating) + '"></div></td><td> ' + totalDL + '</td><td> ' + lastMod + ' </td></tr>');
+                    $("#devlist").append('<tr id = "devRow'+i+'"><td width = 400 ><a class="DEV" id = "dev' + i + '" href="#romList">'+ val.developer +'<img class = "devIcon" height = 100 width = 100 src = "no_icon.png"></a><br>'+val.summary+'</td><td width = 200><div class = "jRating" data = "' + parseInt(4 * rating) + '"></div><div class="filler">'+rating+'</div></td><td> ' + totalDL + '</td><td><div class = "filler">'+theDev.lastModified+'</div> ' + lastMod + ' </td></tr>');
 
                     $('.jRating').jRating({
                         step: false,
@@ -65,9 +65,9 @@ $(document).ready(function()
                 else
                 {
                     if (val.icon)
-                    $("#devlist").append('<tr id = "devRow'+i+'" ><td width = 400><a class="DEV" id = "dev' + i + '" href="#romList">'+ val.developer +'<img class = "devIcon" height = 100 width = 100 src = ' + val.icon + '></a><br>'+val.summary+'</td><td width = 200> Not Rated </td><td> ' + totalDL + '</td><td> ' + lastMod + ' </td></tr>');
+                    $("#devlist").append('<tr id = "devRow'+i+'" ><td width = 400><a class="DEV" id = "dev' + i + '" href="#romList">'+ val.developer +'<img class = "devIcon" height = 100 width = 100 src = ' + val.icon + '></a><br>'+val.summary+'</td><td width = 200> <div class="filler">0</div>Not Rated </td><td> ' + totalDL + '</td><td><div class = "filler">'+theDev.lastModified+'</div> ' + lastMod + ' </td></tr>');
                     else
-                    $("#devlist").append('<tr id = "devRow'+i+'"><td width = 400><a class="DEV" id = "dev' + i + '" href="#romList">'+ val.developer +'<img class = "devIcon" height = 100 width = 100 src = "no_icon.png"></a><br>'+val.summary+'</td><td width = 200> Not Rated </td><td> ' + totalDL + '</td><td> ' + lastMod  + ' </td></tr>');
+                    $("#devlist").append('<tr id = "devRow'+i+'"><td width = 400><a class="DEV" id = "dev' + i + '" href="#romList">'+ val.developer +'<img class = "devIcon" height = 100 width = 100 src = "no_icon.png"></a><br>'+val.summary+'</td><td width = 200> <div class="filler">0</div>Not Rated </td><td> ' + totalDL + '</td><td><div class = "filler">'+theDev.lastModified+'</div> ' + lastMod  + ' </td></tr>');
                 }
             }
         });

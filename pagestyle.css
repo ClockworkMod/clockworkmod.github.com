@@ -11,12 +11,14 @@ strong {
 color: #0BF;
 }
 
-table {
-border-spacing: 20px;
+img.devIcon{
+float:left;
+vertical-align:top;
+padding-right:10px;
 }
 
-td{
-text-align: center;
+table {
+border-spacing: 20px;
 }
 
 td a:hover {

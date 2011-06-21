@@ -47,9 +47,9 @@ $(document).ready(function()
                     var rating = theDev.totalRating / theDev.ratingCount;
 
                     if (val.icon)
-                    $("#devlist").append('<tr><td><a class="DEV" id = "dev' + i + '" href="#romList"><img  height = 100 width = 100 src = ' + val.icon + '><br>' + val.developer + '</a></td><td><div class = "jRating" data = "' + parseInt(4 * rating) + '"></div></td><td> ' + totalDL + '</td><td> ' + lastMod + ' </td></tr>');
+                    $("#devlist").append('<tr><td width = 400><a class="DEV" id = "dev' + i + '" href="#romList">' + val.developer + '<img class = "devIcon"  height = 100 width = 100 src = ' + val.icon + '></a><br>'+val.summary+'</td><td width = 200><div class = "jRating" data = "' + parseInt(4 * rating) + '"></div></td><td> ' + totalDL + '</td><td> ' + lastMod + ' </td></tr>');
                     else
-                    $("#devlist").append('<tr><td><a class="DEV" id = "dev' + i + '" href="#romList"><img  height = 100 width = 100 src = "no_icon.png"><br>' + val.developer + '</a></td><td><div class = "jRating" data = "' + parseInt(4 * rating) + '"></div></td><td> ' + totalDL + '</td><td> ' + lastMod + ' </td></tr>');
+                    $("#devlist").append('<tr><td width = 400 ><a class="DEV" id = "dev' + i + '" href="#romList">'+ val.developer +'<img class = "devIcon" height = 100 width = 100 src = "no_icon.png"></a><br>'+val.summary+'</td><td width = 200><div class = "jRating" data = "' + parseInt(4 * rating) + '"></div></td><td> ' + totalDL + '</td><td> ' + lastMod + ' </td></tr>');
 
                     $('.jRating').jRating({
                         step: false,
@@ -65,9 +65,9 @@ $(document).ready(function()
                 else
                 {
                     if (val.icon)
-                    $("#devlist").append('<tr><td><a class="DEV" id = "dev' + i + '" href="#romList"><img  height = 100 width = 100 src = ' + val.icon + '><br>' + val.developer + '</a></td><td> Not Rated </div></td><td> ' + totalDL + '</td><td> ' + lastMod + ' </td></tr>');
+                    $("#devlist").append('<tr><td width = 400><a class="DEV" id = "dev' + i + '" href="#romList">'+ val.developer +'<img class = "devIcon" height = 100 width = 100 src = ' + val.icon + '></a><br>'+val.summary+'</td><td width = 200> Not Rated </td><td> ' + totalDL + '</td><td> ' + lastMod + ' </td></tr>');
                     else
-                    $("#devlist").append('<tr><td><a class="DEV" id = "dev' + i + '" href="#romList"><img  height = 100 width = 100 src = "no_icon.png"><br>' + val.developer + '</a></td><td> Not Rated </div></td><td> ' + totalDL + '</td><td> ' + lastMod  + ' </td></tr>');
+                    $("#devlist").append('<tr><td width = 400><a class="DEV" id = "dev' + i + '" href="#romList">'+ val.developer +'<img class = "devIcon" height = 100 width = 100 src = "no_icon.png"></a><br>'+val.summary+'</td><td width = 200> Not Rated </td><td> ' + totalDL + '</td><td> ' + lastMod  + ' </td></tr>');
                 }
             }
         });

@@ -23,6 +23,9 @@ $(document).ready(function()
         }
         window.location.hash = "developers";
         //Fill developer list
+        
+        var giantString = null;
+        
         $.each(developers,
         function(i, val)
         {
@@ -33,43 +36,45 @@ $(document).ready(function()
                 // Add to list
                 theDev = devRats[String(devId)];
                 totalDL = theDev.anonymousDownloadCount + theDev.downloadCount;
-                
+
                 //Issue with this?
-                if (theDev.lastModified){
+                if (theDev.lastModified) {
                     lastMod = new Date((theDev.lastModified) * 1000);
                     lastMod = lastMod.toLocaleDateString();
                 }
                 else
-                    lastMod = "Never Modified";
+                lastMod = "Never Modified";
 
                 if (theDev.ratingCount)
                 {
                     var rating = theDev.totalRating / theDev.ratingCount;
 
                     if (val.icon)
-                    $("#devlist").append('<tr id = "devRow'+i+'"><td width = 400><a class="DEV" id = "dev' + i + '" href="#romList">' + val.developer + '<img class = "devIcon"  height = 100 width = 100 src = ' + val.icon + '></a><br>'+val.summary+'</td><td width = 200><div class = "jRating" data = "' + parseInt(4 * rating) + '"></div><div class="filler">'+rating+'</div></td><td> ' + totalDL + '</td><td><div class = "filler">'+theDev.lastModified+'</div> ' + lastMod + ' </td></tr>');
+                    giantString = giantString + '<tr id = "devRow' + i + '"><td width = 400><a class="DEV" id = "dev' + i + '" href="#romList">' + val.developer + '<img class = "devIcon"  height = 100 width = 100 src = ' + val.icon + '></a><br>' + val.summary + '</td><td width = 200><div class = "jRating" data = "' + parseInt(4 * rating) + '"></div><div class="filler">' + rating + '</div></td><td> ' + totalDL + '</td><td><div class = "filler">' + theDev.lastModified + '</div> ' + lastMod + ' </td></tr>';
                     else
-                    $("#devlist").append('<tr id = "devRow'+i+'"><td width = 400 ><a class="DEV" id = "dev' + i + '" href="#romList">'+ val.developer +'<img class = "devIcon" height = 100 width = 100 src = "no_icon.png"></a><br>'+val.summary+'</td><td width = 200><div class = "jRating" data = "' + parseInt(4 * rating) + '"></div><div class="filler">'+rating+'</div></td><td> ' + totalDL + '</td><td><div class = "filler">'+theDev.lastModified+'</div> ' + lastMod + ' </td></tr>');
-
-                    $('.jRating').jRating({
-                        step: false,
-                        // no step
-                        length: 5,
-                        // show 5 stars at the init
-                        isDisabled: true,
-                        decimalLength: 1,
-                        // show small stars instead of big default stars
-                        bigStarsPath: 'stars.png'
-                    });
+                    giantString = giantString + '<tr id = "devRow' + i + '"><td width = 400 ><a class="DEV" id = "dev' + i + '" href="#romList">' + val.developer + '<img class = "devIcon" height = 100 width = 100 src = "no_icon.png"></a><br>' + val.summary + '</td><td width = 200><div class = "jRating" data = "' + parseInt(4 * rating) + '"></div><div class="filler">' + rating + '</div></td><td> ' + totalDL + '</td><td><div class = "filler">' + theDev.lastModified + '</div> ' + lastMod + ' </td></tr>';
                 }
                 else
                 {
                     if (val.icon)
-                    $("#devlist").append('<tr id = "devRow'+i+'" ><td width = 400><a class="DEV" id = "dev' + i + '" href="#romList">'+ val.developer +'<img class = "devIcon" height = 100 width = 100 src = ' + val.icon + '></a><br>'+val.summary+'</td><td width = 200> <div class="filler">0</div>Not Rated </td><td> ' + totalDL + '</td><td><div class = "filler">'+theDev.lastModified+'</div> ' + lastMod + ' </td></tr>');
+                    giantString = giantString + '<tr id = "devRow' + i + '" ><td width = 400><a class="DEV" id = "dev' + i + '" href="#romList">' + val.developer + '<img class = "devIcon" height = 100 width = 100 src = ' + val.icon + '></a><br>' + val.summary + '</td><td width = 200> <div class="filler">0</div>Not Rated </td><td> ' + totalDL + '</td><td><div class = "filler">' + theDev.lastModified + '</div> ' + lastMod + ' </td></tr>';
                     else
-                    $("#devlist").append('<tr id = "devRow'+i+'"><td width = 400><a class="DEV" id = "dev' + i + '" href="#romList">'+ val.developer +'<img class = "devIcon" height = 100 width = 100 src = "no_icon.png"></a><br>'+val.summary+'</td><td width = 200> <div class="filler">0</div>Not Rated </td><td> ' + totalDL + '</td><td><div class = "filler">'+theDev.lastModified+'</div> ' + lastMod  + ' </td></tr>');
+                    giantString = giantString + '<tr id = "devRow' + i + '"><td width = 400><a class="DEV" id = "dev' + i + '" href="#romList">' + val.developer + '<img class = "devIcon" height = 100 width = 100 src = "no_icon.png"></a><br>' + val.summary + '</td><td width = 200> <div class="filler">0</div>Not Rated </td><td> ' + totalDL + '</td><td><div class = "filler">' + theDev.lastModified + '</div> ' + lastMod + ' </td></tr>';
                 }
             }
+        });
+        
+        $("#devlist").append(giantString);
+
+        $('.jRating').jRating({
+            step: false,
+            // no step
+            length: 5,
+            // show 5 stars at the init
+            isDisabled: true,
+            decimalLength: 1,
+            // show small stars instead of big default stars
+            bigStarsPath: 'stars.png'
         });
 
         // Fill drop down list
@@ -137,11 +142,9 @@ $(document).ready(function()
 
             //Get icon and summary
             if (developers[devIndex].icon)
-            $("#devInfo").append('<img height = 100 width = 100 src = "' + developers[devIndex].icon + '">');
+            $("#devInfo").append('<img height = 100 width = 100 src = "' + developers[devIndex].icon + '"><p>' + developers[devIndex].summary + '</p><ol id= "romOL"></ol>');
             else
-            $("#devInfo").append('<img height = 100 width = 100 src = "no_icon.png">');
-
-            $("#devInfo").append('<p>' + developers[devIndex].summary + '</p><ol id= "romOL"></ol>');
+            $("#devInfo").append('<img height = 100 width = 100 src = "no_icon.png"><p>' + developers[devIndex].summary + '</p><ol id= "romOL"></ol>');
 
             // List the roms
             // Clicking a rom will create a new tab with ratings and a download option
@@ -191,7 +194,9 @@ $(document).ready(function()
                         // Tab content starts here
                         $('.newTab').append('<div class = "tabContent romInfo" id = "romInfo"></div>');
 
-                        $("#romInfo").append('<a href="' + data.roms[romIndex].url + '">Download ROM Here</a><br><br>');
+                        var romInfoString = '<a href="' + data.roms[romIndex].url + '">Download ROM Here</a><br><br>'
+
+
 
                         // Rating & number of downloads
                         var romRatUri = "http://rommanager.deployfu.com/v2/ratings/";
@@ -213,11 +218,11 @@ $(document).ready(function()
                             rating = xdata.result[romID].rating.toFixed(1);
 
                             if (xdata.result[romName])
-                            $("#romInfo").append('Overall Rating: <div class = "jRating" data = "' + parseInt(4 * rating) + '"></div><br>Total Downloads: ' + xdata.result[romName].downloads + '<br><br><h2>Comments:</h2>');
+                            romInfoString = romInfoString + 'Overall Rating: <div class = "jRating" data = "' + parseInt(4 * rating) + '"></div><br>Total Downloads: ' + xdata.result[romName].downloads + '<br><br><h2>Comments:</h2>';
                             else if (xdata.result[modV])
-                            $("#romInfo").append('Overall Rating: <div class = "jRating" data = "' + parseInt(4 * rating) + '"></div><br>Total Downloads: ' + xdata.result[modV].downloads + '<br><br><h2>Comments:</h2>');
+                            romInfoString = romInfoString + 'Overall Rating: <div class = "jRating" data = "' + parseInt(4 * rating) + '"></div><br>Total Downloads: ' + xdata.result[modV].downloads + '<br><br><h2>Comments:</h2>';
                             else
-                            $("#romInfo").append('Overall Rating:<div class = "jRating" data = "' + parseInt(4 * rating) + '"></div><br>Total Downloads: ' + xdata.result[modV.toUpperCase()].downloads + '<br><h2>Comments:</h2>');
+                            romInfoString = romInfoString +  'Overall Rating:<div class = "jRating" data = "' + parseInt(4 * rating) + '"></div><br>Total Downloads: ' + xdata.result[modV.toUpperCase()].downloads + '<br><h2>Comments:</h2>';
 
 
 
@@ -231,26 +236,28 @@ $(document).ready(function()
 
                                     var rating = com.rating;
 
-                                    $("#romInfo").append('<hr><strong>User: </strong>' + com.nickname + '<br> <strong>Rating: </strong><div class = "jRating" data = "' + parseInt(4 * rating) + '"></div><br><strong>Comment: </strong>' + com.comment + '<br>');
+                                    romInfoString = romInfoString +  '<hr><strong>User: </strong>' + com.nickname + '<br> <strong>Rating: </strong><div class = "jRating" data = "' + parseInt(4 * rating) + '"></div><br><strong>Comment: </strong>' + com.comment + '<br>';
                                 });
 
-                                $('.jRating').jRating({
-                                    step: false,
-                                    // no step
-                                    length: 5,
-                                    // show 5 stars at the init
-                                    isDisabled: true,
-                                    decimalLength: 1,
-                                    // show small stars instead of big default stars
-                                    bigStarsPath: 'stars.png'
-                                });
+
 
 
                             },
                             "jsonp"
                             );
+                            
+                            $("#romInfo").append(romInfoString);
 
-
+                            $('.jRating').jRating({
+                                step: false,
+                                // no step
+                                length: 5,
+                                // show 5 stars at the init
+                                isDisabled: true,
+                                decimalLength: 1,
+                                // show small stars instead of big default stars
+                                bigStarsPath: 'stars.png'
+                            });
 
                         },
                         "jsonp"
@@ -280,58 +287,7 @@ $(document).ready(function()
 
     }
 
-
-
-
-    //Will be used to alphabetize the drop down menu by first character
-    function sortDevices(itemList)
-    {
-        for (i = 1; i < itemList.length; i++)
-        {
-            var temp = itemList[i];
-            var j = i - 1;
-
-            while (j >= 0 && itemList[j].name[0].toLowerCase() > temp.name[0].toLowerCase())
-            {
-                itemList[j + 1] = itemList[j];
-                j = j - 1;
-            }
-            while (j >= 0 &&
-            itemList[j].key[0].toLowerCase() == temp.name[0].toLowerCase() &&
-            itemList[j].key[1].toLowerCase() > temp.name[1].toLowerCase())
-            {
-                itemList[j + 1] = itemList[j];
-                j = j - 1;
-            }
-
-            itemList[j + 1] = temp;
-        }
-    }
-
-    //Will be used to alphabetize the drop down menu by first character
-    function sortDevs(itemList) {
-        for (i = 1; i < itemList.length; i++)
-        {
-            var temp = itemList[i];
-            var j = i - 1;
-
-            while (j >= 0 && itemList[j].developer[0].toLowerCase() > temp.developer[0].toLowerCase())
-            {
-                itemList[j + 1] = itemList[j];
-                j = j - 1;
-            }
-            while (j >= 0 &&
-            itemList[j].developer[0].toLowerCase() == temp.developer[0].toLowerCase() &&
-            itemList[j].developer[1].toLowerCase() > temp.developer[1].toLowerCase())
-            {
-                itemList[j + 1] = itemList[j];
-                j = j - 1;
-            }
-
-            itemList[j + 1] = temp;
-        }
-    }
-
+    
     function barchange()
     {
         if (window.location.hash == "#romList")
@@ -361,7 +317,7 @@ $(document).ready(function()
     function(data)
     {
         devices = data.devices;
-        sortDevices(devices);
+        devices.sort(function(a,b){return a.name - b.name});
         doStuff();
     },
     "jsonp"
@@ -374,7 +330,7 @@ $(document).ready(function()
     function(data)
     {
         developers = data.manifests;
-        sortDevs(developers);
+        developers.sort(function(a,b){return a.developer - b.developer});
         doStuff();
     },
     "jsonp"

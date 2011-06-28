@@ -2,8 +2,6 @@
 //TODO:  escape!
 $(document).ready(function()
  {
-
-
     window.addEventListener("hashchange", barchange, false);
 
     $("#devTab").addClass("selected");
@@ -23,9 +21,8 @@ $(document).ready(function()
         }
         window.location.hash = "developers";
         //Fill developer list
-        
         var giantString = null;
-        
+
         $.each(developers,
         function(i, val)
         {
@@ -63,7 +60,7 @@ $(document).ready(function()
                 }
             }
         });
-        
+
         $("#devlist").append(giantString);
 
         $('.jRating').jRating({
@@ -102,17 +99,15 @@ $(document).ready(function()
                     {
                         // Add class to hide developers that don't support the device
                         if (j != listVal)
-                        {
-                            $("#devRow" + i).addClass("hideDev");
-                        }
+                        $("#devRow" + i).addClass("hideDev");
                     });
                 });
             }
         });
 
-        $("input.allButton").click(function(event){
+        $("input.allButton").click(function(event) {
             $('tr').removeClass("hideDev");
-            var devOptions = document.getElementById('filter');    
+            var devOptions = document.getElementById('filter');
             devOptions.options[0].selected = 1;
         });
 
@@ -156,11 +151,14 @@ $(document).ready(function()
             // Clicking a rom will create a new tab with ratings and a download option
             $.get("http://jsonp.deployfu.com/clean/" + encodeURIComponent(developers[devIndex].manifest),
             function(data) {
+                var giantRomList = "";
                 $.each(data.roms,
                 function(i, val)
                 {
-                    $("#romOL").append('<li class = "devRom"><a class = "ROM"  id = "' + developers[devIndex].id + "___" + devIndex + "___" + i + '" href="#romInfo">' + val.name + '</a></li>');
+                    giantRomList += '<li class = "devRom"><a class = "ROM"  id = "' + developers[devIndex].id + "___" + devIndex + "___" + i + '" href="#romInfo">' + val.name + '</a></li>';
                 });
+
+                $("#romOL").append(giantRomList);
 
                 $("a.ROM").click(function(event)
                 {
@@ -182,7 +180,6 @@ $(document).ready(function()
                         romName = String(data.roms[romIndex].name);
                         modV = String(data.roms[romIndex].modversion);
 
-
                         //Create the tab
                         $('#tabs').append('<li><a id = "romInfoTab" class = "tabItem selected">' + romName + '</a></li>');
 
@@ -201,8 +198,6 @@ $(document).ready(function()
                         $('.newTab').append('<div class = "tabContent romInfo" id = "romInfo"></div>');
 
                         var romInfoString = '<a href="' + data.roms[romIndex].url + '">Download ROM Here</a><br><br>'
-
-
 
                         // Rating & number of downloads
                         var romRatUri = "http://rommanager.deployfu.com/v2/ratings/";
@@ -224,13 +219,11 @@ $(document).ready(function()
                             rating = xdata.result[romID].rating.toFixed(1);
 
                             if (xdata.result[romName])
-                            romInfoString = romInfoString + 'Overall Rating: <div class = "jRating" data = "' + parseInt(4 * rating) + '"></div><br>Total Downloads: ' + xdata.result[romName].downloads + '<br><br><h2>Comments:</h2>';
+                            romInfoString += 'Overall Rating: <div class = "jRating" data = "' + parseInt(4 * rating) + '"></div><br>Total Downloads: ' + xdata.result[romName].downloads + '<br><br><h2>Comments:</h2>';
                             else if (xdata.result[modV])
-                            romInfoString = romInfoString + 'Overall Rating: <div class = "jRating" data = "' + parseInt(4 * rating) + '"></div><br>Total Downloads: ' + xdata.result[modV].downloads + '<br><br><h2>Comments:</h2>';
+                            romInfoString += 'Overall Rating: <div class = "jRating" data = "' + parseInt(4 * rating) + '"></div><br>Total Downloads: ' + xdata.result[modV].downloads + '<br><br><h2>Comments:</h2>';
                             else
-                            romInfoString = romInfoString +  'Overall Rating:<div class = "jRating" data = "' + parseInt(4 * rating) + '"></div><br>Total Downloads: ' + xdata.result[modV.toUpperCase()].downloads + '<br><h2>Comments:</h2>';
-
-
+                            romInfoString += 'Overall Rating:<div class = "jRating" data = "' + parseInt(4 * rating) + '"></div><br>Total Downloads: ' + xdata.result[modV.toUpperCase()].downloads + '<br><h2>Comments:</h2>';
 
                             // Comments
                             var commentUri = "http://rommanager.deployfu.com/ratings/";
@@ -242,16 +235,12 @@ $(document).ready(function()
 
                                     var rating = com.rating;
 
-                                    romInfoString = romInfoString +  '<hr><strong>User: </strong>' + com.nickname + '<br> <strong>Rating: </strong><div class = "jRating" data = "' + parseInt(4 * rating) + '"></div><br><strong>Comment: </strong>' + com.comment + '<br>';
+                                    romInfoString += '<hr><strong>User: </strong>' + com.nickname + '<br> <strong>Rating: </strong><div class = "jRating" data = "' + parseInt(4 * rating) + '"></div><br><strong>Comment: </strong>' + com.comment + '<br>';
                                 });
-
-
-
-
                             },
                             "jsonp"
                             );
-                            
+
                             $("#romInfo").append(romInfoString);
 
                             $('.jRating').jRating({
@@ -268,8 +257,6 @@ $(document).ready(function()
                         },
                         "jsonp"
                         );
-
-
                     },
                     "jsonp");
                 });
@@ -286,14 +273,9 @@ $(document).ready(function()
             $("div.developers").removeClass("hide");
             $("#devTab").addClass("selected");
         });
-
-
-
-
-
     }
 
-    
+
     function barchange()
     {
         if (window.location.hash == "#romList")
@@ -322,8 +304,16 @@ $(document).ready(function()
     $.get("http://jsonp.deployfu.com/clean/" + encodeURIComponent(uri),
     function(data)
     {
-        devices = data.devices;
-        devices.sort(function(a,b){return a.name - b.name});
+        devices = data.devices.sort(function(a, b) {
+            var nameA = a.name.toLowerCase(),nameB = b.name.toLowerCase()
+            //sort string ascending
+            if (nameA < nameB)
+                return - 1
+            if (nameA > nameB)
+                return 1
+            //default return value (no sorting)
+            return 0
+        });
         doStuff();
     },
     "jsonp"
@@ -335,8 +325,16 @@ $(document).ready(function()
     "http://jsonp.deployfu.com/clean/" + encodeURIComponent(manUri),
     function(data)
     {
-        developers = data.manifests;
-        developers.sort(function(a,b){return a.developer - b.developer});
+        developers = data.manifests.sort(function(a, b) {
+            var devA = a.developer.toLowerCase(),devB = b.developer.toLowerCase()
+            //sort string ascending
+            if (devA < devB)
+                return - 1
+            if (devA > devB)
+                return 1
+            //default return value (no sorting)
+            return 0
+        });
         doStuff();
     },
     "jsonp"

@@ -112,6 +112,8 @@ $(document).ready(function()
 
         $("input.allButton").click(function(event){
             $('tr').removeClass("hideDev");
+            var devOptions = document.getElementById('filter');    
+            devOptions.options[0].selected = 1;
         });
 
         // Clicking developer name should create new tab for his roms,

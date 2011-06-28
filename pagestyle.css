@@ -1,6 +1,6 @@
 body {
 background-color: #EEE;
-color: #000;
+color: #666;
 }
 
 h2 {
@@ -36,6 +36,11 @@ display: none;
 
 td a:hover {
 text-transform: uppercase;
+}
+
+ul{
+text-align:center;
+margin:auto;
 }
 
 ul li {
@@ -91,9 +96,11 @@ display:none;
 }
 
 div.tabContent {
-border: 2px solid #000;
+border: 1px solid #000;
+margin:auto;
 padding: .5em;
 background-color: #FFF;
+width:800px;
 }
 
 div.tabContent.hide {

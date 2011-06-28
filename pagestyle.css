@@ -1,6 +1,6 @@
 body {
-background-color: #000;
-color: #FFF;
+background-color: #EEE;
+color: #000;
 }
 
 h2 {
@@ -19,6 +19,19 @@ padding-right:10px;
 
 table {
 border-spacing: 20px;
+}
+
+th
+{
+text-align:center;
+}
+
+th a:visited{
+color:#393;
+}
+
+tr.hideDev {
+display: none;
 }
 
 td a:hover {
@@ -45,9 +58,31 @@ padding: 0 0 0.1em 0;
 ul#tabs li a {
 color: #FFF;
 background-color: #789;
-border: 1px solid #c9c3ba;
-border-bottom: none;
+border: 1px solid #000;
 padding: 0.3em .3em .4em .3em;
+text-decoration: none;
+}
+
+ul#tabs li a:hover {
+background-color: #0CF;
+}
+
+ul#tabs li a.selected {
+color: #FFF;
+background-color: #222;
+font-weight: bold;
+padding: .75em .3em .4em 0.3em;
+}
+
+a {
+color: #0BF;
+font-weight:bold;
+text-decoration: none;
+}
+
+a:visited {
+color: #0BF;
+font-weight:bold;
 text-decoration: none;
 }
 
@@ -55,39 +90,10 @@ div.filler{
 display:none;
 }
 
-tr.hideDev {
-color: #00F;
-display: none;
-}
-
-th
-{
-text-align:center;
-}
-
-a.DEV {
-color: #6F3;
-text-decoration: none;
-}
-
-a:hover {
-}
-
-ul#tabs li a:hover {
-background-color: #A00;
-}
-
-ul#tabs li a.selected {
-color: #FFF;
-background-color: #000;
-font-weight: bold;
-padding: 1em .3em .5em 0.3em;
-}
-
 div.tabContent {
-border: 1px solid #c9c3ba;
+border: 2px solid #000;
 padding: .5em;
-background-color: #000;
+background-color: #FFF;
 }
 
 div.tabContent.hide {

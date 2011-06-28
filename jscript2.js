@@ -84,8 +84,8 @@ $(document).ready(function()
             $("select.filter").append('<option value = "' + val.key + '">' + val.name + '</option>');
         });
 
-        // Clicking button will narrow down developer list to device in drop down
-        $("input.fButton").click(function(event)
+        // Clicking items in drop down will narrow down developer list
+        $("select.filter").click(function(event)
         {
             $('tr').removeClass("hideDev");
             var listVal = String(document.getElementById('filter').value);
@@ -108,6 +108,10 @@ $(document).ready(function()
                     });
                 });
             }
+        });
+
+        $("input.allButton").click(function(event){
+            $('tr').removeClass("hideDev");
         });
 
         // Clicking developer name should create new tab for his roms,

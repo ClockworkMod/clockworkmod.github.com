@@ -49,14 +49,14 @@ $(document).ready(function()
                     if (val.icon)
                     giantString = giantString + '<tr id = "devRow' + i + '"><td width = 400><a class="DEV" id = "dev' + i + '" href="#romList">' + val.developer + '<img class = "devIcon"  height = 100 width = 100 src = ' + val.icon + '></a><br>' + val.summary + '</td><td width = 200><div class = "jRating" data = "' + parseInt(4 * rating) + '"></div><div class="filler">' + rating + '</div></td><td> ' + totalDL + '</td><td><div class = "filler">' + theDev.lastModified + '</div> ' + lastMod + ' </td></tr>';
                     else
-                    giantString = giantString + '<tr id = "devRow' + i + '"><td width = 400 ><a class="DEV" id = "dev' + i + '" href="#romList">' + val.developer + '<img class = "devIcon" height = 100 width = 100 src = "no_icon.png"></a><br>' + val.summary + '</td><td width = 200><div class = "jRating" data = "' + parseInt(4 * rating) + '"></div><div class="filler">' + rating + '</div></td><td> ' + totalDL + '</td><td><div class = "filler">' + theDev.lastModified + '</div> ' + lastMod + ' </td></tr>';
+                    giantString = giantString + '<tr id = "devRow' + i + '"><td width = 400 ><a class="DEV" id = "dev' + i + '" href="#romList">' + val.developer + '<img class = "devIcon" height = 100 width = 100 src = "https://github.com/ClockworkMod/ajaxThing/raw/gh-pages/no_icon.png"></a><br>' + val.summary + '</td><td width = 200><div class = "jRating" data = "' + parseInt(4 * rating) + '"></div><div class="filler">' + rating + '</div></td><td> ' + totalDL + '</td><td><div class = "filler">' + theDev.lastModified + '</div> ' + lastMod + ' </td></tr>';
                 }
                 else
                 {
                     if (val.icon)
                     giantString = giantString + '<tr id = "devRow' + i + '" ><td width = 400><a class="DEV" id = "dev' + i + '" href="#romList">' + val.developer + '<img class = "devIcon" height = 100 width = 100 src = ' + val.icon + '></a><br>' + val.summary + '</td><td width = 200> <div class="filler">0</div>Not Rated </td><td> ' + totalDL + '</td><td><div class = "filler">' + theDev.lastModified + '</div> ' + lastMod + ' </td></tr>';
                     else
-                    giantString = giantString + '<tr id = "devRow' + i + '"><td width = 400><a class="DEV" id = "dev' + i + '" href="#romList">' + val.developer + '<img class = "devIcon" height = 100 width = 100 src = "no_icon.png"></a><br>' + val.summary + '</td><td width = 200> <div class="filler">0</div>Not Rated </td><td> ' + totalDL + '</td><td><div class = "filler">' + theDev.lastModified + '</div> ' + lastMod + ' </td></tr>';
+                    giantString = giantString + '<tr id = "devRow' + i + '"><td width = 400><a class="DEV" id = "dev' + i + '" href="#romList">' + val.developer + '<img class = "devIcon" height = 100 width = 100 src = "https://github.com/ClockworkMod/ajaxThing/raw/gh-pages/no_icon.png"></a><br>' + val.summary + '</td><td width = 200> <div class="filler">0</div>Not Rated </td><td> ' + totalDL + '</td><td><div class = "filler">' + theDev.lastModified + '</div> ' + lastMod + ' </td></tr>';
                 }
             }
         });
@@ -71,7 +71,7 @@ $(document).ready(function()
             isDisabled: true,
             decimalLength: 1,
             // show small stars instead of big default stars
-            bigStarsPath: 'stars.png'
+            bigStarsPath: 'https://github.com/ClockworkMod/ajaxThing/raw/gh-pages/stars.png'
         });
 
         // Fill drop down list

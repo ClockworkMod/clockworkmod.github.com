@@ -221,11 +221,11 @@ $(document).ready(function()
                                 rating = xdata.result[romID].rating.toFixed(1);
 
                                 if (xdata.result[romName])
-                                romInfoString += 'Overall Rating: <div class = "jRating" data = "' + parseInt(4 * rating) + '"></div><br>Total Downloads: ' + xdata.result[romName].downloads + '<br><br><h2>Comments:</h2>';
+                                romInfoString += 'Overall Rating: <div class = "jRating" data = "' + parseInt(4 * rating) + '"></div><br>Total Downloads: ' + xdata.result[romName].downloads + '<br><br><h2 class="blogger">Comments:</h2>';
                                 else if (xdata.result[modV])
-                                romInfoString += 'Overall Rating: <div class = "jRating" data = "' + parseInt(4 * rating) + '"></div><br>Total Downloads: ' + xdata.result[modV].downloads + '<br><br><h2>Comments:</h2>';
+                                romInfoString += 'Overall Rating: <div class = "jRating" data = "' + parseInt(4 * rating) + '"></div><br>Total Downloads: ' + xdata.result[modV].downloads + '<br><br><h2 class="blogger">Comments:</h2>';
                                 else
-                                romInfoString += 'Overall Rating:<div class = "jRating" data = "' + parseInt(4 * rating) + '"></div><br>Total Downloads: ' + xdata.result[modV.toUpperCase()].downloads + '<br><h2>Comments:</h2>';
+                                romInfoString += 'Overall Rating:<div class = "jRating" data = "' + parseInt(4 * rating) + '"></div><br>Total Downloads: ' + xdata.result[modV.toUpperCase()].downloads + '<br><h2 class="blogger">Comments:</h2>';
                             
                                 $("#romInfo").append(romInfoString);
                             

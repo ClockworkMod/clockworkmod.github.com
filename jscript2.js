@@ -197,7 +197,7 @@ $(document).ready(function()
                         // Tab content starts here
                         $('.newTab').append('<div class = "tabContent romInfo" id = "romInfo"></div>');
 
-                        var romInfoString = '<a href="' + data.roms[romIndex].url + '">Download ROM Here</a><br><br>'
+                        var romInfoString = '<a href="' + data.roms[romIndex].url + '">Download ROM Here</a><br><br>';
 
                         // Rating & number of downloads
                         var romRatUri = "http://rommanager.deployfu.com/v2/ratings/";
@@ -224,7 +224,9 @@ $(document).ready(function()
                             romInfoString += 'Overall Rating: <div class = "jRating" data = "' + parseInt(4 * rating) + '"></div><br>Total Downloads: ' + xdata.result[modV].downloads + '<br><br><h2>Comments:</h2>';
                             else
                             romInfoString += 'Overall Rating:<div class = "jRating" data = "' + parseInt(4 * rating) + '"></div><br>Total Downloads: ' + xdata.result[modV.toUpperCase()].downloads + '<br><h2>Comments:</h2>';
-
+                            
+                            $("#romInfo").append(romInfoString);
+                            
                             // Comments
                             var commentUri = "http://rommanager.deployfu.com/ratings/";
                             $.get("http://jsonp.deployfu.com/clean/" + encodeURIComponent(commentUri + developers[devIndex].id + '/' + modV),
@@ -235,24 +237,24 @@ $(document).ready(function()
 
                                     var rating = com.rating;
 
-                                    romInfoString += '<hr><strong>User: </strong>' + com.nickname + '<br> <strong>Rating: </strong><div class = "jRating" data = "' + parseInt(4 * rating) + '"></div><br><strong>Comment: </strong>' + com.comment + '<br>';
+                                    $("#romInfo").append('<hr><div class = "jRating" data = "' + parseInt(4 * rating) + '"></div><br><strong>User: </strong>' + com.nickname + '<br> <strong>Comment: </strong>' + com.comment + '<br>');
+                                
+                                    $('.jRating').jRating({
+                                        step: false,
+                                        // no step
+                                        length: 5,
+                                        // show 5 stars at the init
+                                        isDisabled: true,
+                                        decimalLength: 1,
+                                        // show small stars instead of big default stars
+                                        bigStarsPath: 'https://github.com/ClockworkMod/ajaxThing/raw/gh-pages/stars.png'
+                                    });
                                 });
                             },
                             "jsonp"
                             );
 
-                            $("#romInfo").append(romInfoString);
-
-                            $('.jRating').jRating({
-                                step: false,
-                                // no step
-                                length: 5,
-                                // show 5 stars at the init
-                                isDisabled: true,
-                                decimalLength: 1,
-                                // show small stars instead of big default stars
-                                bigStarsPath: 'https://github.com/ClockworkMod/ajaxThing/raw/gh-pages/stars.png'
-                            });
+                            
 
                         },
                         "jsonp"

@@ -145,7 +145,7 @@ $(document).ready(function()
             if (developers[devIndex].icon)
             $("#devInfo").append('<img height = 100 width = 100 src = "' + developers[devIndex].icon + '"><p>' + developers[devIndex].summary + '</p><ol id= "romOL"></ol>');
             else
-            $("#devInfo").append('<img height = 100 width = 100 src = "no_icon.png"><p>' + developers[devIndex].summary + '</p><ol id= "romOL"></ol>');
+            $("#devInfo").append('<img height = 100 width = 100 src = "https://github.com/ClockworkMod/ajaxThing/raw/gh-pages/no_icon.png"><p>' + developers[devIndex].summary + '</p><ol id= "romOL"></ol>');
 
             // List the roms
             // Clicking a rom will create a new tab with ratings and a download option

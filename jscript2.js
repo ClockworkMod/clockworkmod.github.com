@@ -216,46 +216,50 @@ $(document).ready(function()
                             else if (xdata.result[modV.toUpperCase()])
                             romID = modV.toUpperCase();
 
-                            rating = xdata.result[romID].rating.toFixed(1);
-
-                            if (xdata.result[romName])
-                            romInfoString += 'Overall Rating: <div class = "jRating" data = "' + parseInt(4 * rating) + '"></div><br>Total Downloads: ' + xdata.result[romName].downloads + '<br><br><h2>Comments:</h2>';
-                            else if (xdata.result[modV])
-                            romInfoString += 'Overall Rating: <div class = "jRating" data = "' + parseInt(4 * rating) + '"></div><br>Total Downloads: ' + xdata.result[modV].downloads + '<br><br><h2>Comments:</h2>';
-                            else
-                            romInfoString += 'Overall Rating:<div class = "jRating" data = "' + parseInt(4 * rating) + '"></div><br>Total Downloads: ' + xdata.result[modV.toUpperCase()].downloads + '<br><h2>Comments:</h2>';
-                            
-                            $("#romInfo").append(romInfoString);
-                            
-                            // Comments
-                            var commentUri = "http://rommanager.deployfu.com/ratings/";
-                            $.get("http://jsonp.deployfu.com/clean/" + encodeURIComponent(commentUri + developers[devIndex].id + '/' + modV),
-                            function(ydata)
+                            if (romID)
                             {
-                                $.each(ydata.result.comments,
-                                function(j, com) {
+                                rating = xdata.result[romID].rating.toFixed(1);
 
-                                    var rating = com.rating;
-
-                                    $("#romInfo").append('<hr><div class = "jRating" data = "' + parseInt(4 * rating) + '"></div><br><strong>User: </strong>' + com.nickname + '<br> <strong>Comment: </strong>' + com.comment + '<br>');
-                                
-                                    $('.jRating').jRating({
-                                        step: false,
-                                        // no step
-                                        length: 5,
-                                        // show 5 stars at the init
-                                        isDisabled: true,
-                                        decimalLength: 1,
-                                        // show small stars instead of big default stars
-                                        bigStarsPath: 'https://github.com/ClockworkMod/ajaxThing/raw/gh-pages/stars.png'
-                                    });
-                                });
-                            },
-                            "jsonp"
-                            );
-
+                                if (xdata.result[romName])
+                                romInfoString += 'Overall Rating: <div class = "jRating" data = "' + parseInt(4 * rating) + '"></div><br>Total Downloads: ' + xdata.result[romName].downloads + '<br><br><h2>Comments:</h2>';
+                                else if (xdata.result[modV])
+                                romInfoString += 'Overall Rating: <div class = "jRating" data = "' + parseInt(4 * rating) + '"></div><br>Total Downloads: ' + xdata.result[modV].downloads + '<br><br><h2>Comments:</h2>';
+                                else
+                                romInfoString += 'Overall Rating:<div class = "jRating" data = "' + parseInt(4 * rating) + '"></div><br>Total Downloads: ' + xdata.result[modV.toUpperCase()].downloads + '<br><h2>Comments:</h2>';
                             
+                                $("#romInfo").append(romInfoString);
+                            
+                                // Comments
+                                var commentUri = "http://rommanager.deployfu.com/ratings/";
+                                $.get("http://jsonp.deployfu.com/clean/" + encodeURIComponent(commentUri + developers[devIndex].id + '/' + modV),
+                                function(ydata)
+                                {
+                                    $.each(ydata.result.comments,
+                                    function(j, com) {
 
+                                        var rating = com.rating;
+
+                                        $("#romInfo").append('<hr><div class = "jRating" data = "' + parseInt(4 * rating) + '"></div><br><strong>User: </strong>' + com.nickname + '<br> <strong>Comment: </strong>' + com.comment + '<br>');
+                                
+                                        $('.jRating').jRating({
+                                            step: false,
+                                            // no step
+                                            length: 5,
+                                            // show 5 stars at the init
+                                            isDisabled: true,
+                                            decimalLength: 1,
+                                            // show small stars instead of big default stars
+                                            bigStarsPath: 'https://github.com/ClockworkMod/ajaxThing/raw/gh-pages/stars.png'
+                                        });
+                                    });
+                                },
+                                "jsonp"
+                                );
+                              }
+                              else
+                              {
+                                $("#romInfo").append("<center>Sorry, no information can be found about this rom.</center>");
+                              }
                         },
                         "jsonp"
                         );

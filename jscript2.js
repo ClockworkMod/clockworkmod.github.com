@@ -82,7 +82,7 @@ $(document).ready(function()
         });
 
         // Clicking items in drop down will narrow down developer list
-        $("select.filter").click(function(event)
+        $("select.filter").change(function(event)
         {
             $('tr').removeClass("hideDev");
             var listVal = String(document.getElementById('filter').value);

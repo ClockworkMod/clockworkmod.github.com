@@ -104,7 +104,7 @@ $(document).ready(function()
 
                     if(!usesDevice)
                       $("#devRow" + i).addClass("hideDev");
-                    });
+                    
                 });
             }
         });

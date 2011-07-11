@@ -45,7 +45,7 @@ $(document).ready(function()
                 else
                 lastMod = "Never Modified";
 
-                giantString += '<tr id="devRow' + i + '"><td><hr><a class="DEV" id ="dev' + i + '" href="#romList"><img class="devIcon"  height=100 width=100 src =';
+                giantString += '<tr id="devRow' + i + '"><td><a class="DEV" id ="dev' + i + '" href="#romList"><img class="devIcon"  height=100 width=100 src =';
 
                 //Add the icon
                 if (val.icon)
@@ -60,13 +60,13 @@ $(document).ready(function()
                 if (theDev.ratingCount)
                 {
                     var rating = theDev.totalRating / theDev.ratingCount;
-                    giantString += '<div class = "jRating" data = "' + parseInt(4 * rating) + '"></div><div class="filler">' + rating + '</div>';
+                    giantString += '<div class = "jRating" data = "' + parseInt(4 * rating) + '"></div><div class="filler">' + rating + '</div><span style="padding-left:30px"></span>';
                 }
                 else
-                giantString += '<div class="filler">0</div>Not Rated';
+                giantString += '<div class="filler">0</div>Not Rated<span style="padding-left:30px"></span>';
 
                 // Add the number of downloads and the last modified date
-                giantString += '(' + totalDL + ' Downloads) <br><div class="filler"> ' + theDev.lastModified + ' </div> ' + lastMod + '</td></tr>';
+                giantString += '(' + totalDL + ' Downloads) <span style="padding-left:30px"></span><div class="filler"> ' + theDev.lastModified + ' </div> ' + lastMod + '</td></tr>';
             }
         });
 
@@ -101,15 +101,18 @@ $(document).ready(function()
                 $.each(developers,
                 function(i, val)
                 {
-
+                   var usesDevice = false;
                     // Check to see if developer supports device
                     $.each(val.roms,
                     function(j, rList)
                     {
                         // Add class to hide developers that don't support the device
-                        if (j != listVal)
-                        $("#devRow" + i).addClass("hideDev");
+                        if (j == listVal)
+                          usesDevice = true;
                     });
+
+                    if(!usesDevice)
+                      $("#devRow" + i).addClass("hideDev");
                 });
             }
         });
@@ -161,19 +164,12 @@ $(document).ready(function()
             $.get("http://jsonp.deployfu.com/clean/" + encodeURIComponent(developers[devIndex].manifest),
             function(data) {
 
-                var romRatings = [];
-                var giantRomList = "";
-
-                romRatingUri = "http://rommanager.deployfu.com/v2/ratings/" +developers[devIndex].id;
-                $.get("http://jsonp.deployfu.com/clean/" + encodeURIComponent(romRatingUri),
-                  function(idata){
-                    romRatings = idata;
-                  });
+              var giantRomList = "";
 
               $.each(data.roms,
                 function(i, val)
                 {
-                    giantRomList += '<hr><a class = "ROM" id = "' + developers[devIndex].id + "___" + devIndex + "___" + i + '" href="#romInfo">' + val.name + '</a><br>' +val.summary;
+                    giantRomList += '<hr><a class = "ROM" id = "' + developers[devIndex].id + "___" + devIndex + "___" + i + '" href="#romInfo">' + val.name + '</a><br>' +val.summary + '<br>';
                 });
 
                 $("#devInfo").append(giantRomList);
@@ -215,7 +211,21 @@ $(document).ready(function()
                         // Tab content starts here
                         $('.newTab').append('<div class = "tabContent romInfo" id = "romInfo"></div>');
 
-                        var romInfoString = '<a href="' + data.roms[romIndex].url + '">Download ROM Here</a><br><br>';
+                        var romInfoString = '<center><a href="' + data.roms[romIndex].url + '">Download ROM Here</a><br><br>';
+
+                        if(data.roms[romIndex].screenshots)
+                        {
+                          var i= 0;
+                          while(data.roms[romIndex].screenshots[i])
+                          {
+                            romInfoString += '<img height=300 width=200 src='+data.roms[romIndex].screenshots[i]+'> ';
+                            if((i>0) && (i%2))
+                              romInfoString +='<br>';
+                            i++;
+                          }
+                        }
+
+                        romInfoString += '</center>';
 
                         // Rating & number of downloads
                         var romRatUri = "http://rommanager.deployfu.com/v2/ratings/";
@@ -257,7 +267,7 @@ $(document).ready(function()
 
                                         var rating = com.rating;
 
-                                        $("#romInfo").append('<hr><div class = "jRating" data = "' + parseInt(4 * rating) + '"></div><br><strong>User: </strong>' + com.nickname + '<br> <strong>Comment: </strong>' + com.comment + '<br>');
+                                        $("#romInfo").append('<hr><strong>User: </strong>' + com.nickname + '<div class = "jRating comments" data = "' + parseInt(4 * rating) + '"></div><br> <strong>Comment: </strong>' + com.comment + '<br>');
 
                                         $('.jRating').jRating({
                                             step: false,

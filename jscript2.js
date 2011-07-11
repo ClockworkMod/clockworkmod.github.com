@@ -92,14 +92,18 @@ $(document).ready(function()
                 $.each(developers,
                 function(i, val)
                 {
-
+                  var usesDevice = false;
                     // Check to see if developer supports device
                     $.each(val.roms,
                     function(j, rList)
                     {
                         // Add class to hide developers that don't support the device
-                        if (j != listVal)
-                        $("#devRow" + i).addClass("hideDev");
+                        if (j == listVal)
+                          usesDevice = true;
+                    });
+
+                    if(!usesDevice)
+                      $("#devRow" + i).addClass("hideDev");
                     });
                 });
             }

@@ -1,0 +1,79 @@
+/* Div Tags
+-----------------------*/
+div.filler{
+display:none;
+}
+
+div.tabContent {
+border: 1px solid #000;
+margin:auto;
+padding: .5em;
+background-color: #FFF;
+width:800px;
+}
+
+div.tabContent.hide {
+display: none;
+}
+
+/* Images
+-----------------------*/
+img.devIcon{
+float:left;
+vertical-align:top;
+padding-right:10px;
+}
+
+/* Table
+-----------------------*/
+table {
+border:0px;
+border-spacing: 5px;
+}
+
+tr.hideDev {
+display: none;
+}
+
+/* Tab List
+-----------------------*/
+ul{
+text-align:center;
+margin:auto;
+}
+
+ul li {
+list-style-type: none;
+}
+
+ul#tabs {
+list-style-type: none;
+margin: 50px 0 0;
+padding: 0 0 0.3em;
+}
+
+ul#tabs li {
+display: inline;
+background-color: #FFE;
+margin: 30px 10px 0 0;
+padding: 0 0 0.1em 0;
+}
+
+ul#tabs li a {
+color: #FFF;
+background-color: #789;
+border: 1px solid #000;
+padding: 0.3em .3em .4em .3em;
+text-decoration: none;
+}
+
+ul#tabs li a:hover {
+background-color: #0CF;
+}
+
+ul#tabs li a.selected {
+color: #FFF;
+background-color: #222;
+font-weight: bold;
+padding: .75em .3em .4em 0.3em;
+}

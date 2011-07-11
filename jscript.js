@@ -1,74 +1,380 @@
-var manArr = new Array();
+// Developer >> Rom List >> Rom Details
+//TODO:  escape!
+$(document).ready(function()
+ {
+    window.addEventListener("hashchange", barchange, false);
 
+    $("#devTab").addClass("selected");
 
-$(document).ready(function() {
+    // Arrays for holding info on devices, developers and ratings
+    var devices = null;
+    var developers = null;
+    var devRats = null;
 
-    $.get(
-    "http://jsonp.deployfu.com/clean/http%3A%2F%2Fromshare.deployfu.com%2Fmanifest",
-    function(data) {
+    // Messing with the address bar
+    // Should allow navigation throught tabs
+    // Attempt to fill page with content
+    function doStuff()
+    {
+        if (devices == null || developers == null || devRats == null)
+        return;
 
+        window.location.hash = "developers";
+        //Fill developer list
+        var giantString = null;
 
-        // Display the developer, his ID, and  the summary
-        // Get manifests into an array
-        $.each(data.manifests,
-        function(i, val) {
-            $('.it').append('<tr class= tx' + i + '><td class = "ty' + i + '><a href="" class = "ax' + i + '">' + val.developer + '</a><br><img src="' + val.icon + '" width = "100" height ="100" alt = "' + val.id + '"></td>');
-            $('.tx' + i).append('<td class= "summary"><b>ROMS:</b><ol class = ox' + i + '></ol><br><b>ABOUT:</b> ' + val.summary + ' </td></tr>');
+        $.each(developers,
+        function(i, val)
+        {
+            // Get the rating
+            var devId = escape(val.id);
+            if (devRats[String(devId)])
+            {
+                // Add to list
+                theDev = devRats[String(devId)];
+                totalDL = theDev.anonymousDownloadCount + theDev.downloadCount;
 
-            manArr.unshift(val.manifest);
+                //Issue with this?
+                if (theDev.lastModified) {
+                    lastMod = new Date((theDev.lastModified) * 1000);
+                    var month = lastMod.getMonth() + 1;
+                    var day = lastMod.getDate();
+                    var year = lastMod.getFullYear();
+                    lastMod = month + "/" + day + "/" + year;
+                }
+                else
+                lastMod = "Never Modified";
+
+                giantString += '<tr id="devRow' + i + '"><td><hr><a class="DEV" id ="dev' + i + '" href="#romList"><img class="devIcon"  height=100 width=100 src =';
+
+                //Add the icon
+                if (val.icon)
+                giantString += val.icon + '>';
+                else
+                giantString += '"https://github.com/ClockworkMod/ajaxThing/raw/gh-pages/no_icon.png">';
+
+                // Add dev's name and description
+                giantString += val.developer + '</a><br>' + val.summary + '<br>';
+
+                //Add the rating
+                if (theDev.ratingCount)
+                {
+                    var rating = theDev.totalRating / theDev.ratingCount;
+                    giantString += '<div class = "jRating" data = "' + parseInt(4 * rating) + '"></div><div class="filler">' + rating + '</div>';
+                }
+                else
+                giantString += '<div class="filler">0</div>Not Rated';
+
+                // Add the number of downloads and the last modified date
+                giantString += '(' + totalDL + ' Downloads) <br><div class="filler"> ' + theDev.lastModified + ' </div> ' + lastMod + '</td></tr>';
+            }
         });
 
+        $("#devlist").append(giantString);
 
-        //Display latest 3 roms for each developer
-        $.each(manArr,
-        function(i, val) {
-            $.get(
-            "http://jsonp.deployfu.com/clean/" + encodeURIComponent(val),
-            function(data) {
-                for (j = 0; j < data.roms.length; j++) {
-                    if (j < 3) {
-                        $('ol.ox' + i).append('<li><a href="' + data.roms[j].url + '">' + data.roms[j].name + '</a></li></tr>');
-                    }
-                    else
-                    {
-                        $('ol.ox' + i).append('<li class = "extra"><a class = "extra" href="' + data.roms[j].url + '">' + data.roms[j].name + '</a></li></tr>');
+        $('.jRating').jRating({
+            step: false,
+            // no step
+            length: 5,
+            // show 5 stars at the init
+            isDisabled: true,
+            decimalLength: 1,
+            // show small stars instead of big default stars
+            bigStarsPath: 'https://github.com/ClockworkMod/ajaxThing/raw/gh-pages/stars.png'
+        });
 
-                    }
-                }
-                if (data.roms.length > 3)
+        // Fill drop down list
+        $.each(devices,
+        function(i, val)
+        {
+            $("select.filter").append('<option value = "' + val.key + '">' + val.name + '</option>');
+        });
+
+        // Clicking items in drop down will narrow down developer list
+        $("select.filter").change(function(event)
+        {
+            $('tr').removeClass("hideDev");
+            var listVal = String(document.getElementById('filter').value);
+
+            if (listVal != "-")
+            {
+                $.each(developers,
+                function(i, val)
                 {
-                    $('ol.ox' + i).append('<br><a class = "extra" href ="">Display older roms.</a>');
-                    $('ol.ox' + i).append('<br><a class = "xExtra" href ="">Hide older roms.</a>');
-                }
 
-                $("li.extra").hide();
-                $("a.xExtra").hide();
+                    // Check to see if developer supports device
+                    $.each(val.roms,
+                    function(j, rList)
+                    {
+                        // Add class to hide developers that don't support the device
+                        if (j != listVal)
+                        $("#devRow" + i).addClass("hideDev");
+                    });
+                });
+            }
+        });
+
+        $("input.allButton").click(function(event) {
+            $('tr').removeClass("hideDev");
+            var devOptions = document.getElementById('filter');
+            devOptions.options[0].selected = 1;
+        });
+
+        // Clicking developer name should create new tab for his roms,
+        // hide the developer tab, and show the new tab
+        $("a.DEV").click(function(event)
+        {
+            event.preventDefault();
+            $("#devInfo").remove();
+            $("#romList").remove();
+            $("#romListTab").remove();
+            $("#romInfo").remove();
+            $("#romInfoTab").remove();
+            $("div.developers").addClass("hide");
+            $(".tabItem").removeClass("selected");
+
+            var devIndex = parseInt(this.id.substring(3));
+
+            $('#tabs').append('<li><a id = "romListTab" class = "tabItem selected">' + developers[devIndex].developer + ' Roms</a></li>');
+            $('.newTab').append('<div class = "tabContent romList" id = "devInfo"></div>');
+
+            // Change address bar hash
+            window.location.hash = "romList";
+
+            // Controls for clicking the rom list tab
+            $("#romListTab").click(function(event)
+            {
+                $("div.tabContent").addClass("hide");
+                $("a.tabItem").removeClass("selected");
+                $("div.romList").removeClass("hide");
+                $("#romListTab").addClass("selected");
+            });
+
+            //Get icon and summary
+            if (developers[devIndex].icon)
+            $("#devInfo").append('<img height = 100 width = 100 src = "' + developers[devIndex].icon + '"><p>' + developers[devIndex].summary + '</p>');
+            else
+            $("#devInfo").append('<img height = 100 width = 100 src = "https://github.com/ClockworkMod/ajaxThing/raw/gh-pages/no_icon.png"><p>' + developers[devIndex].summary + '</p>');
+
+            // List the roms
+            // Clicking a rom will create a new tab with ratings and a download option
+            $.get("http://jsonp.deployfu.com/clean/" + encodeURIComponent(developers[devIndex].manifest),
+            function(data) {
+
+                var romRatings = [];
+                var giantRomList = "";
+
+                romRatingUri = "http://rommanager.deployfu.com/v2/ratings/" +developers[devIndex].id;
+                $.get("http://jsonp.deployfu.com/clean/" + encodeURIComponent(romRatingUri),
+                  function(idata){
+                    romRatings = idata;
+                  });
+
+              $.each(data.roms,
+                function(i, val)
+                {
+                    giantRomList += '<hr><a class = "ROM" id = "' + developers[devIndex].id + "___" + devIndex + "___" + i + '" href="#romInfo">' + val.name + '</a><br>' +val.summary;
+                });
+
+                $("#devInfo").append(giantRomList);
+
+                $("a.ROM").click(function(event)
+                {
+                    event.preventDefault();
+                    $("#romInfo").remove();
+                    $("#romInfoTab").remove();
+                    $("div.romList").addClass("hide");
+                    $(".tabItem").removeClass("selected");
+
+                    // Get the indicies and the rom name
+                    var devIndex = parseInt(this.id.split("___")[1]);
+                    var romIndex = parseInt(this.id.split("___")[2]);
+                    var romName = null;
+                    var modV = null;
+
+                    $.get("http://jsonp.deployfu.com/clean/" + encodeURIComponent(developers[devIndex].manifest),
+                    function(data)
+                    {
+                        romName = String(data.roms[romIndex].name);
+                        modV = String(data.roms[romIndex].modversion);
+
+                        //Create the tab
+                        $('#tabs').append('<li><a id = "romInfoTab" class = "tabItem selected">' + romName + '</a></li>');
+
+                        // Controls for clicking the rom list tab
+                        $("#romInfoTab").click(function(event)
+                        {
+                            $("div.tabContent").addClass("hide");
+                            $("a.tabItem").removeClass("selected");
+                            $("div.romInfo").removeClass("hide");
+                            $("#romInfoTab").addClass("selected");
+                        });
+
+                        window.location.hash = "romInfo";
+
+                        // Tab content starts here
+                        $('.newTab').append('<div class = "tabContent romInfo" id = "romInfo"></div>');
+
+                        var romInfoString = '<a href="' + data.roms[romIndex].url + '">Download ROM Here</a><br><br>';
+
+                        // Rating & number of downloads
+                        var romRatUri = "http://rommanager.deployfu.com/v2/ratings/";
+                        $.get("http://jsonp.deployfu.com/clean/" + encodeURIComponent(romRatUri + developers[devIndex].id),
+                        function(xdata)
+                        {
+
+                            var ratImage = null;
+                            var romID = null
+                            var rating = null;
+
+                            if (xdata.result[romName])
+                            romID = romName;
+                            else if (xdata.result[modV])
+                            romID = modV;
+                            else if (xdata.result[modV.toUpperCase()])
+                            romID = modV.toUpperCase();
+
+                            if (romID)
+                            {
+                                rating = xdata.result[romID].rating.toFixed(1);
+
+                                if (xdata.result[romName])
+                                romInfoString += 'Overall Rating: <div class = "jRating" data = "' + parseInt(4 * rating) + '"></div><br>Total Downloads: ' + xdata.result[romName].downloads + '<br><br><h2 class="blogger">Comments:</h2>';
+                                else if (xdata.result[modV])
+                                romInfoString += 'Overall Rating: <div class = "jRating" data = "' + parseInt(4 * rating) + '"></div><br>Total Downloads: ' + xdata.result[modV].downloads + '<br><br><h2 class="blogger">Comments:</h2>';
+                                else
+                                romInfoString += 'Overall Rating:<div class = "jRating" data = "' + parseInt(4 * rating) + '"></div><br>Total Downloads: ' + xdata.result[modV.toUpperCase()].downloads + '<br><h2 class="blogger">Comments:</h2>';
+
+                                $("#romInfo").append(romInfoString);
+
+                                // Comments
+                                var commentUri = "http://rommanager.deployfu.com/ratings/";
+                                $.get("http://jsonp.deployfu.com/clean/" + encodeURIComponent(commentUri + developers[devIndex].id + '/' + modV),
+                                function(ydata)
+                                {
+                                    $.each(ydata.result.comments,
+                                    function(j, com) {
+
+                                        var rating = com.rating;
+
+                                        $("#romInfo").append('<hr><div class = "jRating" data = "' + parseInt(4 * rating) + '"></div><br><strong>User: </strong>' + com.nickname + '<br> <strong>Comment: </strong>' + com.comment + '<br>');
+
+                                        $('.jRating').jRating({
+                                            step: false,
+                                            // no step
+                                            length: 5,
+                                            // show 5 stars at the init
+                                            isDisabled: true,
+                                            decimalLength: 1,
+                                            // show small stars instead of big default stars
+                                            bigStarsPath: 'https://github.com/ClockworkMod/ajaxThing/raw/gh-pages/stars.png'
+                                        });
+                                    });
+                                },
+                                "jsonp"
+                                );
+                            }
+                            else
+                            {
+                                $("#romInfo").append("<center>Sorry, no information can be found about this rom.</center>");
+                            }
+                        },
+                        "jsonp"
+                        );
+                    },
+                    "jsonp");
+                });
             },
             "jsonp"
             );
-        });
-    },
 
+        });
+
+        $("#devTab").click(function(event)
+        {
+            $("div.tabContent").addClass("hide");
+            $("a.tabItem").removeClass("selected");
+            $("div.developers").removeClass("hide");
+            $("#devTab").addClass("selected");
+        });
+    }
+
+
+    function barchange()
+    {
+        if (window.location.hash == "#romList")
+        {
+            $("#romInfo").remove();
+            $("#romInfoTab").remove();
+            $(".tabContent").addClass("hide");
+            $(".tabItem").removeClass("selected");
+            $("div.romList").removeClass("hide");
+            $("#romListTab").addClass("selected");
+
+        }
+        else if (window.location.hash == "#developers")
+        {
+            $("#devInfo").remove();
+            $("#romListTab").remove();
+            $(".tabContent").addClass("hide");
+            $(".tabItem").removeClass("selected");
+            $("#devListing").removeClass("hide");
+            $("#devTab").addClass("selected");
+        }
+    }
+
+    //Grab device info
+    var uri = "http://gh-pages.clockworkmod.com/ROMManagerManifest/devices.js";
+    $.get("http://jsonp.deployfu.com/clean/" + encodeURIComponent(uri),
+    function(data)
+    {
+        devices = data.devices.sort(function(a, b) {
+            var nameA = a.name.toLowerCase(),
+            nameB = b.name.toLowerCase()
+            //sort string ascending
+            if (nameA < nameB)
+            return - 1
+            if (nameA > nameB)
+            return 1
+            //default return value (no sorting)
+            return 0
+        });
+        doStuff();
+    },
     "jsonp"
     );
 
+    //Get developers
+    manUri = 'http://gh-pages.clockworkmod.com/ROMManagerManifest/manifests.js';
+    $.get(
+    "http://jsonp.deployfu.com/clean/" + encodeURIComponent(manUri),
+    function(data)
+    {
+        developers = data.manifests.sort(function(a, b) {
+            var devA = a.developer.toLowerCase(),
+            devB = b.developer.toLowerCase()
+            //sort string ascending
+            if (devA < devB)
+            return - 1
+            if (devA > devB)
+            return 1
+            //default return value (no sorting)
+            return 0
+        });
+        doStuff();
+    },
+    "jsonp"
+    );
 
-    $("a.extra").click(function(event) {
-        event.preventDefault();
-        $("li.extra").show('slow');
-        $("a.xExtra").show();
-        $("a.extra").hide();
-    });
-
-    $("a.xExtra").click(function(event) {
-        event.preventDefault();
-        $("li.extra").hide('slow');
-        $("a.xExtra").hide();
-        $("a.xExtra").show();
-    });
-
+    //Get dev's ratings
+    var ratUri = "http://rommanager.deployfu.com/v2/ratings";
+    $.get(
+    "http://jsonp.deployfu.com/clean/" + encodeURIComponent(ratUri),
+    function(data)
+    {
+        devRats = data.result;
+        doStuff();
+    },
+    "jsonp"
+    );
 });
-
-
-
-

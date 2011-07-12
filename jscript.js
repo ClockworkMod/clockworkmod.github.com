@@ -10,6 +10,7 @@ $(document).ready(function()
     var devices = null;
     var developers = null;
     var devRats = null;
+    var masterList = [];
 
     // Messing with the address bar
     // Should allow navigation throught tabs
@@ -19,69 +20,56 @@ $(document).ready(function()
         if (devices == null || developers == null || devRats == null)
         return;
 
-        window.location.hash = "developers";
-        //Fill developer list
-        var giantString = null;
-
-        $.each(developers,
-        function(i, val)
+        for (dev in developers)
         {
-            // Get the rating
-            var devId = escape(val.id);
-            if (devRats[String(devId)])
+            var devID = developers[dev].id;
+            if (devRats[devID])
             {
-                // Add to list
-                theDev = devRats[String(devId)];
-                totalDL = theDev.anonymousDownloadCount + theDev.downloadCount;
-
-                //Issue with this?
-                if (theDev.lastModified) {
-                    lastMod = new Date((theDev.lastModified) * 1000);
-                    var month = lastMod.getMonth() + 1;
-                    var day = lastMod.getDate();
-                    var year = lastMod.getFullYear();
-                    lastMod = month + "/" + day + "/" + year;
-                }
-                else
-                lastMod = "Never Modified";
-
-                giantString += '<tr id="devRow' + i + '"><td><a class="DEV" id ="dev' + i + '" href="#romList"><img class="devIcon"  height=100 width=100 src =';
-
-                //Add the icon
-                if (val.icon)
-                giantString += val.icon + '>';
-                else
-                giantString += '"https://github.com/ClockworkMod/ajaxThing/raw/gh-pages/no_icon.png">';
-
-                // Add dev's name and description
-                giantString += val.developer + '</a><br>' + val.summary + '<br>';
-
-                //Add the rating
-                if (theDev.ratingCount)
+                var ratingInfo = devRats[devID];
+                var rating = 0;
+                if (ratingInfo)
                 {
-                    var rating = theDev.totalRating / theDev.ratingCount;
-                    giantString += '<div class = "jRating" data = "' + parseInt(4 * rating) + '"></div><div class="filler">' + rating + '</div><span style="padding-left:30px"></span>';
+                    if (ratingInfo.ratingCount)
+                    rating = ratingInfo.totalRating / ratingInfo.ratingCount;
+
+                    masterList.push({
+                        "devName": developers[dev].developer,
+                        "id": devID,
+                        "icon":null,
+                        "summary":developers[dev].summary,
+                        "rating": rating,
+                        "downloads": ratingInfo.downloadCount + ratingInfo.anonymousDownloadCount,
+                        "utcMod": ratingInfo.lastModified
+                    });
                 }
-                else
-                giantString += '<div class="filler">0</div>Not Rated<span style="padding-left:30px"></span>';
-
-                // Add the number of downloads and the last modified date
-                giantString += '(' + totalDL + ' Downloads) <span style="padding-left:30px"></span><div class="filler"> ' + theDev.lastModified + ' </div> ' + lastMod + '</td></tr>';
             }
-        });
+            else
+            {
+                masterList.push({
+                    "devName": developers[dev].developer,
+                    "id": devID,
+                    "icon":null,
+                    "summary":developers[dev].summary,
+                    "rating":0,
+                    "downloads":0,
+                    "utcMod":null
+                });
+            }
 
-        $("#devlist").append(giantString);
+            for (index in masterList)
+            {
+              for(dev in developers)
+              {
+                if(developers[dev].id == masterList[index].id)
+                  masterList[index].icon = developers[dev].icon;
+              }
+            }
+        }
 
-        $('.jRating').jRating({
-            step: false,
-            // no step
-            length: 5,
-            // show 5 stars at the init
-            isDisabled: true,
-            decimalLength: 1,
-            // show small stars instead of big default stars
-            bigStarsPath: 'https://github.com/ClockworkMod/ajaxThing/raw/gh-pages/stars.png'
-        });
+        window.location.hash = "developers";
+
+        //Fill developer list
+        fillDevTableBy("name", 0);
 
         // Fill drop down list
         $.each(devices,
@@ -101,18 +89,18 @@ $(document).ready(function()
                 $.each(developers,
                 function(i, val)
                 {
-                   var usesDevice = false;
+                    var usesDevice = false;
                     // Check to see if developer supports device
                     $.each(val.roms,
                     function(j, rList)
                     {
                         // Add class to hide developers that don't support the device
                         if (j == listVal)
-                          usesDevice = true;
+                        usesDevice = true;
                     });
 
-                    if(!usesDevice)
-                      $("#devRow" + i).addClass("hideDev");
+                    if (!usesDevice)
+                    $("#devRow" + i).addClass("hideDev");
                 });
             }
         });
@@ -121,6 +109,15 @@ $(document).ready(function()
             $('tr').removeClass("hideDev");
             var devOptions = document.getElementById('filter');
             devOptions.options[0].selected = 1;
+        });
+
+        // New Dropdown bar needs to filter table contents
+        // Clicking items in drop down will narrow down developer list
+        $("input.sortButton").click(function(event) {
+          var listVal = String(document.getElementById('sorty').value);
+          var updown = parseInt(document.getElementById('updown').value);
+          fillDevTableBy(listVal,updown);
+          console.log(masterList);
         });
 
         // Clicking developer name should create new tab for his roms,
@@ -164,13 +161,19 @@ $(document).ready(function()
             $.get("http://jsonp.deployfu.com/clean/" + encodeURIComponent(developers[devIndex].manifest),
             function(data) {
 
-              var giantRomList = "";
+                var giantRomList = "";
 
-              $.each(data.roms,
-                function(i, val)
+
+                if (data.roms && data.roms[0])
                 {
-                    giantRomList += '<hr><a class = "ROM" id = "' + developers[devIndex].id + "___" + devIndex + "___" + i + '" href="#romInfo">' + val.name + '</a><br>' +val.summary + '<br>';
-                });
+                    $.each(data.roms,
+                    function(i, val)
+                    {
+                        giantRomList += '<hr><a class = "ROM" id = "' + developers[devIndex].id + "___" + devIndex + "___" + i + '" href="#romInfo">' + val.name + '</a><br>' + val.summary + '<br>';
+                    });
+                }
+                else
+                giantRomList += 'No roms available.';
 
                 $("#devInfo").append(giantRomList);
 
@@ -213,16 +216,16 @@ $(document).ready(function()
 
                         var romInfoString = '<center><a href="' + data.roms[romIndex].url + '">Download ROM Here</a><br><br>';
 
-                        if(data.roms[romIndex].screenshots)
+                        if (data.roms[romIndex].screenshots)
                         {
-                          var i= 0;
-                          while(data.roms[romIndex].screenshots[i])
-                          {
-                            romInfoString += '<img height=300 width=200 src='+data.roms[romIndex].screenshots[i]+'> ';
-                            if((i>0) && (i%2))
-                              romInfoString +='<br>';
-                            i++;
-                          }
+                            var i = 0;
+                            while (data.roms[romIndex].screenshots[i])
+                            {
+                                romInfoString += '<img height=300 width=200 src=' + data.roms[romIndex].screenshots[i] + '> ';
+                                if ((i > 0) && (i % 2))
+                                romInfoString += '<br>';
+                                i++;
+                            }
                         }
 
                         romInfoString += '</center>';
@@ -309,6 +312,59 @@ $(document).ready(function()
         });
     }
 
+    function sorthelper(updown, A, B)
+    {
+        if (updown)
+        {
+            if (A < B)
+            return 1
+            if (A > B)
+            return - 1
+        }
+        else
+        {
+            if (A < B)
+            return - 1
+            if (A > B)
+            return 1
+        }
+        //default return value (no sorting)
+        return 0
+    }
+
+    function sortbyName(updown)
+    {
+        masterList = masterList.sort(function(a, b) {
+            var A = a.devName.toLowerCase(),
+            B = b.devName.toLowerCase();
+            return sorthelper(updown, A, B);
+
+        });
+    }
+    function sortbyRating(updown)
+    {
+        masterList = masterList.sort(function(a, b) {
+            var A = a.rating,
+            B = b.rating;
+            return sorthelper(updown, A, B);
+        });
+    }
+    function sortbyDownloads(updown)
+    {
+        masterList = masterList.sort(function(a, b) {
+            var A = a.downloads,
+            B = b.downloads;
+            return sorthelper(updown, A, B);
+        });
+    }
+    function sortbyUTC(updown)
+    {
+        masterList = masterList.sort(function(a, b) {
+            var A = a.uctMod,
+            B = b.utcMod;
+            return sorthelper(updown, A, B);
+        });
+    }
 
     function barchange()
     {
@@ -320,7 +376,6 @@ $(document).ready(function()
             $(".tabItem").removeClass("selected");
             $("div.romList").removeClass("hide");
             $("#romListTab").addClass("selected");
-
         }
         else if (window.location.hash == "#developers")
         {
@@ -339,15 +394,9 @@ $(document).ready(function()
     function(data)
     {
         devices = data.devices.sort(function(a, b) {
-            var nameA = a.name.toLowerCase(),
-            nameB = b.name.toLowerCase()
-            //sort string ascending
-            if (nameA < nameB)
-            return - 1
-            if (nameA > nameB)
-            return 1
-            //default return value (no sorting)
-            return 0
+            var A = a.name.toLowerCase(),
+            B = b.name.toLowerCase();
+            return sorthelper(0, A, B);
         });
         doStuff();
     },
@@ -361,16 +410,11 @@ $(document).ready(function()
     function(data)
     {
         developers = data.manifests.sort(function(a, b) {
-            var devA = a.developer.toLowerCase(),
-            devB = b.developer.toLowerCase()
-            //sort string ascending
-            if (devA < devB)
-            return - 1
-            if (devA > devB)
-            return 1
-            //default return value (no sorting)
-            return 0
+            var A = a.developer.toLowerCase(),
+            B = b.developer.toLowerCase();
+            return sorthelper(0, A, B);
         });
+
         doStuff();
     },
     "jsonp"
@@ -387,4 +431,84 @@ $(document).ready(function()
     },
     "jsonp"
     );
+
+    function fillDevTableBy(what, updown)
+    {
+        if (what == "name")
+          sortbyName(updown);
+        else if (what == "rating")
+          sortbyRating(updown);
+        else if (what == "downloads")
+          sortbyDownloads(updown);
+        else if (what == "date")
+          sortbyUTC(updown);
+
+        giantString = '<table id="devTable">'
+
+        for(i in masterList)
+        {
+
+            giantString += '<tr id="devRow' + i + '"><td><a class="DEV" id ="dev' + i + '" href="#romList"><img class="devIcon"  height=100 width=100 src =';
+
+            //Add the icon
+            if (masterList[i].icon)
+            giantString += masterList[i].icon + '>';
+            else
+            giantString += '"https://github.com/ClockworkMod/ajaxThing/raw/gh-pages/no_icon.png">';
+
+            // Add dev's name and description
+            giantString += masterList[i].devName + '</a><br>' + masterList[i].summary + '<br>';
+
+            // Get the rating
+            var devId = escape(masterList[i].id);
+            if (devRats[String(devId)])
+            {
+                // Add to list
+                theDev = devRats[String(devId)];
+                totalDL = theDev.anonymousDownloadCount + theDev.downloadCount;
+
+                //Issue with this?
+                if (masterList[i].utcMod) {
+                    lastMod = new Date((masterList[i].utcMod) * 1000);
+                    var month = lastMod.getMonth() + 1;
+                    var day = lastMod.getDate();
+                    var year = lastMod.getFullYear();
+                    lastMod = month + "/" + day + "/" + year;
+                }
+                else
+                lastMod = "Never Modified";
+
+                //Add the rating
+                if (theDev.ratingCount)
+                {
+                    var rating = theDev.totalRating / theDev.ratingCount;
+                    giantString += '<div class = "jRating" data = "' + parseInt(4 * rating) + '"></div><div class="filler">' + rating + '</div><span style="padding-left:30px"></span>';
+                }
+                else
+                giantString += '<div class="filler">0</div>Not Rated<span style="padding-left:30px"></span>';
+
+                // Add the number of downloads and the last modified date
+                giantString += '(' + totalDL + ' Downloads) <span style="padding-left:30px"></span><div class="filler"> ' + theDev.lastModified + ' </div> ' + lastMod + '</td></tr>';
+            }
+            else
+            {
+                giantString += '<div class="filler">0</div>Not Rated<span style="padding-left:30px"></span>(0 Downloads) <span style="padding-left:30px"></span>Never Modified</td></tr>';
+            }
+        }
+
+        $("#devTable").remove();
+        $("#devListing").append(giantString+"</table>");
+
+        $('.jRating').jRating({
+            step: false,
+            // no step
+            length: 5,
+            // show 5 stars at the init
+            isDisabled: true,
+            decimalLength: 1,
+            // show small stars instead of big default stars
+            bigStarsPath: 'https://github.com/ClockworkMod/ajaxThing/raw/gh-pages/stars.png'
+        });
+
+    }
 });

@@ -14,15 +14,24 @@
         <option value ="-">-</option>
     </select>
     <input type="button" value = "UNFILTER" class = "allButton">
-    
+    <br>
+    Sort By: 
+    <select class = "sorty" id = "sorty">
+        <option value ="name">Name</option>
+        <option value ="rating">Rating</option>
+        <option value ="downloads">Downloads</option>
+        <option value ="date">Updated</option>
+    </select>
+    <select class = "sorty" id = "updown">
+        <option value ="0">Ascending</option>
+        <option value ="1">Descending</option>
+    </select>
+    <input type="button" value = "SORT" class = "sortButton">
     <ul id = "tabs">
       <li><a id = "devTab" class = "tabItem">DEVELOPERS</a></li>
     </ul>
     
-    <div class = "tabContent developers" id = "devListing">
-      <table id="devlist">
-      </table>
-    </div>
+    <div class = "tabContent developers" id = "devListing"></div>
     <div class = "newTab"></div>
     
   </body>

@@ -169,6 +169,7 @@ $(document).ready(function()
                     $.each(data.roms,
                     function(i, val)
                     {
+                      if (val.visible == null)
                         giantRomList += '<hr><a class = "ROM" id = "' + developers[devIndex].id + "___" + devIndex + "___" + i + '" href="#romInfo">' + val.name + '</a><br>' + val.summary + '<br>';
                     });
                 }
@@ -252,11 +253,11 @@ $(document).ready(function()
                                 rating = xdata.result[romID].rating.toFixed(1);
 
                                 if (xdata.result[romName])
-                                romInfoString += 'Overall Rating: <div class = "jRating" data = "' + parseInt(4 * rating) + '"></div><br>Total Downloads: ' + xdata.result[romName].downloads + '<br><br><h2 class="blogger">Comments:</h2>';
+                                romInfoString += '<div class = "jRating" data = "' + parseInt(4 * rating) + '"></div><br>' + xdata.result[romName].downloads + ' Downloads<br><br><h2 class="blogger">Comments:</h2>';
                                 else if (xdata.result[modV])
-                                romInfoString += 'Overall Rating: <div class = "jRating" data = "' + parseInt(4 * rating) + '"></div><br>Total Downloads: ' + xdata.result[modV].downloads + '<br><br><h2 class="blogger">Comments:</h2>';
+                                romInfoString += '<div class = "jRating" data = "' + parseInt(4 * rating) + '"></div><br>' + xdata.result[modV].downloads + ' Downloads<br><br><h2 class="blogger">Comments:</h2>';
                                 else
-                                romInfoString += 'Overall Rating:<div class = "jRating" data = "' + parseInt(4 * rating) + '"></div><br>Total Downloads: ' + xdata.result[modV.toUpperCase()].downloads + '<br><h2 class="blogger">Comments:</h2>';
+                                romInfoString += '<div class = "jRating" data = "' + parseInt(4 * rating) + '"></div><br>' + xdata.result[modV.toUpperCase()].downloads + ' Downloads<br><h2 class="blogger">Comments:</h2>';
 
                                 $("#romInfo").append(romInfoString);
 
@@ -270,7 +271,7 @@ $(document).ready(function()
 
                                         var rating = com.rating;
 
-                                        $("#romInfo").append('<hr><strong>User: </strong>' + com.nickname + '<div class = "jRating comments" data = "' + parseInt(4 * rating) + '"></div><br> <strong>Comment: </strong>' + com.comment + '<br>');
+                                        $("#romInfo").append('<hr><strong>' + com.nickname + '</strong><div class = "jRating comments" data = "' + parseInt(4 * rating) + '"></div><br><i>' + com.comment + '</i><br>');
 
                                         $('.jRating').jRating({
                                             step: false,

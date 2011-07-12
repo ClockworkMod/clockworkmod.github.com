@@ -1,3 +1,6 @@
+a{
+text-decoration:none;
+}
 /* Div Tags
 -----------------------*/
 div.filler{
@@ -52,12 +55,7 @@ border-width: 1px 0 0 0;
 }
 
 /* Tab List
------------------------
-ul{
-text-align:center;
-margin:auto;
-}
-*/
+-----------------------*/
 ul li {
 list-style-type: none;
 }

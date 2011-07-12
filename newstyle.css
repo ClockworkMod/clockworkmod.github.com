@@ -4,12 +4,16 @@ div.filler{
 display:none;
 }
 
+div.containAll{
+width:800px;
+margin:auto;
+}
+
 div.tabContent {
 border: 1px solid #000;
-margin:auto;
 padding: .5em;
 background-color: #FFF;
-width:800px;
+
 }
 
 div.tabContent.hide {
@@ -48,12 +52,12 @@ border-width: 1px 0 0 0;
 }
 
 /* Tab List
------------------------*/
+-----------------------
 ul{
 text-align:center;
 margin:auto;
 }
-
+*/
 ul li {
 list-style-type: none;
 }

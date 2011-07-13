@@ -179,13 +179,12 @@ $(document).ready(function()
                         //load rom
                         for(j in data.roms)
                         {
-                            // WILL BE CHANGED TO MODVERSION !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-                            if((rom == encodeURIComponent(data.roms[j].url))||(rom == data.roms[j].url))
+                            if((rom == data.roms[j].modversion)||(rom == encodeURIComponent(data.roms[j].url))||(rom == data.roms[j].url))
                             {
                                 fillRomInfo(dev, j);
                                 done=true;
                                 break;
-                            }
+                            }   
                         }
                         if(done)
                             return;
@@ -370,6 +369,9 @@ $(document).ready(function()
                 $("#romInfoTab").addClass("selected");
             });
 
+            if(modV)
+            window.location.hash = "romInfo/" + developers[devIndex].id + "/" + modV);
+            else
             window.location.hash = "romInfo/" + developers[devIndex].id + "/" + encodeURIComponent(data.roms[romIndex].url);
 
             // Tab content starts here

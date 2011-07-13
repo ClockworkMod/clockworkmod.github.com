@@ -6,18 +6,16 @@ $(document).ready(function()
     var sortTypeCookie = null;
     var sortOrderCookie = null;
 
-    console.log(document.cookie);
-
     //get device cookie
-     if(document.cookie.split(';')[0])
+     if(readCookie('deviceCookie'))
      {
-        devCookie = document.cookie.split(';')[0].split('=')[1];
+        devCookie = readCookie('deviceCookie');
      }
      //get sort cookie
-     if(document.cookie.split(';')[1])
+     if(readCookie('sortCookie'))
       {
-          sortTypeCookie = document.cookie.split(';')[1].split('=')[1].split('_')[0];
-          sortOrderCookie = document.cookie.split(';')[1].split('=')[1].split('_')[1];
+          sortTypeCookie = readCookie('sortCookie').split('_')[0];
+          sortOrderCookie = readCookie('sortCookie').split('_')[1];
       }
 
      var hash = window.location.hash;
@@ -165,6 +163,15 @@ $(document).ready(function()
             $("#devTab").addClass("selected");
         });
     }
+//==============================readCookie()==================================
+    function readCookie(name) {
+        name = name.replace(/([.*+?^=!:${}()|[\]\/\\])/g, '\\$1');
+        var regExp = new RegExp('(?:^|;)\\s?' + name + '=(.*?)(?:;|$)','i'),
+            match = document.cookie.match(regExp);
+
+        return match && unescape(match[1]);
+    }
+
 
 //==============================hashParse()===================================
     //Use to direct immediate links to the site
@@ -289,9 +296,9 @@ $(document).ready(function()
       });
 
       $("input.allButton").click(function(event) {
-          $('tr').removeClass("hideDev");
           var devOptions = document.getElementById('filter');
           devOptions.options[0].selected = 1;
+          fillDevTableBy('name', 0);
       });
 
       // New Dropdown bar needs to filter table contents
@@ -601,53 +608,71 @@ $(document).ready(function()
 
         giantString = '<table id="devTable">'
 
+        var devFilter = '-'
+
+        if(document.getElementById('filter').value != '-')
+            devFilter = document.getElementById('filter').value;
+
         for (i in masterList)
         {
-            giantString += '<tr id="devRow' + i + '"><td><a class="DEV" id ="dev' + i + '" href="#romList"><img class="devIcon"  height=100 width=100 src =';
-
-            //Add the icon
-            if (masterList[i].icon)
-            giantString += masterList[i].icon + '>';
-            else
-            giantString += '"https://github.com/ClockworkMod/ajaxThing/raw/gh-pages/no_icon.png">';
-
-            // Add dev's name and description
-            giantString += masterList[i].devName + '</a><br>' + masterList[i].summary + '<br>';
-
-            // Get the rating
             var devId = escape(masterList[i].id);
-            if (devRats[String(devId)])
+            var devOk = false;
+            for (j in developers)
             {
-                // Add to list
-                theDev = devRats[String(devId)];
-                totalDL = theDev.anonymousDownloadCount + theDev.downloadCount;
-
-                //Issue with this?
-                if (masterList[i].utcMod) {
-                    lastMod = new Date((masterList[i].utcMod) * 1000);
-                    var month = lastMod.getMonth() + 1;
-                    var day = lastMod.getDate();
-                    var year = lastMod.getFullYear();
-                    lastMod = month + "/" + day + "/" + year;
-                }
-                else
-                lastMod = "Never Modified";
-
-                //Add the rating
-                if (theDev.ratingCount)
+                if(developers[j].id == devId)
                 {
-                    var rating = theDev.totalRating / theDev.ratingCount;
-                    giantString += '<div class = "jRating" data = "' + parseInt(4 * rating) + '"></div><div class="filler">' + rating + '</div><span style="padding-left:30px"></span>';
+                    if ((developers[j].roms[devFilter])||(devFilter=="-"))
+                        devOk = true;
+                }
+            }
+
+            if(devOk)
+            {
+                giantString += '<tr id="devRow' + i + '"><td><a class="DEV" id ="dev' + i + '" href="#romList"><img class="devIcon"  height=100 width=100 src =';
+
+                //Add the icon
+                if (masterList[i].icon)
+                giantString += masterList[i].icon + '>';
+                else
+                giantString += '"https://github.com/ClockworkMod/ajaxThing/raw/gh-pages/no_icon.png">';
+
+                // Add dev's name and description
+                giantString += masterList[i].devName + '</a><br>' + masterList[i].summary + '<br>';
+
+                // Get the rating
+                if (devRats[String(devId)])
+                {
+                    // Add to list
+                    theDev = devRats[String(devId)];
+                    totalDL = theDev.anonymousDownloadCount + theDev.downloadCount;
+
+                    //Issue with this?
+                    if (masterList[i].utcMod) {
+                        lastMod = new Date((masterList[i].utcMod) * 1000);
+                        var month = lastMod.getMonth() + 1;
+                        var day = lastMod.getDate();
+                        var year = lastMod.getFullYear();
+                        lastMod = month + "/" + day + "/" + year;
+                    }
+                    else
+                    lastMod = "Never Modified";
+
+                    //Add the rating
+                    if (theDev.ratingCount)
+                    {
+                        var rating = theDev.totalRating / theDev.ratingCount;
+                        giantString += '<div class = "jRating" data = "' + parseInt(4 * rating) + '"></div><div class="filler">' + rating + '</div><span style="padding-left:30px"></span>';
+                    }
+                    else
+                    giantString += '<div class="filler">0</div>Not Rated<span style="padding-left:30px"></span>';
+
+                    // Add the number of downloads and the last modified date
+                    giantString += '(' + totalDL + ' Downloads) <span style="padding-left:30px"></span><div class="filler"> ' + theDev.lastModified + ' </div> ' + lastMod + '</td></tr>';
                 }
                 else
-                giantString += '<div class="filler">0</div>Not Rated<span style="padding-left:30px"></span>';
-
-                // Add the number of downloads and the last modified date
-                giantString += '(' + totalDL + ' Downloads) <span style="padding-left:30px"></span><div class="filler"> ' + theDev.lastModified + ' </div> ' + lastMod + '</td></tr>';
-            }
-            else
-            {
-                giantString += '<div class="filler">0</div>Not Rated<span style="padding-left:30px"></span>(0 Downloads) <span style="padding-left:30px"></span>Never Modified</td></tr>';
+                {
+                    giantString += '<div class="filler">0</div>Not Rated<span style="padding-left:30px"></span>(0 Downloads) <span style="padding-left:30px"></span>Never Modified</td></tr>';
+                }
             }
         }
 

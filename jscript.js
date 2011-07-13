@@ -370,7 +370,7 @@ $(document).ready(function()
             });
 
             if(modV)
-            window.location.hash = "romInfo/" + developers[devIndex].id + "/" + modV);
+            window.location.hash = "romInfo/" + developers[devIndex].id + "/" + modV;
             else
             window.location.hash = "romInfo/" + developers[devIndex].id + "/" + encodeURIComponent(data.roms[romIndex].url);
 

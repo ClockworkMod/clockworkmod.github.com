@@ -63,14 +63,14 @@ list-style-type: none;
 ul#tabs {
 list-style-type: none;
 margin: 50px 0 0;
-padding: 0 0 0.3em;
+padding: 0 0 6px;
 }
 
 ul#tabs li {
 display: inline;
 background-color: #FFE;
 margin: 30px 10px 0 0;
-padding: 0 0 0.1em 0;
+padding: 0 0 5px 0;
 }
 
 ul#tabs li a {
@@ -89,5 +89,5 @@ ul#tabs li a.selected {
 color: #FFF;
 background-color: #222;
 font-weight: bold;
-padding: .75em .3em .4em 0.3em;
+padding: .75em 0 .4em 0;
 }

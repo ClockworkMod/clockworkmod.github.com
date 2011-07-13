@@ -2,6 +2,24 @@
 //TODO:  escape!
 $(document).ready(function()
  {
+    var devCookie = null;
+    var sortTypeCookie = null;
+    var sortOrderCookie = null;
+
+    console.log(document.cookie);
+
+    //get device cookie
+     if(document.cookie.split(';')[0])
+     {
+        devCookie = document.cookie.split(';')[0].split('=')[1];
+     }
+     //get sort cookie
+     if(document.cookie.split(';')[1])
+      {
+          sortTypeCookie = document.cookie.split(';')[1].split('=')[1].split('_')[0];
+          sortOrderCookie = document.cookie.split(';')[1].split('=')[1].split('_')[1];
+      }
+
      var hash = window.location.hash;
      var mainHash = null;
      var devHash = null;
@@ -216,6 +234,32 @@ $(document).ready(function()
           $("select.filter").append('<option value = "' + val.key + '">' + val.name + '</option>');
       });
 
+      if(devCookie)
+        {
+            document.getElementById('filter').value = devCookie;
+
+              $.each(developers,
+              function(i, val)
+              {
+                  var usesDevice = false;
+                  // Check to see if developer supports device
+                  $.each(val.roms,
+                  function(j, rList)
+                  {
+                      // Add class to hide developers that don't support the device
+                      if (j == devCookie)
+                      usesDevice = true;
+                  });
+                  if (!usesDevice)
+                  $("#devRow" + i).addClass("hideDev");
+              });
+        }
+
+        if(sortTypeCookie && sortOrderCookie)
+        {
+            fillDevTableBy(sortTypeCookie, sortOrderCookie);
+        }
+
       // Clicking items in drop down will narrow down developer list
       $("select.filter").change(function(event)
       {
@@ -224,6 +268,7 @@ $(document).ready(function()
 
           if (listVal != "-")
           {
+              document.cookie = 'deviceCookie='+ listVal;
               $.each(developers,
               function(i, val)
               {
@@ -254,6 +299,7 @@ $(document).ready(function()
       $("input.sortButton").click(function(event) {
           var listVal = String(document.getElementById('sorty').value);
           var updown = parseInt(document.getElementById('updown').value);
+          document.cookie = 'sortCookie='+listVal+"_"+updown;
           fillDevTableBy(listVal, updown);
       });
     }

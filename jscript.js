@@ -180,7 +180,7 @@ $(document).ready(function()
                         for(j in data.roms)
                         {
                             // WILL BE CHANGED TO MODVERSION !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-                            if(rom == data.roms[j].url)
+                            if((rom == encodeURIComponent(data.roms[j].url))||(rom == data.roms[j].url))
                             {
                                 fillRomInfo(dev, j);
                                 done=true;

@@ -2,7 +2,18 @@
 //TODO:  escape!
 $(document).ready(function()
  {
-    window.location.hash = "developers";
+     var hash = window.location.hash;
+     var mainHash = null;
+     var devHash = null;
+     var romHash = null;
+
+     mainHash = hash.split('/')[0];
+     if (hash.split('/')[1])
+         devHash = hash.split('/')[1];
+     if (hash.split('/')[2])
+         romHash = hash.split(mainHash+"/"+devHash+"/")[1];
+
+    //reacts when the hash changes
     window.addEventListener("hashchange", barchange, false);
     $("#devTab").addClass("selected");
 
@@ -59,8 +70,6 @@ $(document).ready(function()
 //============================================================================
 //===========================<functions>======================================
 //============================================================================
-
-
     // Attempt to fill page with content
     function doStuff()
     {
@@ -114,8 +123,7 @@ $(document).ready(function()
             }
         }
 
-        //Fill developer list tab
-        fillDevTableBy("name", 0);
+        hashControl(mainHash, devHash, romHash);
 
         //Button and dropdown logic
         buttonsNStuff();
@@ -138,6 +146,64 @@ $(document).ready(function()
             $("div.developers").removeClass("hide");
             $("#devTab").addClass("selected");
         });
+    }
+
+//==============================hashParse()===================================
+    //Use to direct immediate links to the site
+    //If a nonsense link: just go through the normal processs
+    //If legit hashtag: go further.
+    function hashControl(main, dev, rom)
+    {
+        //load developers
+        fillDevTableBy("name", 0);
+
+        if(!(main=="#devInfo")&&!(main=="#romInfo"))
+        {
+            window.location.hash = "#developers";
+            return;
+        }
+
+        //load roms
+        var devExists=false;
+        for(i in developers)
+        {
+            if(developers[i].id == dev)
+            {
+                fillDevInfo(i);
+                devExists = true;
+                if(rom)
+                {
+                    var done = false;
+                    $.get("http://jsonp.deployfu.com/clean/" + encodeURIComponent(developers[i].manifest),
+                    function(data){
+                        //load rom
+                        for(j in data.roms)
+                        {
+                            // WILL BE CHANGED TO MODVERSION !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+                            if(rom == data.roms[j].url)
+                            {
+                                fillRomInfo(dev, j);
+                                done=true;
+                                break;
+                            }
+                        }
+                        if(done)
+                            return;
+                        else
+                        {
+                            window.location.hash=main+"/"+dev;
+                            alert('Invalid rom.');
+                            return;
+                        }
+                    },"jsonp");
+                }
+            }
+        }
+        if(!devExists)
+        {
+            alert('Invalid developer.');
+            window.location.hash="#developer";
+        }
     }
 
 //==========================buttonsNStuff()===================================
@@ -261,7 +327,7 @@ $(document).ready(function()
                 var devIndex = parseInt(this.id.split("___")[1]);
                 var romIndex = parseInt(this.id.split("___")[2]);
 
-                fillRomInfo(devIndex, romIndex);
+                fillRomInfo(developers[devIndex].id, romIndex);
             });
         },
         "jsonp"
@@ -269,15 +335,22 @@ $(document).ready(function()
     }
 
 //=============================fillRomInfo()==================================
-    function fillRomInfo(devIndex, romIndex)
+    function fillRomInfo(devID, romIndex)
     {
         $("#romInfo").remove();
         $("#romInfoTab").remove();
         $("div.romList").addClass("hide");
         $(".tabItem").removeClass("selected");
 
+        var devIndex = 0;
         var romName = null;
         var modV = null;
+
+        for (i in developers)
+        {
+            if (devID == developers[i].id)
+                devIndex = i;
+        }
 
         $.get("http://jsonp.deployfu.com/clean/" + encodeURIComponent(developers[devIndex].manifest),
         function(data)
@@ -460,12 +533,11 @@ $(document).ready(function()
     function sortbyUTC(updown)
     {
         masterList = masterList.sort(function(a, b) {
-            var A = a.uctMod,
+            var A = a.utcMod,
             B = b.utcMod;
             return sorthelper(updown, A, B);
         });
     }
-
 
 //================================fillDevTableby()============================
     function fillDevTableBy(what, updown)
@@ -483,7 +555,6 @@ $(document).ready(function()
 
         for (i in masterList)
         {
-
             giantString += '<tr id="devRow' + i + '"><td><a class="DEV" id ="dev' + i + '" href="#romList"><img class="devIcon"  height=100 width=100 src =';
 
             //Add the icon

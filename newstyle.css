@@ -19,8 +19,8 @@ margin:auto;
 div.tabContent {
 border: 1px solid #000;
 padding: .5em;
-background-color: #FFF;
 border-radius:0px 0px 10px 10px;
+background-color:#EEE;
 
 }
 
@@ -48,6 +48,7 @@ padding-right:10px;
 -----------------------*/
 table {
 border-spacing: 5px;
+background-color:#EEE;
 }
 
 tr.hideDev {
@@ -84,19 +85,20 @@ margin: 30px 10px 0 0;
 ul#tabs li a {
 color: #FFF;
 border-radius:10px 10px 0px 0px;
-background-color: #555;
+background-color: #999;
 border: 1px solid #000;
 padding: 7px 4px 5px 4px;
 text-decoration: none;
 }
 
 ul#tabs li a:hover {
-background-color: #0CF;
+color:#F60;
+background-color: #999;
 }
 
 ul#tabs li a.selected{
 color: #FFF;
-background-color: #600;
+background-color: #A00;
 font-weight: bold;
 padding: 12px 4px 5px 4px;
 }

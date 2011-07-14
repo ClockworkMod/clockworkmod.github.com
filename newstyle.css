@@ -85,7 +85,7 @@ ul#tabs li a:hover {
 background-color: #0CF;
 }
 
-ul#tabs li a.selected {
+ul#tabs li a.selected{
 color: #FFF;
 background-color: #222;
 font-weight: bold;

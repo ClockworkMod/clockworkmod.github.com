@@ -143,25 +143,6 @@ $(document).ready(function()
 
         //Button and dropdown logic
         buttonsNStuff();
-
-        // Clicking developer name should create new tab for his roms,
-        // hide the developer tab, and show the new tab
-        $("a.DEV").click(function(event)
-        {
-            event.preventDefault();
-            var devIndex = parseInt(this.id.substring(3));
-
-            //Fill in developer tab data
-            fillDevInfo(devIndex);
-        });
-
-        $("#devTab").click(function(event)
-        {
-            $("div.tabContent").addClass("hide");
-            $("a.tabItem").removeClass("selected");
-            $("div.developers").removeClass("hide");
-            $("#devTab").addClass("selected");
-        });
     }
 //==============================readCookie()==================================
     function readCookie(name) {
@@ -264,6 +245,8 @@ $(document).ready(function()
 
         if(sortTypeCookie && sortOrderCookie)
         {
+            document.getElementById('sorty').value = sortTypeCookie;
+            document.getElementById('updown').value = sortOrderCookie;
             fillDevTableBy(sortTypeCookie, parseInt(sortOrderCookie));
         }
 
@@ -272,10 +255,10 @@ $(document).ready(function()
       {
           fillDevTableBy('name', 0);
           var listVal = String(document.getElementById('filter').value);
+          document.cookie = 'deviceCookie='+ listVal;
 
           if (listVal != "-")
           {
-              document.cookie = 'deviceCookie='+ listVal;
               $.each(developers,
               function(i, val)
               {
@@ -296,8 +279,13 @@ $(document).ready(function()
       });
 
       $("input.allButton").click(function(event) {
-          var devOptions = document.getElementById('filter');
-          devOptions.options[0].selected = 1;
+          document.cookie = 'deviceCookie=-';
+          document.cookie = 'sortCookie=name_0';
+
+          document.getElementById('filter').value = '-';
+          document.getElementById('sorty').value = "name";
+          document.getElementById('updown').value = 0;
+
           fillDevTableBy('name', 0);
       });
 
@@ -313,20 +301,32 @@ $(document).ready(function()
 
 
 //============================fillDevInfo()===================================
-    function fillDevInfo(devIndex)
+    function fillDevInfo(devId)
     {
         // Change address bar hash
-        window.location.hash = "romList/" + developers[devIndex].id;
+        window.location.hash = "romList/" + devId;
+
+        var devIndex = 0;
+        for (i in developers)
+        {
+            if(developers[i].id==devId)
+            {
+                devIndex = i;
+                break;
+            }
+        }
 
         $("#devInfo").remove();
         $("#romList").remove();
+        $("#romListItemTab").remove();
+        $("#romInfoListItem").remove();
         $("#romListTab").remove();
         $("#romInfo").remove();
         $("#romInfoTab").remove();
         $("div.developers").addClass("hide");
         $(".tabItem").removeClass("selected");
 
-        $('#tabs').append('<li><a id = "romListTab" class = "tabItem selected">' + developers[devIndex].developer + ' Roms</a></li>');
+        $('#tabs').append('<li id="romListItemTab"><a id = "romListTab" class = "tabItem selected">' + developers[devIndex].developer + ' Roms</a></li>');
         $('.newTab').append('<div class = "tabContent romList" id = "devInfo"></div>');
 
         // Controls for clicking the rom list tab
@@ -391,6 +391,7 @@ $(document).ready(function()
     {
         $("#romInfo").remove();
         $("#romInfoTab").remove();
+        $("#romInfoListItem").remove();
         $("div.romList").addClass("hide");
         $(".tabItem").removeClass("selected");
 
@@ -411,7 +412,7 @@ $(document).ready(function()
             modV = String(data.roms[romIndex].modversion);
 
             //Create the tab
-            $('#tabs').append('<li><a id = "romInfoTab" class = "tabItem selected">' + romName + '</a></li>');
+            $('#tabs').append('<li id="romInfoListItem"><a id = "romInfoTab" class = "tabItem selected">' + romName + '</a></li>');
 
             // Controls for clicking the rom list tab
             $("#romInfoTab").click(function(event)
@@ -628,7 +629,7 @@ $(document).ready(function()
 
             if(devOk)
             {
-                giantString += '<tr id="devRow' + i + '"><td><a class="DEV" id ="dev' + i + '" href="#romList"><img class="devIcon"  height=100 width=100 src =';
+                giantString += '<tr id="devRow' + i + '"><td><a class="DEV" id ="devdev' + devId + '" href="#romList"><img class="devIcon"  height=100 width=100 src =';
 
                 //Add the icon
                 if (masterList[i].icon)
@@ -679,6 +680,31 @@ $(document).ready(function()
         $("#devTable").remove();
         $("#devListing").append(giantString + "</table>");
         callJrating();
+        // Clicking developer name should create new tab for his roms,
+        // hide the developer tab, and show the new tab
+        $("a.DEV").click(function(event)
+        {
+            event.preventDefault();
+            var devId = this.id.split("devdev")[1];
 
+            //Fill in developer tab data
+            fillDevInfo(devId);
+        });
+
+        $("#devTab").click(function(event)
+        {
+            $("#devInfo").remove();
+            $("#romList").remove();
+            $("#romListItemTab").remove();
+            $("#romInfoListItem").remove();
+            $("#romListTab").remove();
+            $("#romInfo").remove();
+            $("#romInfoTab").remove();
+
+            $("div.tabContent").addClass("hide");
+            $("a.tabItem").removeClass("selected");
+            $("div.developers").removeClass("hide");
+            $("#devTab").addClass("selected");
+        });
     }
 });

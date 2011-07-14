@@ -253,7 +253,7 @@ $(document).ready(function()
       // Clicking items in drop down will narrow down developer list
       $("select.filter").change(function(event)
       {
-          fillDevTableBy('name', 0);
+          fillDevTableBy(sortTypeCookie, sortOrderCookie);
           var listVal = String(document.getElementById('filter').value);
           document.cookie = 'deviceCookie='+ listVal;
 
@@ -339,9 +339,9 @@ $(document).ready(function()
 
         //Get icon and summary
         if (developers[devIndex].icon)
-        $("#devInfo").append('<img height = 100 width = 100 src = "' + developers[devIndex].icon + '"><p>' + developers[devIndex].summary + '</p><table id="romListTable"></table>');
+        $("#devInfo").append('<img height = 100 width = 100 src = "' + developers[devIndex].icon + '"><p>' + developers[devIndex].summary + '</p><table id="romListTable" width="100%"></table>');
         else
-        $("#devInfo").append('<img height = 100 width = 100 src = "https://github.com/ClockworkMod/ajaxThing/raw/gh-pages/no_icon.png"><p>' + developers[devIndex].summary + '</p><table id="romListTable"></table>');
+        $("#devInfo").append('<img height = 100 width = 100 src = "https://github.com/ClockworkMod/ajaxThing/raw/gh-pages/no_icon.png"><p>' + developers[devIndex].summary + '</p><table id="romListTable" width="100%"></table>');
 
         // List the roms
         // Clicking a rom will create a new tab with ratings and a download option
@@ -622,7 +622,7 @@ $(document).ready(function()
         else if (what == "date")
         sortbyUTC(updown);
 
-        giantString = '<table id="devTable">'
+        giantString = '<table id="devTable" width="100%">'
 
         var devFilter = '-'
 

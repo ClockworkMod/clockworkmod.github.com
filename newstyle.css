@@ -49,6 +49,10 @@ tr.hideDev {
 display: none;
 }
 
+tr{
+width:auto;
+}
+
 td{
 border-style:solid;
 border-width: 1px 0 0 0;

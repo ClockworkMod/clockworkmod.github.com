@@ -175,7 +175,7 @@ $(document).ready(function()
         {
             if(developers[i].id == dev)
             {
-                fillDevInfo(i);
+                fillDevInfo(dev);
                 devExists = true;
                 if(rom)
                 {
@@ -304,7 +304,7 @@ $(document).ready(function()
     function fillDevInfo(devId)
     {
         // Change address bar hash
-        window.location.hash = "romList/" + devId;
+        window.location.hash = "devInfo/" + devId;
 
         var devIndex = 0;
         for (i in developers)
@@ -317,7 +317,6 @@ $(document).ready(function()
         }
 
         $("#devInfo").remove();
-        $("#romList").remove();
         $("#romListItemTab").remove();
         $("#romInfoListItem").remove();
         $("#romListTab").remove();
@@ -340,50 +339,71 @@ $(document).ready(function()
 
         //Get icon and summary
         if (developers[devIndex].icon)
-        $("#devInfo").append('<img height = 100 width = 100 src = "' + developers[devIndex].icon + '"><p>' + developers[devIndex].summary + '</p>');
+        $("#devInfo").append('<img height = 100 width = 100 src = "' + developers[devIndex].icon + '"><p>' + developers[devIndex].summary + '</p><table id="romListTable"></table>');
         else
-        $("#devInfo").append('<img height = 100 width = 100 src = "https://github.com/ClockworkMod/ajaxThing/raw/gh-pages/no_icon.png"><p>' + developers[devIndex].summary + '</p>');
+        $("#devInfo").append('<img height = 100 width = 100 src = "https://github.com/ClockworkMod/ajaxThing/raw/gh-pages/no_icon.png"><p>' + developers[devIndex].summary + '</p><table id="romListTable"></table>');
 
         // List the roms
         // Clicking a rom will create a new tab with ratings and a download option
         $.get("http://jsonp.deployfu.com/clean/" + encodeURIComponent(developers[devIndex].manifest),
         function(data)
         {
-
             var giantRomList = "";
 
             if (data.roms && data.roms[0])
             {
-                giantRomList += '<table id="romListTable">';
-                $.each(data.roms,
-                function(i, val)
+                urlThing = "http://rommanager.deployfu.com/v2/ratings/";
+                $.get("http://jsonp.deployfu.com/clean/" + encodeURIComponent(urlThing)+devId,
+                function(rData)
                 {
-                    if (val.visible == null)
+                    $.each(data.roms,
+                    function(i, val)
                     {
                         var devOptions = document.getElementById('filter').value;
-                        if ((devOptions == '-') || (val.device == devOptions))
-                        giantRomList += '<tr><td><a class = "ROM" id = "' + developers[devIndex].id + "___" + devIndex + "___" + i + '" href="#romInfo">' + val.name + '</a><br>' + val.summary + '</td></tr>';
-                    }
-                });
-                giantRomList += '</table>';
+                        var romRating = "Not Rated";
+                        var romDownloads = 0;
+                        if (val.visible == null)
+                        {
+                            if ((devOptions == '-') || (val.device == devOptions))
+                            {
+                                giantRomList += '<tr><td><a class = "ROM" id = "' + devId + "___" + i + '" href="#romInfo">' + val.name + '</a><br>' + val.summary;
+                                if (rData.result[val.modversion])
+                                {
+                                    romRating = rData.result[val.modversion].rating;
+                                    romDownloads = rData.result[val.modversion].downloads;
+                                    if(rData.result[val.modversion].ratingcount)
+                                        giantRomList += '<br><div class="jRating" data="'+ parseInt(romRating*4)+'"></div>';
+
+                                    else
+                                        giantRomList += '<br>Not Rated';
+                                    giantRomList += '<span style="padding-left:30px"></span>(' + romDownloads;
+                                }
+                                else
+                                {
+                                    giantRomList += '<br>Not Rated<span style="padding-left:30px"></span>(0';
+                                }
+                                giantRomList += ' Downloads)</td></tr>';
+                            }
+                        }
+                    });
+                    $("#romListTable").append(giantRomList);
+
+                    callJrating();
+                    $("a.ROM").click(function(event)
+                    {
+                        event.preventDefault();
+                        var romIndex = parseInt(this.id.split("___")[1]);
+                        fillRomInfo(devId, romIndex);
+                    });
+                },"jsonp");
+
             }
             else
-            giantRomList += 'No roms available.';
-            $("#devInfo").append(giantRomList);
-
-            $("a.ROM").click(function(event)
             {
-                event.preventDefault();
-
-                // Get the indicies and the rom name
-                var devIndex = parseInt(this.id.split("___")[1]);
-                var romIndex = parseInt(this.id.split("___")[2]);
-
-                fillRomInfo(developers[devIndex].id, romIndex);
-            });
-        },
-        "jsonp"
-        );
+                giantRomList += '<tr><td>No roms available.</td></tr>';
+                $("#romListTable").append(giantRomList);
+            }
+        },"jsonp");
     }
 
 //=============================fillRomInfo()==================================
@@ -483,7 +503,6 @@ $(document).ready(function()
                         function(j, com) {
                             var rating = com.rating;
                             $("#romInfo").append('<hr><strong>' + com.nickname + '</strong><div class = "jRating comments" data = "' + parseInt(4 * rating) + '"></div><br><i>' + com.comment + '</i><br>');
-
                             callJrating();
                         });
                     },
@@ -520,19 +539,15 @@ $(document).ready(function()
     function barchange()
     {
         var hash = window.location.hash.split("/")[0];
-        if (hash == "#romList")
+        if (hash == "#romInfo")
         {
-            $("#romInfo").remove();
-            $("#romInfoTab").remove();
             $(".tabContent").addClass("hide");
             $(".tabItem").removeClass("selected");
-            $("div.romList").removeClass("hide");
-            $("#romListTab").addClass("selected");
+            $("div.romInfo").removeClass("hide");
+            $("#romInfoListItem").addClass("selected");
         }
         else if (hash == "#developers")
         {
-            $("#devInfo").remove();
-            $("#romListTab").remove();
             $(".tabContent").addClass("hide");
             $(".tabItem").removeClass("selected");
             $("#devListing").removeClass("hide");
@@ -620,16 +635,21 @@ $(document).ready(function()
             var devOk = false;
             for (j in developers)
             {
+                // Check if developer id works
                 if(developers[j].id == devId)
                 {
+                    // Check if works with the device chosen
                     if ((developers[j].roms[devFilter])||(devFilter=="-"))
-                        devOk = true;
+                        {
+                            devOk = true;
+                            break;
+                        }
                 }
             }
 
             if(devOk)
             {
-                giantString += '<tr id="devRow' + i + '"><td><a class="DEV" id ="devdev' + devId + '" href="#romList"><img class="devIcon"  height=100 width=100 src =';
+                giantString += '<tr id="devRow' + i + '"><td><a class="DEV" id ="devdev' + devId + '" href="#romInfo"><img class="devIcon"  height=100 width=100 src =';
 
                 //Add the icon
                 if (masterList[i].icon)
@@ -694,7 +714,6 @@ $(document).ready(function()
         $("#devTab").click(function(event)
         {
             $("#devInfo").remove();
-            $("#romList").remove();
             $("#romListItemTab").remove();
             $("#romInfoListItem").remove();
             $("#romListTab").remove();

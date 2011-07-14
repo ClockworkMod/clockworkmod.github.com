@@ -30,7 +30,7 @@ $(document).ready(function()
          romHash = hash.split(mainHash+"/"+devHash+"/")[1];
 
     //reacts when the hash changes
-    window.addEventListener("hashchange", barchange, false);
+    window.addEventListener("hashchange", changeTab, false);
     $("#devTab").addClass("selected");
 
     // Arrays for holding info on devices, developers and ratings
@@ -49,7 +49,7 @@ $(document).ready(function()
             B = b.name.toLowerCase();
             return sorthelper(0, A, B);
         });
-        doStuff();
+        fillPage();
     },
     "jsonp"
     );
@@ -66,7 +66,7 @@ $(document).ready(function()
             return sorthelper(0, A, B);
         });
 
-        doStuff();
+        fillPage();
     },
     "jsonp"
     );
@@ -78,7 +78,7 @@ $(document).ready(function()
     function(data)
     {
         devRats = data.result;
-        doStuff();
+        fillPage();
     },
     "jsonp"
     );
@@ -87,7 +87,7 @@ $(document).ready(function()
 //===========================<functions>======================================
 //============================================================================
     // Attempt to fill page with content
-    function doStuff()
+    function fillPage()
     {
         if (devices == null || developers == null || devRats == null)
         return;
@@ -142,17 +142,8 @@ $(document).ready(function()
         hashControl(mainHash, devHash, romHash);
 
         //Button and dropdown logic
-        buttonsNStuff();
+        buttonMenuLogic();
     }
-//==============================readCookie()==================================
-    function readCookie(name) {
-        name = name.replace(/([.*+?^=!:${}()|[\]\/\\])/g, '\\$1');
-        var regExp = new RegExp('(?:^|;)\\s?' + name + '=(.*?)(?:;|$)','i'),
-            match = document.cookie.match(regExp);
-
-        return match && unescape(match[1]);
-    }
-
 
 //==============================hashParse()===================================
     //Use to direct immediate links to the site
@@ -211,94 +202,122 @@ $(document).ready(function()
         }
     }
 
-//==========================buttonsNStuff()===================================
-    //Put in logic for dropdown menus and buttons
-    function buttonsNStuff()
+//================================fillDevTableby()============================
+    function fillDevTableBy(what, updown)
     {
-      // Fill drop down list
-      $.each(devices,
-      function(i, val)
-      {
-          $("select.filter").append('<option value = "' + val.key + '">' + val.name + '</option>');
-      });
+        if (what == "name")
+        sortbyName(updown);
+        else if (what == "rating")
+        sortbyRating(updown);
+        else if (what == "downloads")
+        sortbyDownloads(updown);
+        else if (what == "date")
+        sortbyUTC(updown);
 
-      if(devCookie)
+        giantString = '<table id="devTable" width="100%">'
+
+        var devFilter = '-'
+
+        if(document.getElementById('filter').value != '-')
+            devFilter = document.getElementById('filter').value;
+
+        for (i in masterList)
         {
-            document.getElementById('filter').value = devCookie;
+            var devId = escape(masterList[i].id);
+            var devOk = false;
+            for (j in developers)
+            {
+                // Check if developer id works
+                if(developers[j].id == devId)
+                {
+                    // Check if works with the device chosen
+                    if ((developers[j].roms[devFilter])||(devFilter=="-"))
+                        {
+                            devOk = true;
+                            break;
+                        }
+                }
+            }
 
-              $.each(developers,
-              function(i, val)
-              {
-                  var usesDevice = false;
-                  // Check to see if developer supports device
-                  $.each(val.roms,
-                  function(j, rList)
-                  {
-                      // Add class to hide developers that don't support the device
-                      if (j == devCookie)
-                      usesDevice = true;
-                  });
-                  if (!usesDevice)
-                  $("#devRow" + i).addClass("hideDev");
-              });
+            if(devOk)
+            {
+                giantString += '<tr id="devRow' + i + '"><td><a class="DEV" id ="devdev' + devId + '" href="#romInfo"><img class="devIcon"  height=100 width=100 src =';
+
+                //Add the icon
+                if (masterList[i].icon)
+                giantString += masterList[i].icon + '>';
+                else
+                giantString += '"https://github.com/ClockworkMod/ajaxThing/raw/gh-pages/no_icon.png">';
+
+                // Add dev's name and description
+                giantString += masterList[i].devName + '</a><br>' + masterList[i].summary + '<br>';
+
+                // Get the rating
+                if (devRats[String(devId)])
+                {
+                    // Add to list
+                    theDev = devRats[String(devId)];
+                    totalDL = theDev.anonymousDownloadCount + theDev.downloadCount;
+
+                    //Issue with this?
+                    if (masterList[i].utcMod) {
+                        lastMod = new Date((masterList[i].utcMod) * 1000);
+                        var month = lastMod.getMonth() + 1;
+                        var day = lastMod.getDate();
+                        var year = lastMod.getFullYear();
+                        lastMod = month + "/" + day + "/" + year;
+                    }
+                    else
+                    lastMod = "Never Modified";
+
+                    //Add the rating
+                    if (theDev.ratingCount)
+                    {
+                        var rating = theDev.totalRating / theDev.ratingCount;
+                        giantString += '<div class = "jRating" data = "' + parseInt(4 * rating) + '"></div><span style="padding-left:30px"></span>';
+                    }
+                    else
+                    giantString += '<div class="filler">0</div>Not Rated<span style="padding-left:30px"></span>';
+
+                    // Add the number of downloads and the last modified date
+                    giantString += '(' +totalDL + ' Downloads)<span style="padding-left:30px"></span> ' + lastMod + '</td></tr>';
+                }
+                else
+                {
+                    giantString += '<div class="filler">0</div>Not Rated<span style="padding-left:30px"></span>(0 Downloads) <span style="padding-left:30px"></span>Never Modified</td></tr>';
+                }
+            }
         }
 
-        if(sortTypeCookie && sortOrderCookie)
+        $("#devTable").remove();
+        $("#devListing").append(giantString + "</table>");
+        callJrating();
+        // Clicking developer name should create new tab for his roms,
+        // hide the developer tab, and show the new tab
+        $("a.DEV").click(function(event)
         {
-            document.getElementById('sorty').value = sortTypeCookie;
-            document.getElementById('updown').value = sortOrderCookie;
-            fillDevTableBy(sortTypeCookie, parseInt(sortOrderCookie));
-        }
+            event.preventDefault();
+            var devId = this.id.split("devdev")[1];
 
-      // Clicking items in drop down will narrow down developer list
-      $("select.filter").change(function(event)
-      {
-          fillDevTableBy(sortTypeCookie, sortOrderCookie);
-          var listVal = String(document.getElementById('filter').value);
-          document.cookie = 'deviceCookie='+ listVal;
+            //Fill in developer tab data
+            fillDevInfo(devId);
+        });
 
-          if (listVal != "-")
-          {
-              $.each(developers,
-              function(i, val)
-              {
-                  var usesDevice = false;
-                  // Check to see if developer supports device
-                  $.each(val.roms,
-                  function(j, rList)
-                  {
-                      // Add class to hide developers that don't support the device
-                      if (j == listVal)
-                      usesDevice = true;
-                  });
-                  if (!usesDevice)
-                  $("#devRow" + i).addClass("hideDev");
-              });
+        $("#devTab").click(function(event)
+        {
+            $("#devInfo").remove();
+            $("#romListItemTab").remove();
+            $("#romInfoListItem").remove();
+            $("#romListTab").remove();
+            $("#romInfo").remove();
+            $("#romInfoTab").remove();
 
-          }
-      });
-
-      $("input.allButton").click(function(event) {
-          document.cookie = 'deviceCookie=-';
-          document.cookie = 'sortCookie=name_0';
-
-          document.getElementById('filter').value = '-';
-          document.getElementById('sorty').value = "name";
-          document.getElementById('updown').value = 0;
-
-          fillDevTableBy('name', 0);
-      });
-
-      // New Dropdown bar needs to filter table contents
-      // Clicking items in drop down will narrow down developer list
-      $("input.sortButton").click(function(event) {
-          var listVal = String(document.getElementById('sorty').value);
-          var updown = parseInt(document.getElementById('updown').value);
-          document.cookie = 'sortCookie='+listVal+"_"+updown;
-          fillDevTableBy(listVal, updown);
-      });
+            $("div.tabContent").addClass("hide");
+            $("a.tabItem").removeClass("selected");
+            $("div.developers").removeClass("hide");
+            $("#devTab").addClass("selected");
+        });
     }
-
 
 //============================fillDevInfo()===================================
     function fillDevInfo(devId)
@@ -521,7 +540,17 @@ $(document).ready(function()
         );
     }
 
-//=========================callJrating()==================================
+//==============================readCookie()==================================
+    function readCookie(name)
+    {
+        name = name.replace(/([.*+?^=!:${}()|[\]\/\\])/g, '\\$1');
+        var regExp = new RegExp('(?:^|;)\\s?' + name + '=(.*?)(?:;|$)','i'),
+            match = document.cookie.match(regExp);
+
+        return match && unescape(match[1]);
+    }
+
+//=============================callJrating()==================================
     function callJrating()
     {
         $('.jRating').jRating({
@@ -535,8 +564,97 @@ $(document).ready(function()
             bigStarsPath: 'https://github.com/ClockworkMod/ajaxThing/raw/gh-pages/stars.png'
         });
     }
-//=========================barchange()========================================
-    function barchange()
+
+//============================buttonsMenuLogic()===============================
+    //Put in logic for dropdown menus and buttons
+    function buttonMenuLogic()
+    {
+      // Fill drop down list
+      $.each(devices,
+      function(i, val)
+      {
+          $("select.filter").append('<option value = "' + val.key + '">' + val.name + '</option>');
+      });
+
+      if(devCookie)
+        {
+            document.getElementById('filter').value = devCookie;
+
+              $.each(developers,
+              function(i, val)
+              {
+                  var usesDevice = false;
+                  // Check to see if developer supports device
+                  $.each(val.roms,
+                  function(j, rList)
+                  {
+                      // Add class to hide developers that don't support the device
+                      if (j == devCookie)
+                      usesDevice = true;
+                  });
+                  if (!usesDevice)
+                  $("#devRow" + i).addClass("hideDev");
+              });
+        }
+
+        if(sortTypeCookie && sortOrderCookie)
+        {
+            document.getElementById('sorty').value = sortTypeCookie;
+            document.getElementById('updown').value = sortOrderCookie;
+            fillDevTableBy(sortTypeCookie, parseInt(sortOrderCookie));
+        }
+
+      // Clicking items in drop down will narrow down developer list
+      $("select.filter").change(function(event)
+      {
+          fillDevTableBy(sortTypeCookie, sortOrderCookie);
+          var listVal = String(document.getElementById('filter').value);
+          document.cookie = 'deviceCookie='+ listVal;
+
+          if (listVal != "-")
+          {
+              $.each(developers,
+              function(i, val)
+              {
+                  var usesDevice = false;
+                  // Check to see if developer supports device
+                  $.each(val.roms,
+                  function(j, rList)
+                  {
+                      // Add class to hide developers that don't support the device
+                      if (j == listVal)
+                      usesDevice = true;
+                  });
+                  if (!usesDevice)
+                  $("#devRow" + i).addClass("hideDev");
+              });
+
+          }
+      });
+
+      $("input.allButton").click(function(event) {
+          document.cookie = 'deviceCookie=-';
+          document.cookie = 'sortCookie=name_0';
+
+          document.getElementById('filter').value = '-';
+          document.getElementById('sorty').value = "name";
+          document.getElementById('updown').value = 0;
+
+          fillDevTableBy('name', 0);
+      });
+
+      // New Dropdown bar needs to filter table contents
+      // Clicking items in drop down will narrow down developer list
+      $("input.sortButton").click(function(event) {
+          var listVal = String(document.getElementById('sorty').value);
+          var updown = parseInt(document.getElementById('updown').value);
+          document.cookie = 'sortCookie='+listVal+"_"+updown;
+          fillDevTableBy(listVal, updown);
+      });
+    }
+
+//==============================changeTab()===================================
+    function changeTab()
     {
         var hash = window.location.hash.split("/")[0];
         if (hash == "#romInfo")
@@ -610,120 +728,4 @@ $(document).ready(function()
         });
     }
 
-//================================fillDevTableby()============================
-    function fillDevTableBy(what, updown)
-    {
-        if (what == "name")
-        sortbyName(updown);
-        else if (what == "rating")
-        sortbyRating(updown);
-        else if (what == "downloads")
-        sortbyDownloads(updown);
-        else if (what == "date")
-        sortbyUTC(updown);
-
-        giantString = '<table id="devTable" width="100%">'
-
-        var devFilter = '-'
-
-        if(document.getElementById('filter').value != '-')
-            devFilter = document.getElementById('filter').value;
-
-        for (i in masterList)
-        {
-            var devId = escape(masterList[i].id);
-            var devOk = false;
-            for (j in developers)
-            {
-                // Check if developer id works
-                if(developers[j].id == devId)
-                {
-                    // Check if works with the device chosen
-                    if ((developers[j].roms[devFilter])||(devFilter=="-"))
-                        {
-                            devOk = true;
-                            break;
-                        }
-                }
-            }
-
-            if(devOk)
-            {
-                giantString += '<tr id="devRow' + i + '"><td><a class="DEV" id ="devdev' + devId + '" href="#romInfo"><img class="devIcon"  height=100 width=100 src =';
-
-                //Add the icon
-                if (masterList[i].icon)
-                giantString += masterList[i].icon + '>';
-                else
-                giantString += '"https://github.com/ClockworkMod/ajaxThing/raw/gh-pages/no_icon.png">';
-
-                // Add dev's name and description
-                giantString += masterList[i].devName + '</a><br>' + masterList[i].summary + '<br>';
-
-                // Get the rating
-                if (devRats[String(devId)])
-                {
-                    // Add to list
-                    theDev = devRats[String(devId)];
-                    totalDL = theDev.anonymousDownloadCount + theDev.downloadCount;
-
-                    //Issue with this?
-                    if (masterList[i].utcMod) {
-                        lastMod = new Date((masterList[i].utcMod) * 1000);
-                        var month = lastMod.getMonth() + 1;
-                        var day = lastMod.getDate();
-                        var year = lastMod.getFullYear();
-                        lastMod = month + "/" + day + "/" + year;
-                    }
-                    else
-                    lastMod = "Never Modified";
-
-                    //Add the rating
-                    if (theDev.ratingCount)
-                    {
-                        var rating = theDev.totalRating / theDev.ratingCount;
-                        giantString += '<div class = "jRating" data = "' + parseInt(4 * rating) + '"></div><div class="filler">' + rating + '</div><span style="padding-left:30px"></span>';
-                    }
-                    else
-                    giantString += '<div class="filler">0</div>Not Rated<span style="padding-left:30px"></span>';
-
-                    // Add the number of downloads and the last modified date
-                    giantString += '(' + totalDL + ' Downloads) <span style="padding-left:30px"></span><div class="filler"> ' + theDev.lastModified + ' </div> ' + lastMod + '</td></tr>';
-                }
-                else
-                {
-                    giantString += '<div class="filler">0</div>Not Rated<span style="padding-left:30px"></span>(0 Downloads) <span style="padding-left:30px"></span>Never Modified</td></tr>';
-                }
-            }
-        }
-
-        $("#devTable").remove();
-        $("#devListing").append(giantString + "</table>");
-        callJrating();
-        // Clicking developer name should create new tab for his roms,
-        // hide the developer tab, and show the new tab
-        $("a.DEV").click(function(event)
-        {
-            event.preventDefault();
-            var devId = this.id.split("devdev")[1];
-
-            //Fill in developer tab data
-            fillDevInfo(devId);
-        });
-
-        $("#devTab").click(function(event)
-        {
-            $("#devInfo").remove();
-            $("#romListItemTab").remove();
-            $("#romInfoListItem").remove();
-            $("#romListTab").remove();
-            $("#romInfo").remove();
-            $("#romInfoTab").remove();
-
-            $("div.tabContent").addClass("hide");
-            $("a.tabItem").removeClass("selected");
-            $("div.developers").removeClass("hide");
-            $("#devTab").addClass("selected");
-        });
-    }
 });

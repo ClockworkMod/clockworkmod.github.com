@@ -264,13 +264,13 @@ $(document).ready(function()
 
         if(sortTypeCookie && sortOrderCookie)
         {
-            fillDevTableBy(sortTypeCookie, sortOrderCookie);
+            fillDevTableBy(sortTypeCookie, parseInt(sortOrderCookie));
         }
 
       // Clicking items in drop down will narrow down developer list
       $("select.filter").change(function(event)
       {
-          $('tr').removeClass("hideDev");
+          fillDevTableBy('name', 0);
           var listVal = String(document.getElementById('filter').value);
 
           if (listVal != "-")

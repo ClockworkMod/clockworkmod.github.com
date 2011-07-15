@@ -561,7 +561,7 @@ $(document).ready(function()
             isDisabled: true,
             decimalLength: 1,
             // show small stars instead of big default stars
-            bigStarsPath: 'https://github.com/ClockworkMod/ajaxThing/raw/gh-pages/stars.png'
+            bigStarsPath: 'stars_gray.png'
         });
     }
 

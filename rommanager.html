@@ -1,221 +1,106 @@
-<!DOCTYPE html>
 <html>
-<head>
-<meta http-equiv="content-type" content="text/html; charset=UTF-8">
-<title>ROM Manager - App.net</title>
-<meta name="description" content="">
-<link rel="icon" type="image/png" href="http://d2rfichhc2fb9n.cloudfront.net/image/1/resize@w=48,h=48;output@png/adn-user-assets/assets/app/45/50/00/4550000000000000.jpg">
-<link rel="stylesheet" href="rommanager_files/NLwyMQfUcvJLT1r70P2u22ptNy0_g.css" type="text/css" class="ac-css-mondrian">
-<style type="text/css" media="screen" class="theme-bundle-override">
-.wrapper .app-name h1,.wrapper .app-name h2 {
-  font-family: Helvetica;
-}
-.wrapper .header {
-  background-color: #414141;
-}
-.wrapper .app-description a,.wrapper .app-whats-new a,.wrapper .footer a {
-  color: #333;
-}
+  <head>
+    <title>Fresh Roms</title>
 
-.wrapper {
-  font-family: Helvetica;
-  color: #414141;
-}
+    <link rel="stylesheet" href="rommanager_files/NLwyMQfUcvJLT1r70P2u22ptNy0_g.css" type="text/css" class="ac-css-mondrian">
+    <style type="text/css" media="screen" class="theme-bundle-override">
+    .wrapper .app-name h1,.wrapper .app-name h2 {
+      font-family: Helvetica;
+    }
+    .wrapper .header {
+      background-color: #414141;
+    }
+    .wrapper .app-description a,.wrapper .app-whats-new a,.wrapper .footer a {
+      color: #333;
+    }
 
-.wrapper .app-name h1,.wrapper .app-name h2,.wrapper .app-name h2 a {
-  color: #FFF;
-}
+    .wrapper {
+      font-family: Helvetica;
+      color: #414141;
+    }
 
-.wrapper .app-video {
-  display: none;
-}
-.wrapper .app-description,.wrapper .app-whats-new {
-  font-size: 14px;
-}
-.wrapper .app-price-tag {
-  background-color: #78A24F;
-}
-.wrapper .app-name h1 {
-  font-size: 50px;
-}
-.app-icon {
-  background-image: url(http://d2rfichhc2fb9n.cloudfront.net/image/1/resize@w=82,h=82;output@png/adn-user-assets/assets/app/45/50/00/4550000000000000.jpg);
-  -moz-box-shadow: none;
-  -webkit-box-shadow: none;
-}
-.app-download-app-icon {
-  background-image: url(http://d2rfichhc2fb9n.cloudfront.net/image/1/resize@w=44,h=44;output@png/adn-user-assets/assets/app/45/50/00/4550000000000000.jpg);
-  -moz-box-shadow: none;
-  -webkit-box-shadow: none;
-}
-.toRomList {
-  background-image: url(64.png);
-  -moz-box-shadow: none;
-  -webkit-box-shadow: none;
-}
+    .wrapper .app-name h1,.wrapper .app-name h2,.wrapper .app-name h2 a {
+      color: #FFF;
+    }
 
-.app-icon-share {
-  background-image: url(http://d2rfichhc2fb9n.cloudfront.net/image/1/resize@w=44,h=44;output@png/adn-user-assets/assets/app/45/50/00/4550000000000000.jpg);
-  -moz-box-shadow: none;
-  -webkit-box-shadow: none;
-}
-.module-app_logo {
-  display: none;
-}
+    .wrapper .app-video {
+      display: none;
+    }
+    .wrapper .app-description,.wrapper .app-whats-new {
+      font-size: 14px;
+    }
+    .wrapper .app-price-tag {
+      background-color: #78A24F;
+    }
+    .wrapper .app-name h1 {
+      font-size: 50px;
+    }
+    .app-icon {
+      background-image: url(http://d2rfichhc2fb9n.cloudfront.net/image/1/resize@w=82,h=82;output@png/adn-user-assets/assets/app/45/50/00/4550000000000000.jpg);
+      -moz-box-shadow: none;
+      -webkit-box-shadow: none;
+    }
+    .app-download-app-icon {
+      background-image: url(http://d2rfichhc2fb9n.cloudfront.net/image/1/resize@w=44,h=44;output@png/adn-user-assets/assets/app/45/50/00/4550000000000000.jpg);
+      -moz-box-shadow: none;
+      -webkit-box-shadow: none;
+    }
+    .app-icon-share {
+      background-image: url(http://d2rfichhc2fb9n.cloudfront.net/image/1/resize@w=44,h=44;output@png/adn-user-assets/assets/app/45/50/00/4550000000000000.jpg);
+      -moz-box-shadow: none;
+      -webkit-box-shadow: none;
+    }
+    .module-app_logo {
+      display: none;
+    }
 
-</style>
-<script type="text/javascript">
-var page_context = {
-    "is_authenticated": false,
-    "timestamp": 1310670860000,
-    "is_staff": false,
-    "app_id": 434,
-    "readyView": ["enable_sharing_widget", "enable_carousel", "forms"]
-};
-</script>
-</head>
-<body>
-  <div class="wrapper" data-dirty="false">
+    </style>
+
+    <link rel="stylesheet" type="text/css" href="newstyle.css" />
+    <script src="jquery-1.6.1.min.js" type="text/javascript"></script>
+    <script src="jscript.js" type="text/javascript"></script>
+    <!-- jRating -->
+    <link rel="stylesheet" href="jRating.jquery.css" type="text/css" />
+    <script type="text/javascript" src="jRating.jquery.js"></script>
+  </head>
+  <body>
     <div class="header wrapper-color">
-      <div class="app-info-box inner">
-        <div class="app-name"><h1 class=" ">ROM Manager</h1>
-          <div class="app-dev-homepage ">
-            <h2><a href="https://market.android.com/developer?pub=ClockworkMod">ClockworkMod</a>
-            </h2>
-          </div>
-        </div>
-      </div>
-    </div>
-    <div class="body inner clearfix">
-      <div class="right-column">
-        <div class="app-download-link-wrapper clearfix">
-          <div class="btnx">
-            <a class="show_available_platforms show_app_icon medium light" target="_blank" href="https://market.android.com/details?id=com.koushikdutta.rommanager.license&referrer=app.net,1,EjgxfDEzMTA2NzA4NjB8dXVGTUppSDR4OUdCU1NDaXFSMzlDeEpmUVlJS3pzQnlENnJhUE5wQ0s2axojY29tLmtvdXNoaWtkdXR0YS5yb21tYW5hZ2VyLmxpY2Vuc2VQp-SC05Im;3YGmzps5BOj5R-kT47YpWr3-wR4">
-              <span class="app-download-app-icon "></span>
-              <span class="app-download-text" style="width:134px">
-                <span class="top-line-text">Get this App</span>
-                <span class="bottom-line-text">For Android</span>
-              </span>
-              <span class="app-download-icon"></span>
-            </a>
-          </div>
-        </div>
-        <div class="app-description-container">
-          <div class="app-description">
-            <p>ROM Manager is THE MUST HAVE APP for any Android root user. (Over 1.3 million downloads and counting!)</p>
-            <p></p>
-            <p></p>
-            <p></p>
-            <p></p>
-            <ul>
-              <p></p>
-              <p></p>
-              <li>Flash your recovery to the latest and greatest ClockworkMod recovery.</li>
-              <p></p>
-              <p></p>
-              <li>Manage your ROMs via a handy UI.</li>
-              <p></p>
-              <p></p>
-              <li>Organize and perform backups and restores from within Android!</li>
-              <p></p>
-              <p></p>
-              <li>Install ROMs from your SD card.</li>
-              <p></p>
-              <p></p>
-              <li>Install your favorite ROMs over the air!</li>
-              <p></p>
-              <p></p>
-            </ul>
-            <p></p>
-            <p></p>
-            <p></p>
-            <p>Premium Version:</p>
-            <p></p>
-            <p></p>
-            <ul>
-              <p></p>
-              <p></p>
-              <li>Premium ROMs</li>
-              <p></p>
-              <p></p>
-              <li>Receive notifications for when your ROM is updated!</li>
-              <p></p>
-              <p></p>
-              <li>Automatic backups</li>
-              <p></p>
-              <p></p>
-              <li>Install from QR Code</li>
-              <p></p>
-              <p></p>
-              <li>Web Connect</li>
-              <p></p>
-              <p></p>
-              <li>Support</li>
-              <p></p>
-              <p></p>
-            </ul>
-            <p></p>
-          </div>
-        </div>
-      </div>
-      <div class="app-screenshots left-column">
-        <div class="screenshot-carousel android-nexus_s-portrait clearfix">
-          <div class="carousel-inner clearfix">
-            <div class="picture-holder mask clearfix ui-carousel ui-carousel-horizontal ui-carousel-items-auto ui-carousel-rows-1" style="width:208px;height:347px;overflow:hidden;">
-              <ul style="width: 1248px; left: -208px;" class="clearfix mask">
-                <li class="ui-carousel-cloned">
-                  <img src="rommanager_files/screen1.jpg" height="346px" width="208px">
-                </li>
-                <li>
-                  <img src="rommanager_files/screen2.jpg" height="346px" width="208px">
-                </li>
-                <li>
-                  <img src="rommanager_files/screen3.jpg" height="346px" width="208px">
-                </li>
-                <li>
-                  <img src="rommanager_files/screen1.jpg" height="346px" width="208px">
-                </li>
-                <li class="ui-carousel-cloned">
-                  <img src="rommanager_files/screen2.jpg" height="346px" width="208px">
-                </li>
-                <li class="ui-carousel-cloned">
-                  <img src="rommanager_files/screen3.jpg" height="346px" width="208px">
-                </li>
-              </ul>
-            </div>
-          </div>
-        </div>
-        <div class="app-icon"></div>
-        <div class="btnx">
-          <a class="show_available_platforms show_app_icon medium light" target="_blank" href="index.html">
-            
-            <span class="toRomList app-download-app-icon "></span>
-            <span class="app-download-text"><br>
-              <span class="bottom-line-text" style="font-size:18px;width:200px">Check Out the Roms!</span>
-            </span>
-          </a>
-          
-        </div>
-      </div>
-    </div>
-  </div>                            
-    <div class="app-external-links ">
-      <ul>
-        <li class="follow-us">Follow us</li>
-        <li class="app-facebook-badge  "><a href="http://app.net/redirect?dest=facebook&amp;app_id=434" target="_blank">clockworkmod</a>
-        </li>
-        <li class="app-twitter-badge  ">
-          <a href="http://app.net/redirect?dest=twitter&amp;app_id=434" target="_blank">@clockworkmod</a>
-        </li>
-      </ul>
-    </div>
-    <div class="app-sharing clearfix"></div>
-  </div>
-  </div>
-</div>
+      <br><br>
+      <center>
+        <span style="color:#FFF;">
+          <span style="font-size:45px;">
+            <strong>ROM Manager</strong>
+          </span>
+          <br><br>
+          Device: 
+          <select class = "filter" id = "filter">
+            <option value ="-">-</option>
+          </select>
+          <input type="button" value = "UNFILTER" class = "allButton">
+          <br>
+          Sort By:
+          <select class = "sorty" id = "sorty">
+              <option value ="name">Name</option>
+              <option value ="rating">Rating</option>
+              <option value ="downloads">Downloads</option>
+              <option value ="date">Updated</option>
+          </select>
+          <select class = "sorty" id = "updown">
+              <option value ="0">Ascending</option>
+              <option value ="1">Descending</option>
+          </select>
+          <input type="button" value = "SORT" class = "sortButton">
+        </span>
+      </center>
+      <div class="containAll">
+        <ul id = "tabs">
+          <li><a id = "devTab" class = "tabItem" href="#developers">DEVELOPERS</a></li>
+        </ul>
 
-<script type="text/javascript" src="rommanager_files/jquery.js"></script>
-<script type="text/javascript" src="rommanager_files/jquery-ui.js"></script>
-<script type="text/javascript" src="rommanager_files/UShSeV1fC1c96zwZdDIn9Meuats_g.js"></script>
-</body>
+        <div class = "tabContent developers" id = "devListing"></div>
+        <div class = "newTab"></div>
+        </div>
+      </div>
+
+  </body>
 </html>

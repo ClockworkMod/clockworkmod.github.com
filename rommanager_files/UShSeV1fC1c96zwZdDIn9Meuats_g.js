@@ -1,11 +1,11 @@
 var image_map = {};
-function get_img_url(d) {
+function get_img_url(b) {
     var g = "https:" == document.location.protocol ? "https_url": "http_url";
-    if (!image_map[d] || typeof image_map[d][g] === "undefined") {
-        console.log("get_img_url failed for", d);
+    if (!image_map[b] || typeof image_map[b][g] === "undefined") {
+        console.log("get_img_url failed for", b);
         return false
     }
-    return image_map[d][g]
+    return image_map[b][g]
 };
 if (typeof window.console === "undefined") window.console = {
     log: function() {
@@ -14,18 +14,28 @@ if (typeof window.console === "undefined") window.console = {
 };
 if (typeof window.TAPP === "undefined") window.TAPP = {};
 $._ajax = $.ajax;
-$.ajax = function(d) {
-    var g = d.success;
-    d.success = function(b, f, h) {
-        var a = b && b.result ? b.result: null,
-        c = b && b.value ? b.value: "ajax failed",
-        e = b && b.text ? b.text: "ajax failed";
-        if (a && a !== "ok") this.error && this.error(h, c, e);
-        else g && g(b, f, h)
+$.ajax = function(b) {
+    var g = b.success;
+    b.success = function(c, f, h) {
+        var a = c && c.result ? c.result: null,
+        d = c && c.value ? c.value: "ajax failed",
+        e = c && c.text ? c.text: "ajax failed";
+        if (a && a !== "ok") this.error && this.error(h, d, e);
+        else g && g(c, f, h)
     };
-    return $._ajax(d)
-}; (function(d, g) {
-    var b = d.Widget.prototype,
+    return $._ajax(b)
+};
+ (function() {
+    var b = "";
+    $.browser.firefox && (b += " firefox");
+    $.browser.msie && (b += " ie");
+    $.browser.opera && (b += " opera");
+    $.browser.chrome && (b += " chrome");
+    $.browser.webkit && (b += " webkit");
+    b += " v" + $.browser.version;
+    $("html").addClass(b)
+})(); (function(b, g) {
+    var c = b.Widget.prototype,
     f = {
         pos: "left",
         pos2: "right",
@@ -36,7 +46,7 @@ $.ajax = function(d) {
         pos2: "bottom",
         dim: "height"
     };
-    d.widget("ui.carousel", {
+    b.widget("ui.carousel", {
         oldClass: null,
         options: {
             itemsPerPage: "auto",
@@ -87,25 +97,25 @@ $.ajax = function(d) {
             if (!this.oldClass) this.oldClass = this.element.attr("class");
             this._removeClasses();
             var a = this.widgetBaseClass,
-            c = [];
-            c.push(a);
-            c.push(a + "-" + this.options.orientation);
-            c.push(a + "-items-" + this.options.itemsPerPage);
-            c.push(a + "-rows-" + this.options.noOfRows);
-            this.element.addClass(c.join(" "))
+            d = [];
+            d.push(a);
+            d.push(a + "-" + this.options.orientation);
+            d.push(a + "-items-" + this.options.itemsPerPage);
+            d.push(a + "-rows-" + this.options.noOfRows);
+            this.element.addClass(d.join(" "))
         },
         _removeClasses: function() {
             var a = [],
-            c,
+            d,
             e;
             this.element.removeClass(function(i, j) {
                 j = j.split(" ");
-                d.each(j,
+                b.each(j,
                 function(k) {
-                    c = j[k];
-                    e = c.split("-");
+                    d = j[k];
+                    e = d.split("-");
                     e[0] ===
-                    "ui" && e[1] === "carousel" && a.push(c)
+                    "ui" && e[1] === "carousel" && a.push(d)
                 });
                 return a.join(" ")
             })
@@ -164,19 +174,19 @@ $.ajax = function(d) {
         _addPagination: function() {
             if (this.options.pagination) {
                 var a = this,
-                c = this.elements,
+                d = this.elements,
                 e = this.options,
                 i = [],
                 j;
                 this._removePagination();
                 for (j = 1; j <= this.noOfPages; j++) i[j] = '<li><a href="#page-' + j + '">' + j + "</a></li>";
-                c.pagination = d('<ol class="pagination-links" />').append(i.join("")).delegate("a", "click.carousel",
+                d.pagination = b('<ol class="pagination-links" />').append(i.join("")).delegate("a", "click.carousel",
                 function() {
                     a.goToPage(this.hash.split("-")[1]);
                     return false
                 });
-                d.isFunction(e.insertPagination) ?
-                e.insertPagination.apply(c.pagination[0]) : c.pagination.insertAfter(c.mask)
+                b.isFunction(e.insertPagination) ?
+                e.insertPagination.apply(d.pagination[0]) : d.pagination.insertAfter(d.mask)
             }
         },
         _removePagination: function() {
@@ -185,37 +195,37 @@ $.ajax = function(d) {
                 this.elements.pagination = null
             }
         },
-        goToPage: function(a, c) {
+        goToPage: function(a, d) {
             var e = (a - 1) * this._getItemsPerTransition() + 1;
             this.oldItemIndex = this.itemIndex;
             this.itemIndex = e;
-            this._slide(c)
+            this._slide(d)
         },
-        goToItem: function(a, c) {
-            if (typeof a !== "number") a = d(a).index() + 1;
+        goToItem: function(a, d) {
+            if (typeof a !== "number") a = b(a).index() + 1;
             this.oldItemIndex = this.itemIndex;
             this.itemIndex = a;
-            this._slide(c)
+            this._slide(d)
         },
         _addNextPrevActions: function() {
             if (this.options.nextPrevActions) {
                 var a =
                 this,
-                c = this.elements,
+                d = this.elements,
                 e = this.options;
                 this._removeNextPrevActions();
-                c.prevAction = d('<a href="#" class="prev">Prev</a>').bind("click.carousel",
+                d.prevAction = b('<a href="#" class="prev">Prev</a>').bind("click.carousel",
                 function() {
                     a.prev();
                     return false
                 });
-                c.nextAction = d('<a href="#" class="next">Next</a>').bind("click.carousel",
+                d.nextAction = b('<a href="#" class="next">Next</a>').bind("click.carousel",
                 function() {
                     a.next();
                     return false
                 });
-                d.isFunction(e.insertPrevAction) ? e.insertPrevAction.apply(c.prevAction[0]) : c.prevAction.appendTo(this.element);
-                d.isFunction(e.insertNextAction) ? e.insertNextAction.apply(c.nextAction[0]) : c.nextAction.appendTo(this.element)
+                b.isFunction(e.insertPrevAction) ? e.insertPrevAction.apply(d.prevAction[0]) : d.prevAction.appendTo(this.element);
+                b.isFunction(e.insertNextAction) ? e.insertNextAction.apply(d.nextAction[0]) : d.nextAction.appendTo(this.element)
             }
         },
         _removeNextPrevActions: function() {
@@ -241,7 +251,7 @@ $.ajax = function(d) {
         },
         _updateUi: function() {
             var a = this.elements,
-            c = this.itemIndex,
+            d = this.itemIndex,
             e = this.noOfItems <= this._getItemsPerPage();
             if (this.options.pagination) e ?
             a.pagination.addClass("void") : a.pagination.children("li").removeClass("current").eq(this._getPage() - 1).addClass("current");
@@ -251,8 +261,8 @@ $.ajax = function(d) {
                 if (e) i.addClass("void");
                 else {
                     i.removeClass("void");
-                    if (c === this.lastItem) a.nextAction.addClass("disabled");
-                    else c === 1 && a.prevAction.addClass("disabled")
+                    if (d === this.lastItem) a.nextAction.addClass("disabled");
+                    else d === 1 && a.prevAction.addClass("disabled")
                 }
             }
         },
@@ -262,7 +272,7 @@ $.ajax = function(d) {
             return Math.ceil(a / this._getItemsPerTransition()) + 1
         },
         _slide: function(a) {
-            var c =
+            var d =
             this;
             a = a === false ? 0: this.options.speed;
             var e = {},
@@ -272,7 +282,7 @@ $.ajax = function(d) {
             this._trigger("beforeAnimate", null, this._getData());
             this.elements.runner.stop().animate(e, a, this.options.easing,
             function() {
-                c._trigger("afterAnimate", null, c._getData())
+                d._trigger("afterAnimate", null, d._getData())
             });
             this._updateUi()
         },
@@ -311,10 +321,10 @@ $.ajax = function(d) {
             false);
             this._updateUi()
         },
-        _setOption: function(a, c) {
+        _setOption: function(a, d) {
             var e = this.elements,
             i = this.options;
-            b._setOption.apply(this, arguments);
+            c._setOption.apply(this, arguments);
             switch (a) {
             case "itemsPerPage":
                 this.refresh();
@@ -333,13 +343,13 @@ $.ajax = function(d) {
                 this.refresh();
                 break;
             case "pagination":
-                if (c) {
+                if (d) {
                     this._addPagination();
                     this._updateUi()
                 } else this._removePagination();
                 break;
             case "nextPrevActions":
-                if (c) {
+                if (d) {
                     this._addNextPrevActions();
                     this._updateUi()
                 } else this._removeNextPrevActions()
@@ -347,21 +357,21 @@ $.ajax = function(d) {
         },
         destroy: function() {
             var a = this.elements,
-            c = {};
+            d = {};
             this.element.removeClass().addClass(this.oldClass);
             this.maskAdded && a.runner.unwrap(".mask");
-            c[this.helperStr.pos] = "";
-            c[this.helperStr.dim] = "";
-            a.runner.css(c);
+            d[this.helperStr.pos] = "";
+            d[this.helperStr.dim] = "";
+            a.runner.css(d);
             this._removePagination();
             this._removeNextPrevActions();
-            b.destroy.apply(this, arguments)
+            c.destroy.apply(this, arguments)
         }
     });
-    d.ui.carousel.version = "0.7.4"
-})(jQuery); (function(d) {
-    var g = d.ui.carousel.prototype;
-    d.widget("ui.carousel", d.ui.carousel, {
+    b.ui.carousel.version = "0.7.4"
+})(jQuery); (function(b) {
+    var g = b.ui.carousel.prototype;
+    b.widget("ui.carousel", b.ui.carousel, {
         options: {
             pause: 8E3,
             autoScroll: false
@@ -375,7 +385,7 @@ $.ajax = function(d) {
         },
         _bindAutoScroll: function() {
             if (!this.autoScrollInitiated) {
-                this.element.bind("touchstart." + this.widgetName + " mouseover." + this.widgetName, d.proxy(this, "_stop")).bind("touchend." + this.widgetName + " mouseout." + this.widgetName, d.proxy(this, "_start"));
+                this.element.bind("touchstart." + this.widgetName + " mouseover." + this.widgetName, b.proxy(this, "_stop")).bind("touchend." + this.widgetName + " mouseout." + this.widgetName, b.proxy(this, "_start"));
                 this.autoScrollInitiated = true
             }
         },
@@ -384,18 +394,18 @@ $.ajax = function(d) {
             this.autoScrollInitiated = false
         },
         _start: function() {
-            var b = this;
+            var c = this;
             this.interval = setInterval(function() {
-                b.itemIndex === b.lastItem ? b.goToItem(1) : b.next()
+                c.itemIndex === c.lastItem ? c.goToItem(1) : c.next()
             },
             this.options.pause)
         },
         _stop: function() {
             clearInterval(this.interval)
         },
-        _setOption: function(b, f) {
+        _setOption: function(c, f) {
             g._setOption.apply(this, arguments);
-            switch (b) {
+            switch (c) {
             case "autoScroll":
                 this._stop();
                 if (f) {
@@ -409,9 +419,9 @@ $.ajax = function(d) {
             this._stop()
         }
     })
-})(jQuery); (function(d) {
-    var g = d.ui.carousel.prototype;
-    d.widget("ui.carousel", d.ui.carousel, {
+})(jQuery); (function(b) {
+    var g = b.ui.carousel.prototype;
+    b.widget("ui.carousel", b.ui.carousel, {
         options: {
             continuous: true
         },
@@ -426,50 +436,50 @@ $.ajax = function(d) {
             }
         },
         _addClonedItems: function() {
-            var b = this.elements,
+            var c = this.elements,
             f = this._getItemsPerTransition() + this._getItemsPerPage(),
             h = this.noOfItems - this._getItemsPerTransition() - 1;
             this._removeClonedItems();
-            b.clonedBeginning = d(this.elements.items.eq(f).prevAll().clone().removeAttr("id").addClass("ui-carousel-cloned").get().reverse());
-            b.clonedEnd = this.elements.items.eq(h).nextAll().clone().removeAttr("id").addClass("ui-carousel-cloned").prependTo(this.elements.runner);
-            b.clonedBeginning.appendTo(b.runner);
-            b.clonedEnd.prependTo(b.runner)
+            c.clonedBeginning = b(this.elements.items.eq(f).prevAll().clone().removeAttr("id").addClass("ui-carousel-cloned").get().reverse());
+            c.clonedEnd = this.elements.items.eq(h).nextAll().clone().removeAttr("id").addClass("ui-carousel-cloned").prependTo(this.elements.runner);
+            c.clonedBeginning.appendTo(c.runner);
+            c.clonedEnd.prependTo(c.runner)
         },
         _removeClonedItems: function() {
-            var b = this.elements;
-            b.clonedBeginning && b.clonedBeginning.remove();
-            b.clonedEnd && b.clonedEnd.remove()
+            var c = this.elements;
+            c.clonedBeginning && c.clonedBeginning.remove();
+            c.clonedEnd && c.clonedEnd.remove()
         },
         _getPos: function() {
             if (this.options.continuous) {
-                var b = this.elements,
+                var c = this.elements,
                 f = {};
                 if (this.itemIndex > this.noOfItems - 1) {
                     var h = this.noOfItems - 1 - this.oldItemIndex;
                     h = this._getItemsPerTransition() - 1 - h;
-                    f[this.helperStr.pos] = -b.clonedEnd.eq(h).position()[this.helperStr.pos];
-                    b.runner.css(f);
+                    f[this.helperStr.pos] = -c.clonedEnd.eq(h).position()[this.helperStr.pos];
+                    c.runner.css(f);
                     this.itemIndex = h
                 } else if (this.itemIndex <
                 0) {
-                    f[this.helperStr.pos] = -b.clonedBeginning.eq(this.oldItemIndex).position()[this.helperStr.pos];
-                    b.runner.css(f);
+                    f[this.helperStr.pos] = -c.clonedBeginning.eq(this.oldItemIndex).position()[this.helperStr.pos];
+                    c.runner.css(f);
                     this.itemIndex = this.noOfItems - (this._getItemsPerTransition() - this.oldItemIndex)
                 }
-                return b.items.eq(this.itemIndex).position()[this.helperStr.pos]
+                return c.items.eq(this.itemIndex).position()[this.helperStr.pos]
             } else return g._getItemIndex.apply(this, arguments)
         },
-        refresh: function(b) {
+        refresh: function(c) {
             if (this.options.continuous) {
-                b = this.elements.runner.children("li");
-                g.refresh.call(this, b.filter(":not(.ui-carousel-cloned)"));
+                c = this.elements.runner.children("li");
+                g.refresh.call(this, c.filter(":not(.ui-carousel-cloned)"));
                 this._setRunnerWidth(this.elements.runner.children("li").length /
                 this.options.noOfRows)
             } else g.refresh.apply(this, arguments)
         },
-        _setOption: function(b, f) {
+        _setOption: function(c, f) {
             g._setOption.apply(this, arguments);
-            switch (b) {
+            switch (c) {
             case "continuous":
                 if (f) this._addClonedItems();
                 else {
@@ -484,39 +494,39 @@ $.ajax = function(d) {
             g.destroy.apply(this)
         }
     })
-})(jQuery); (function(d) {
-    function g(c) {
+})(jQuery); (function(b) {
+    function g(d) {
         var e = {},
         i = /^jQuery\d+$/;
-        d.each(c.attributes,
+        b.each(d.attributes,
         function(j, k) {
             if (k.specified && !i.test(k.name)) e[k.name] = k.value
         });
         return e
     }
-    function b() {
-        var c = d(this);
-        if (c.val() === c.attr("placeholder") && c.hasClass("placeholder")) c.data("placeholder-password") ? c.hide().next().attr("id", c.removeAttr("id").data("placeholder-id")).show().focus() : c.val("").removeClass("placeholder")
+    function c() {
+        var d = b(this);
+        if (d.val() === d.attr("placeholder") && d.hasClass("placeholder")) d.data("placeholder-password") ? d.hide().next().attr("id", d.removeAttr("id").data("placeholder-id")).show().focus() : d.val("").removeClass("placeholder")
     }
     function f() {
-        var c,
-        e = d(this),
+        var d,
+        e = b(this),
         i = this.id;
         if (e.val() === "") {
             if (e.is(":password")) {
                 if (!e.data("placeholder-textinput")) {
                     try {
-                        c =
+                        d =
                         e.clone().attr({
                             type: "text"
                         })
                     } catch(j) {
-                        c = d("<input>").attr(d.extend(g(this), {
+                        d = b("<input>").attr(b.extend(g(this), {
                             type: "text"
                         }))
                     }
-                    c.removeAttr("name").data("placeholder-password", true).data("placeholder-id", i).bind("focus.placeholder", b);
-                    e.data("placeholder-textinput", c).data("placeholder-id", i).before(c)
+                    d.removeAttr("name").data("placeholder-password", true).data("placeholder-id", i).bind("focus.placeholder", c);
+                    e.data("placeholder-textinput", d).data("placeholder-id", i).before(d)
                 }
                 e = e.removeAttr("id").hide().prev().attr("id", i).show()
             }
@@ -526,68 +536,74 @@ $.ajax = function(d) {
     var h = "placeholder" in document.createElement("input"),
     a = "placeholder" in document.createElement("textarea");
     if (h && a) {
-        d.fn.placeholder = function() {
+        b.fn.placeholder = function() {
             return this
         };
-        d.fn.placeholder.input = d.fn.placeholder.textarea = true
+        b.fn.placeholder.input = b.fn.placeholder.textarea = true
     } else {
-        d.fn.placeholder = function() {
-            return this.filter((h ? "textarea": ":input") + "[placeholder]").bind("focus.placeholder", b).bind("blur.placeholder", f).trigger("blur.placeholder").end()
+        b.fn.placeholder = function() {
+            return this.filter((h ? "textarea": ":input") + "[placeholder]").bind("focus.placeholder", c).bind("blur.placeholder", f).trigger("blur.placeholder").end()
         };
-        d.fn.placeholder.input = h;
-        d.fn.placeholder.textarea = a
+        b.fn.placeholder.input = h;
+        b.fn.placeholder.textarea = a
     }
-    d(function() {
-        d("form").bind("submit.placeholder",
+    b(function() {
+        b("form").bind("submit.placeholder",
         function() {
-            var c = d(".placeholder", this).each(b);
+            var d = b(".placeholder", this).each(c);
             setTimeout(function() {
-                c.each(f)
+                d.each(f)
             },
             10)
         })
     });
-    d(window).bind("unload.placeholder",
+    b(window).bind("unload.placeholder",
     function() {
-        d(".placeholder").val("")
+        b(".placeholder").val("")
     })
-})(jQuery); (function(d) {
+})(jQuery); (function(b) {
     var g = {};
-    d.publish = function(b, f) {
-        g[b] && d.each(g[b],
+    b.publish = function(c, f) {
+        g[c] && b.each(g[c],
         function() {
-            this.apply(d, f || [])
+            this.apply(b, f || [])
         });
         return false
     };
-    d.subscribe = function(b, f) {
-        g[b] || (g[b] = []);
-        g[b].push(f);
-        return [b, f]
+    b.subscribe = function(c, f) {
+        g[c] || (g[c] = []);
+        g[c].push(f);
+        return [c, f]
     };
-    d.unsubscribe = function(b) {
-        var f = b[0];
-        g[f] && d.each(g[f],
+    b.unsubscribe = function(c) {
+        var f = c[0];
+        g[f] && b.each(g[f],
         function(h) {
-            this == b[1] && g[f].splice(h, 1)
+            this == c[1] && g[f].splice(h, 1)
         })
     }
-})(jQuery); (function(d) {
-    $.fn.waiting = function(b) {
+})(jQuery); (function(b) {
+    $.fn.waiting = function(c) {
         var f = $(this),
         h = f.html();
-        f.text(b);
+        f.text(c);
         return function(a) {
             f.html(a ? a: h);
             return h
         }
     };
     var g = false;
-    d.landing_page = {
+    b.landing_page = {
+        disable_sharing_widget: function() {
+            $("body").delegate(".btnx .app-download-link", "click",
+            function() {
+                return false
+            })
+        },
         enable_sharing_widget: function() {
             $(".btnx .app-download-link").bind("click",
-            function(b) {
-                b.preventDefault();
+            function(c) {
+                c.preventDefault();
                 g = g ? g: $("#dialog .title-markup").html();
                 $("#dialog .title-markup").remove();
                 $("#dialog").dialog({
@@ -599,8 +615,7 @@ $.ajax = function(d) {
                 });
                 $("#dialog input").placeholder();
                 if (!$(this).data("saw_modal")) {
-                    $.post("/api/log_stat_event",
-                    {
+                    $.post("/api/log_stat_event", {
                         stat_id: 13,
                         app_id: page_context.app_id
                     });
@@ -609,20 +624,21 @@ $.ajax = function(d) {
                 return false
             });
             $("#dialog form").bind("submit",
-            function(b) {
+            function(c) {
                 var f = $(this),
                 h = f.data("app-pk"),
                 a = $("input", f),
-                c = $("button", f),
-                e = c.html(),
+                d = $("button", f),
+                e = d.html(),
                 i;
                 $("#dialog .error").hide();
-                b.preventDefault();
+                c.preventDefault();
                 if (a.val().length < 10 && a.val().indexOf("@") < 0) $("#dialog .error.invalid").show();
                 else {
-                    i = c.waiting("Sending...");
+                    i = d.waiting("Sending...");
                     if (!f.data("sending")) {
-                        f.data("sending", true);
+                        f.data("sending",
+                        true);
                         $.ajax({
                             type: "POST",
                             url: "/api/send_link",
@@ -638,7 +654,7 @@ $.ajax = function(d) {
                                 setTimeout(function() {
                                     $("#dialog").dialog("close");
                                     a.val("");
-                                    c.html(e);
+                                    d.html(e);
                                     $("#dialog .error").hide();
                                     $(".widget-body-action").removeClass("no-display");
                                     $(".widget-body-success").addClass("no-display")
@@ -650,8 +666,7 @@ $.ajax = function(d) {
                                 e = i();
                                 a.val("");
                                 if (l === "email") $("#dialog .error.email").show();
-                                else l === "sms" ? $("#dialog .error.sms").show() :
-                                $("#dialog .error.generic").show()
+                                else l === "sms" ? $("#dialog .error.sms").show() : $("#dialog .error.generic").show()
                             },
                             complete: function() {
                                 f.data("sending", false)
@@ -672,20 +687,21 @@ $.ajax = function(d) {
             $("input, textarea").placeholder()
         },
         forms: function() {
-            $("body").delegate("input[name=permalink]", "click",
+            $("body").delegate("input[name=permalink]",
+            "click",
             function() {
                 this.select()
             })
         }
     };
-    $.each(d.landing_page,
-    function(b, f) {
-        $.subscribe(b, f)
+    $.each(b.landing_page,
+    function(c, f) {
+        $.subscribe(c, f)
     })
 })(TAPP);
 $(document).ready(function() {
     if (page_context.readyView) $.isArray(page_context.readyView) ? $.each(page_context.readyView,
-    function(d, g) {
+    function(b, g) {
         $.publish(g)
     }) : $.publish(page_context.readyView)
 });

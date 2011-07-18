@@ -139,7 +139,13 @@ $(document).ready(function()
             }
         }
 
+        //Figure out what to do based on hash input
         hashControl(mainHash, devHash, romHash);
+
+        // Sub header removes extra tabs
+        $('#removeXtraTabs').click(function(event){
+            removeXtraTabs();
+        })
 
         //Button and dropdown logic
         buttonMenuLogic();
@@ -231,7 +237,7 @@ $(document).ready(function()
                 if(developers[j].id == devId)
                 {
                     // Check if works with the device chosen
-                    if ((developers[j].roms[devFilter])||(devFilter=="-"))
+                    if ((developers[j].roms[devFilter])||(devFilter=="-")||(developers[j].roms['all']))
                         {
                             devOk = true;
                             break;
@@ -344,7 +350,7 @@ $(document).ready(function()
         $("div.developers").addClass("hide");
         $(".tabItem").removeClass("selected");
 
-        $('#tabs').append('<li id="romListItemTab"><a id = "romListTab" class = "tabItem selected">' + developers[devIndex].developer + ' Roms</a></li>');
+        $('#tabs').append('<li id="romListItemTab"><a id = "romListTab" class = "tabItem selected">' + developers[devIndex].developer + '</a></li>');
         $('.newTab').append('<div class = "tabContent romList" id = "devInfo"></div>');
 
         // Controls for clicking the rom list tab
@@ -383,7 +389,7 @@ $(document).ready(function()
                         var romDownloads = 0;
                         if (val.visible == null)
                         {
-                            if ((devOptions == '-') || (val.device == devOptions))
+                            if ((devOptions == '-') || (val.device == devOptions) || val.device == 'all')
                             {
                                 giantRomList += '<tr><td><a class = "ROM" id = "' + devId + "___" + i + '" href="#romInfo">' + val.name + '</a><br>' + val.summary;
                                 if (rData.result[val.modversion])
@@ -671,6 +677,14 @@ $(document).ready(function()
             $("#devListing").removeClass("hide");
             $("#devTab").addClass("selected");
         }
+    }
+//===============================removeXtraTabs()=============================
+    function removeXtraTabs()
+    {
+        $('#devInfo').remove();
+        $('#romListItemTab').remove();
+        $('#romInfo').remove();
+        $('#romInfoListItem').remove();
     }
 
 //===============================Sorting Functions============================

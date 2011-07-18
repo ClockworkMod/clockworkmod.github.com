@@ -100,19 +100,11 @@ font-size: 1em
 .ui-widget input,.ui-widget select,.ui-widget textarea,.ui-widget button {
 font-size: 1em
 }
-.ui-state-highlight,.ui-widget-content .ui-state-highlight,.ui-widget-header .ui-state-highlight {
-border: 1px solid #f9dd34;
-background: #ffef8f url("http://d185vqj7zjbnhg.cloudfront.net/i/DGbDNeRtC1lDPGLdoCjKMOfGe04.png") 50% top repeat-x;
-color: #363636
-}
+
 .ui-state-highlight a,.ui-widget-content .ui-state-highlight a,.ui-widget-header .ui-state-highlight a {
 color: #363636
 }
-.ui-state-error,.ui-widget-content .ui-state-error,.ui-widget-header .ui-state-error {
-border: 1px solid #cd0a0a;
-background: #cd0a0a url("http://d185vqj7zjbnhg.cloudfront.net/i/Btj1k4VcIguRaENJszDRuyLiZfo.png") 50% 50% repeat-x;
-color: #ffffff
-}
+
 .ui-state-error a,.ui-widget-content .ui-state-error a,.ui-widget-header .ui-state-error a {
 color: #ffffff
 }
@@ -132,32 +124,7 @@ opacity: .35;
 filter: Alpha(Opacity=35);
 background-image: none
 }
-.ui-icon {
-width: 16px;
-height: 16px;
-background-image: url("http://d185vqj7zjbnhg.cloudfront.net/i/uES5T2hMM0-Minym30azGNnMjY0.png")
-}
-.ui-widget-content .ui-icon {
-background-image: url("http://d185vqj7zjbnhg.cloudfront.net/i/uES5T2hMM0-Minym30azGNnMjY0.png")
-}
-.ui-widget-header .ui-icon {
-background-image: url("http://d185vqj7zjbnhg.cloudfront.net/i/uES5T2hMM0-Minym30azGNnMjY0.png")
-}
-.ui-state-default .ui-icon {
-background-image: url("http://d185vqj7zjbnhg.cloudfront.net/i/irdbaMQwG5ajEs3Ltrqzt1k1wKw.png")
-}
-.ui-state-hover .ui-icon,.ui-state-focus .ui-icon {
-background-image: url("http://d185vqj7zjbnhg.cloudfront.net/i/0kr8tazd8_K5yMbwR6eeIdb1zwE.png")
-}
-.ui-state-active .ui-icon {
-background-image: url("http://d185vqj7zjbnhg.cloudfront.net/i/_e8-jO6zaxS_kUuQm-vRkZFUrM4.png")
-}
-.ui-state-highlight .ui-icon {
-background-image: url("http://d185vqj7zjbnhg.cloudfront.net/i/XAgAKRqNxBrpFdn-bUL5bGcDWiM.png")
-}
-.ui-state-error .ui-icon,.ui-state-error-text .ui-icon {
-background-image: url("http://d185vqj7zjbnhg.cloudfront.net/i/_e8-jO6zaxS_kUuQm-vRkZFUrM4.png")
-}
+
 .ui-icon-carat-1-n {
 background-position: 0 0
 }
@@ -685,16 +652,7 @@ background: #000;
 opacity: .80;
 filter: Alpha(Opacity=80)
 }
-.ui-widget-shadow {
-margin: -7px 0 0 -7px;
-padding: 7px;
-background: black url("http://d185vqj7zjbnhg.cloudfront.net/i/cOVlm9g8ewzEZf9ji9HQUkEikB0.png") 50% top repeat-x;
-opacity: .30;
-filter: Alpha(Opacity=30);
--moz-border-radius: 8px;
--webkit-border-radius: 8px;
-border-radius: 8px
-}
+
 .ui-resizable {
 position: relative
 }
@@ -1579,7 +1537,7 @@ color: #fff
 -moz-box-shadow: inset 0 0 1px rgba(0, 0, 0, 0.3);
 -o-box-shadow: inset 0 0 1px rgba(0, 0, 0, 0.3);
 box-shadow: inset 0 0 1px rgba(0, 0, 0, 0.3);
-background: url("http://d185vqj7zjbnhg.cloudfront.net/i/BkeMDr6dWgQRt1Pwj7sB32fEyzE.png") no-repeat center center #8f8f8f
+background: url("dl_arrow.png") no-repeat center center #8f8f8f
 }
 .btnx .dark {
 font-weight: bold;
@@ -1601,7 +1559,7 @@ background-image: -moz-linear-gradient(top, #555555 0%, #404040 100%);
 background-image: linear-gradient(top, #555555 0%, #404040 100%)
 }
 .btnx .dark:hover .app-download-icon {
-background: url("http://d185vqj7zjbnhg.cloudfront.net/i/BkeMDr6dWgQRt1Pwj7sB32fEyzE.png") no-repeat center center #333333
+background: url("dl_arrow.png") no-repeat center center #333333
 }
 .btnx .dark .app-download-text .top-line-text,.btnx .dark .app-download-text .bottom-line-text {
 color: #fff
@@ -1612,7 +1570,7 @@ color: #fff
 .btnx .dark .app-download-icon {
 -moz-box-shadow: inset 0 0 0 1px rgba(0, 0, 0, 0.3);
 -webkit-box-shadow: inset 0 0 0 1px rgba(0, 0, 0, 0.3);
-background: url("http://d185vqj7zjbnhg.cloudfront.net/i/BkeMDr6dWgQRt1Pwj7sB32fEyzE.png") no-repeat center center #444444
+background: url("dl_arrow.png") no-repeat center center #444444
 }
 .btnx .icon_only {
 background: transparent;
@@ -1791,46 +1749,13 @@ float: right
 .carousel-inner img {
 border: none
 }
-.ios-iphone-landscape .carousel-inner {
-background: url("http://d185vqj7zjbnhg.cloudfront.net/i/3PPP_Vi6w4z9aFkrH_ZUjcvh6wE.png") no-repeat;
-width: 320px;
-padding: 22px 90px 23px 88px
-}
-.ios-iphone-portrait .carousel-inner {
-background: url("http://d185vqj7zjbnhg.cloudfront.net/i/bDs7W3BwtMLHc1d9RbsLBKEV90w.png") no-repeat;
-padding: 88px 23px 110px 24px;
-width: 213px
-}
-.android-droid_x-landscape .carousel-inner {
-background: url("http://d185vqj7zjbnhg.cloudfront.net/i/zBAODQywT27P7asIdD-YeWoAm1Y.png") no-repeat;
-padding: 26px 77px 29px 49px;
-width: 378px
-}
-.android-droid_x-portrait .carousel-inner {
-background: url("http://d185vqj7zjbnhg.cloudfront.net/i/nJSfDBvHtz3ldgWuQ_VO_3_ym4E.png") no-repeat;
-padding: 48px 26px 89px;
-width: 208px
-}
-.android-nexus_s-landscape .carousel-inner {
-background: url("http://d185vqj7zjbnhg.cloudfront.net/i/8B227g3zV4dmoFKXO98igPC0aRc.png") no-repeat;
-padding: 26px 68px 29px 72px;
-width: 366px
-}
+
 .android-nexus_s-portrait .carousel-inner {
-background: url("http://d185vqj7zjbnhg.cloudfront.net/i/SSMXaDyfJb5q_A6C-bxGbwMRbks.png") no-repeat;
+background: url("phone.png") no-repeat;
 padding: 52px 24px 120px 27px;
 width: 210px
 }
-.android-wildfire-landscape .carousel-inner {
-background: url("http://d185vqj7zjbnhg.cloudfront.net/i/w8Qn5vBhNT2pcasltGR9hItjuxU.png") no-repeat;
-padding: 30px 95px 29px 62px;
-width: 298px
-}
-.android-wildfire-portrait .carousel-inner {
-background: url("http://d185vqj7zjbnhg.cloudfront.net/i/2fZ_zJRgSLQpEbUdNh8xm__r1zc.png") no-repeat;
-padding: 65px 24px 152px 32px;
-width: 205px
-}
+
 .app-icon {
 display: block;
 width: 80px;
@@ -1886,26 +1811,6 @@ top: 0;
 left: 0;
 z-index: 100
 }
-.app-ss-module:hover .app-ss-hover {
-display: block;
-background: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABkAAAAZCAYAAADE6YVjAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAA2ZpVFh0WE1MOmNvbS5hZG9iZS54bXAAAAAAADw/eHBhY2tldCBiZWdpbj0i77u/IiBpZD0iVzVNME1wQ2VoaUh6cmVTek5UY3prYzlkIj8+IDx4OnhtcG1ldGEgeG1sbnM6eD0iYWRvYmU6bnM6bWV0YS8iIHg6eG1wdGs9IkFkb2JlIFhNUCBDb3JlIDUuMC1jMDYwIDYxLjEzNDc3NywgMjAxMC8wMi8xMi0xNzozMjowMCAgICAgICAgIj4gPHJkZjpSREYgeG1sbnM6cmRmPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5LzAyLzIyLXJkZi1zeW50YXgtbnMjIj4gPHJkZjpEZXNjcmlwdGlvbiByZGY6YWJvdXQ9IiIgeG1sbnM6eG1wTU09Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC9tbS8iIHhtbG5zOnN0UmVmPSJodHRwOi8vbnMuYWRvYmUuY29tL3hhcC8xLjAvc1R5cGUvUmVzb3VyY2VSZWYjIiB4bWxuczp4bXA9Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC8iIHhtcE1NOk9yaWdpbmFsRG9jdW1lbnRJRD0ieG1wLmRpZDoxMTVCQTQ1MTc5MjA2ODExQjI0MkU1MDI2MTQ2NjFDQyIgeG1wTU06RG9jdW1lbnRJRD0ieG1wLmRpZDoyNUZCMEMyOTg1MEQxMUUwOEUwREZDQ0U2RkEzMUQxOSIgeG1wTU06SW5zdGFuY2VJRD0ieG1wLmlpZDoyNUZCMEMyODg1MEQxMUUwOEUwREZDQ0U2RkEzMUQxOSIgeG1wOkNyZWF0b3JUb29sPSJBZG9iZSBQaG90b3Nob3AgQ1M1IE1hY2ludG9zaCI+IDx4bXBNTTpEZXJpdmVkRnJvbSBzdFJlZjppbnN0YW5jZUlEPSJ4bXAuaWlkOjEyNUJBNDUxNzkyMDY4MTFCMjQyRTUwMjYxNDY2MUNDIiBzdFJlZjpkb2N1bWVudElEPSJ4bXAuZGlkOjExNUJBNDUxNzkyMDY4MTFCMjQyRTUwMjYxNDY2MUNDIi8+IDwvcmRmOkRlc2NyaXB0aW9uPiA8L3JkZjpSREY+IDwveDp4bXBtZXRhPiA8P3hwYWNrZXQgZW5kPSJyIj8+/jU6VgAAAtFJREFUeNrsVd9LWmEYPh5Ppm2VOsmYObXBHMocLFAjalAwaP+AyKARUhf7D4KIXbn73YwhXozumgy9FZZz68rBvBgFiSW19UMqm9EPW0fPnhc+IVzGObDFLvbCg995/c73fM/766gkSeL+tqnOrxcXFw0Wi+WhTqe7LwiCET5JFMWd4+Pj7NLS0seBgYFD8l100GWXrZOo8vm802q1PtFoNF3kOIKpYG0wej45OflWKBTeuN3u7xcRXUbCE8Hc3NwNKBgjgrW1ta3p6emk1+uNDw0NxcPh8PtisbgLdVabzTYWiUTaGyIgywQcHMBNXuOmz51Opw8+O0CKzIBjeHh4cHt7+wXtyeVyj9nlflPSDLRZYzAYPDXY7OxsZnl5uQDfFrAL7NB6fn4+H4/Hv9BhJpPpQW9vb6sSFUTSotVqOxDzysLCwiqey8BPoMZwCvzIZDIrKAIRIe30+/3XlISMSHiShBxzyAsdeNaQWFqf9fT0EDEHwVypVFIrVcIdwJBYXTAYtDTbODo6egtlLZTL5YN0On2mlKSazWZzVK4+n28kFouZGvsnmUxaPB7PIFRIqVTqK0KriESg+E9NTX3GIXfMZvNN3PjZxsZGslKprOBQHm1y12g0PkLejFQc3d3ddDGxWVM2a0aKr35iYuLezMzMCGLfxWJPOVDxPN9y/gX4xfX19XcOhyPFCkNWxxPoIIPL5bKCyNPf32/X6/XU6dLe3t5hIpFYhZLWycnJPpDyIKpubm7GMCE+1IlkjRVGdJ1UqdXqdrvd3kY5QIMesjIW0O3e8fFxP/6niqxC0VvsSxOR3EFbD50W6CBlDDRGdMx3OxqNPkW7vKLux+9Ltv/Sjhca+qHKcNo4NZivFgqFPuFFKRAI9O3v7xdpYgAVuaNebslTrqjMO2lYsxF0JCcnSok0DHXV4p8m4ZR+tISr+Pzy3BXYf5J/j+SXAAMAjl9qOI+4bucAAAAASUVORK5CYII=") no-repeat bottom right transparent
-}
-.loading {
-background-image: url("http://d185vqj7zjbnhg.cloudfront.net/i/RYPZsYmpk5Iu0IQrBPlLw6sTRgg.png") !important;
-background-repeat: no-repeat;
-background-position: 50% 50%;
-position: absolute;
-z-index: 9999;
-background-color: rgba(0, 0, 0, 0);
-background-size: 15px 15px;
-color: #fff
-}
-@-webkit-keyframes spinnerRotate {from {
--webkit-transform: rotate(0deg)
-}
-to {
--webkit-transform: rotate(360deg)
-}
 
 }
 .app-video-module {
@@ -1942,10 +1847,10 @@ clear: none;
 margin-right: 10px
 }
 .app-facebook-badge a {
-background: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABgAAAAYCAYAAADgdz34AAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAyJpVFh0WE1MOmNvbS5hZG9iZS54bXAAAAAAADw/eHBhY2tldCBiZWdpbj0i77u/IiBpZD0iVzVNME1wQ2VoaUh6cmVTek5UY3prYzlkIj8+IDx4OnhtcG1ldGEgeG1sbnM6eD0iYWRvYmU6bnM6bWV0YS8iIHg6eG1wdGs9IkFkb2JlIFhNUCBDb3JlIDUuMC1jMDYwIDYxLjEzNDc3NywgMjAxMC8wMi8xMi0xNzozMjowMCAgICAgICAgIj4gPHJkZjpSREYgeG1sbnM6cmRmPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5LzAyLzIyLXJkZi1zeW50YXgtbnMjIj4gPHJkZjpEZXNjcmlwdGlvbiByZGY6YWJvdXQ9IiIgeG1sbnM6eG1wPSJodHRwOi8vbnMuYWRvYmUuY29tL3hhcC8xLjAvIiB4bWxuczp4bXBNTT0iaHR0cDovL25zLmFkb2JlLmNvbS94YXAvMS4wL21tLyIgeG1sbnM6c3RSZWY9Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC9zVHlwZS9SZXNvdXJjZVJlZiMiIHhtcDpDcmVhdG9yVG9vbD0iQWRvYmUgUGhvdG9zaG9wIENTNSBNYWNpbnRvc2giIHhtcE1NOkluc3RhbmNlSUQ9InhtcC5paWQ6MzQ5QzNCMDg3MDA5MTFFMDlGNUJBRTAwQzBFRDlDMkYiIHhtcE1NOkRvY3VtZW50SUQ9InhtcC5kaWQ6MzQ5QzNCMDk3MDA5MTFFMDlGNUJBRTAwQzBFRDlDMkYiPiA8eG1wTU06RGVyaXZlZEZyb20gc3RSZWY6aW5zdGFuY2VJRD0ieG1wLmlpZDozNDlDM0IwNjcwMDkxMUUwOUY1QkFFMDBDMEVEOUMyRiIgc3RSZWY6ZG9jdW1lbnRJRD0ieG1wLmRpZDozNDlDM0IwNzcwMDkxMUUwOUY1QkFFMDBDMEVEOUMyRiIvPiA8L3JkZjpEZXNjcmlwdGlvbj4gPC9yZGY6UkRGPiA8L3g6eG1wbWV0YT4gPD94cGFja2V0IGVuZD0iciI/PiSufw0AAACNSURBVHjaYmFgYJAEYncgZmOgLvgFxDsZgUQCDQyHW8JEQ8NBgI2JgcaAhUx9t4D4Jojx////5zBBRkbGNGpYcAto6AFiFZMTRDdJUTz44gA5zKHhjjeZU8MHbEMjiIBBM4uQOLZkSnMfDJ4ggnkfPaiwBcvwCqJRC0aIBb9oaD640t9JI0vAzRaAAAMA5+wk3lpno5oAAAAASUVORK5CYII=") no-repeat 0 0
+background: url("fb_badge.png") no-repeat 0 0
 }
 .app-twitter-badge a {
-background: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABgAAAAYCAYAAADgdz34AAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAyJpVFh0WE1MOmNvbS5hZG9iZS54bXAAAAAAADw/eHBhY2tldCBiZWdpbj0i77u/IiBpZD0iVzVNME1wQ2VoaUh6cmVTek5UY3prYzlkIj8+IDx4OnhtcG1ldGEgeG1sbnM6eD0iYWRvYmU6bnM6bWV0YS8iIHg6eG1wdGs9IkFkb2JlIFhNUCBDb3JlIDUuMC1jMDYwIDYxLjEzNDc3NywgMjAxMC8wMi8xMi0xNzozMjowMCAgICAgICAgIj4gPHJkZjpSREYgeG1sbnM6cmRmPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5LzAyLzIyLXJkZi1zeW50YXgtbnMjIj4gPHJkZjpEZXNjcmlwdGlvbiByZGY6YWJvdXQ9IiIgeG1sbnM6eG1wPSJodHRwOi8vbnMuYWRvYmUuY29tL3hhcC8xLjAvIiB4bWxuczp4bXBNTT0iaHR0cDovL25zLmFkb2JlLmNvbS94YXAvMS4wL21tLyIgeG1sbnM6c3RSZWY9Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC9zVHlwZS9SZXNvdXJjZVJlZiMiIHhtcDpDcmVhdG9yVG9vbD0iQWRvYmUgUGhvdG9zaG9wIENTNSBNYWNpbnRvc2giIHhtcE1NOkluc3RhbmNlSUQ9InhtcC5paWQ6MzQ5QzNCMDQ3MDA5MTFFMDlGNUJBRTAwQzBFRDlDMkYiIHhtcE1NOkRvY3VtZW50SUQ9InhtcC5kaWQ6MzQ5QzNCMDU3MDA5MTFFMDlGNUJBRTAwQzBFRDlDMkYiPiA8eG1wTU06RGVyaXZlZEZyb20gc3RSZWY6aW5zdGFuY2VJRD0ieG1wLmlpZDozNDlDM0IwMjcwMDkxMUUwOUY1QkFFMDBDMEVEOUMyRiIgc3RSZWY6ZG9jdW1lbnRJRD0ieG1wLmRpZDozNDlDM0IwMzcwMDkxMUUwOUY1QkFFMDBDMEVEOUMyRiIvPiA8L3JkZjpEZXNjcmlwdGlvbj4gPC9yZGY6UkRGPiA8L3g6eG1wbWV0YT4gPD94cGFja2V0IGVuZD0iciI/PmvCh08AAADTSURBVHjaYmRgYJAEYncgZmOgLvgFxDsZgUQCDQyHW8JEQ8NBgI2JgcaABY/cWyA+C2U7kOtTfD44+////wcgDGQfINcH+Cx4hoNNHQuALv+FjU3NOEC3cBY2cUZGRgV8cURxKoLG0TFy4oAU8JlmFgCDSBhIWVEcB0CD0qidTKkCmAh4nXYWAAEvGv8WWXEExLjC9hkwCW4hIm7IzgdSQM1qtM4HDkBLdGhVXMOAFTQYbuHIULzUyAdSUDw488EvGpr/ixlIvARiRSBmpkWzBSDAAF56Nh97/D7CAAAAAElFTkSuQmCC") no-repeat 0 0
+background: url("twitter_badge.png") no-repeat 0 0
 }
 .app-external-links a {
 float: left;
@@ -2254,12 +2159,7 @@ border-top-right-radius: 10px
 border-bottom-left-radius: 10px;
 border-bottom-right-radius: 10px
 }
-.ui-widget-header .ui-icon {
-background-image: url("http://d185vqj7zjbnhg.cloudfront.net/i/1LD8j1R4XtPAxGI9lAgj6G3ayDM.png");
-width: 14px;
-height: 14px;
-opacity: .8
-}
+
 .ui-widget-header .ui-icon:hover {
 opacity: .7
 }
@@ -2319,12 +2219,7 @@ width: 170px
 color: #bbb;
 color: rgba(0, 0, 0, 0.5)
 }
-.android-store {
-background-image: url("http://d185vqj7zjbnhg.cloudfront.net/i/vJpwE_vuxWfFnyU4B9s1Ox1nZUg.png")
-}
-.ios-store {
-background-image: url("http://d185vqj7zjbnhg.cloudfront.net/i/cd7lnos7NlPPOQidfATwOwdnRPY.png")
-}
+
 .app-logo-share-title input {
 width: 300px;
 padding: 0;
@@ -2383,7 +2278,7 @@ width: 100%;
 height: 260px;
 background-image: -webkit-gradient(linear, center top, center bottom, from(rgba(0, 0, 0, 0.25)), to(rgba(255, 255, 255, 0)));
 background-image: -moz-linear-gradient(center top, rgba(0, 0, 0, 0.25), rgba(255, 255, 255, 0.15));
-background: url("http://d185vqj7zjbnhg.cloudfront.net/i/KZnFqz9QqICh028rAZDo_LEyhTc.png") repeat-x 0 0;
+background: url("header_grad.png") repeat-x 0 0;
 background-color: #414141;
 border-bottom: 1px solid #fff;
 padding: 0
